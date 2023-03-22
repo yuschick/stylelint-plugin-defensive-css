@@ -1,4 +1,4 @@
-# 🛸 Stylelint Plugin Defensive CSS
+# 🦖 Stylelint Plugin Defensive CSS
 
 ![License](https://img.shields.io/github/license/yuschick/stylelint-plugin-defensive-css?style=for-the-badge)
 ![NPM Version](https://img.shields.io/npm/v/stylelint-plugin-defensive-css?style=for-the-badge)
