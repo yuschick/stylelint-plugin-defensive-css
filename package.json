@@ -1,0 +1,56 @@
+{
+  "name": "stylelint-plugin-defensive-css",
+  "version": "0.0.1",
+  "description": "A Stylelint plugin to enforce defensive CSS best practices.",
+  "main": "src/index.js",
+  "files": [
+    "src/**/*.js",
+    "!**/**/*.test.js"
+  ],
+  "scripts": {
+    "prepare": "husky install",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yuschick/stylelint-plugin-defensive-css.git"
+  },
+  "author": "Daniel Yuschick",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yuschick/stylelint-plugin-defensive-css/issues"
+  },
+  "homepage": "https://github.com/yuschick/stylelint-plugin-defensive-css#readme",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "keywords": [
+    "Stylelint",
+    "plugin",
+    "CSS",
+    "defensive CSS",
+    "best practices"
+  ],
+  "peerDependencies": {
+    "stylelint": "^14.0.0 || ^15.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
+    "eslint": "^8.35.0",
+    "husky": "^8.0.0",
+    "jest": "^29.4.3",
+    "jest-cli": "^29.4.3",
+    "jest-preset-stylelint": "^6.1.0",
+    "lint-staged": "^13.1.2",
+    "prettier": "^2.8.4",
+    "prettier-eslint": "^15.0.1",
+    "stylelint": "^15.2.0"
+  },
+  "lint-staged": {
+    "**/*.{js|md}": [
+      "eslint",
+      "prettier --write"
+    ]
+  }
+}
