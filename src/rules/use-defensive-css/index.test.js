@@ -155,12 +155,12 @@ testRule({
   plugins: ['./index.js'],
   accept: [
     {
-      code: `input::-webkit-input-placeholder { color: #222; } input::-moz-placeholder { color: #222; } `,
+      code: `input::-webkit-input-placeholder { color: #222; } input::-moz-placeholder { color: #222; }`,
       description:
         'Split webkit and moz placeholder selectors to separate rules.',
     },
     {
-      code: `input::-ms-input-placeholder { color: #222; } input::-o-placeholder { color: #222; } `,
+      code: `input::-ms-input-placeholder { color: #222; } input::-o-placeholder { color: #222; }`,
       description:
         'Split webkit and moz placeholder selectors to separate rules.',
     },
