@@ -55,7 +55,7 @@ Enable this rule in order to prevent unintentional repeating background.
   "rules": {
     "plugin/use-defensive-css": [
       true,
-      { ..., "background-repeat": true }
+      { "background-repeat": true }
     ]
   }
 }
@@ -98,7 +98,7 @@ Enable this rule in order to require fallbacks values for custom properties.
   "rules": {
     "plugin/use-defensive-css": [
       true,
-      { ..., "custom-property-fallbacks": true }
+      { "custom-property-fallbacks": true }
     ]
   }
 }
@@ -133,7 +133,7 @@ Enable this rule in order to require all flex rows to have a flex-wrap value.
   "rules": {
     "plugin/use-defensive-css": [
       true,
-      { ..., "flex-wrapping": true }
+      { "flex-wrapping": true }
     ]
   }
 }
@@ -178,7 +178,7 @@ Enable this rule in order to require all vendor-prefixed selectors to be split i
   "rules": {
     "plugin/use-defensive-css": [
       true,
-      { ..., "vendor-prefix-grouping": true }
+      { "vendor-prefix-grouping": true }
     ]
   }
 }
