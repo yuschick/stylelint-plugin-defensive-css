@@ -87,7 +87,7 @@ const ruleFunction = (_, options) => {
           flexWrappingProps.nodeToReport = decl;
         }
 
-        if (decl.prop === 'flex-direction' && decl.value.startsWith('column')) {
+        if (decl.prop === 'flex-direction' && decl.value.includes('column')) {
           flexWrappingProps.isFlexRow = false;
         }
 

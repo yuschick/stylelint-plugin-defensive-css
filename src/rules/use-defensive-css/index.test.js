@@ -131,11 +131,20 @@ testRule({
       code: `div { display: flex; flex-direction: row-reverse; flex-wrap: wrap-reverse; }`,
       description: 'Ignores flex direction row-reverse.',
     },
+    {
+      code: `div { display: inline-flex; flex-direction: column; }`,
+      description: 'Allows inline flex with direction column.',
+    },
   ],
 
   reject: [
     {
       code: `div { display: flex; }`,
+      description: 'A flex container without a flex-wrap property defined.',
+      message: messages.flexWrapping(),
+    },
+    {
+      code: `div { display: inline-flex; }`,
       description: 'A flex container without a flex-wrap property defined.',
       message: messages.flexWrapping(),
     },
