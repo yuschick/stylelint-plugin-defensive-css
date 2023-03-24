@@ -59,7 +59,7 @@ const ruleFunction = (_, options) => {
           if (Object.values(backgroundRepeatProps).every((prop) => prop)) {
             stylelint.utils.report({
               message: ruleMessages.backgroundRepeat(),
-              node: decl.parent,
+              node: backgroundRepeatProps.nodeToReport,
               result,
               ruleName,
             });
