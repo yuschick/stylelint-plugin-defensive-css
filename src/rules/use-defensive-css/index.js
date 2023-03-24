@@ -8,20 +8,23 @@ const {
 } = require('../../utils/findShorthandBackgroundRepeat');
 const { findVendorPrefixes } = require('../../utils/findVendorPrefixes');
 
-const ruleFunction = (_, options) => {
-  let isLastStyleDeclaration = false;
-  const backgroundRepeatProps = {
-    hasBackgroundImage: false,
-    isMissingBackgroundRepeat: true,
-    nodeToReport: undefined,
-  };
-  const flexWrappingProps = {
-    isDisplayFlex: false,
-    isFlexRow: true,
-    isMissingFlexWrap: true,
-    nodeToReport: undefined,
-  };
+const defaultBackgroundRepeatProps = {
+  hasBackgroundImage: false,
+  isMissingBackgroundRepeat: true,
+  nodeToReport: undefined,
+};
+const defaultFlexWrappingProps = {
+  isDisplayFlex: false,
+  isFlexRow: true,
+  isMissingFlexWrap: true,
+  nodeToReport: undefined,
+};
 
+let backgroundRepeatProps = { ...defaultBackgroundRepeatProps };
+let flexWrappingProps = { ...defaultFlexWrappingProps };
+let isLastStyleDeclaration = false;
+
+const ruleFunction = (_, options) => {
   return (root, result) => {
     const validOptions = stylelint.utils.validateOptions(result, ruleName);
 
@@ -30,12 +33,9 @@ const ruleFunction = (_, options) => {
     }
 
     root.walkDecls((decl) => {
-      if (
+      isLastStyleDeclaration =
         JSON.stringify(decl) ===
-        JSON.stringify(decl.parent.nodes[decl.parent.nodes.length - 1])
-      ) {
-        isLastStyleDeclaration = true;
-      }
+        JSON.stringify(decl.parent.nodes[decl.parent.nodes.length - 1]);
 
       /* BACKGROUND REPEAT  */
       if (options?.['background-repeat']) {
@@ -55,23 +55,26 @@ const ruleFunction = (_, options) => {
           backgroundRepeatProps.isMissingBackgroundRepeat = false;
         }
 
-        if (
-          isLastStyleDeclaration &&
-          Object.values(backgroundRepeatProps).every((prop) => prop)
-        ) {
-          stylelint.utils.report({
-            message: ruleMessages.backgroundRepeat(),
-            node: decl.parent,
-            result,
-            ruleName,
-          });
+        if (isLastStyleDeclaration) {
+          if (Object.values(backgroundRepeatProps).every((prop) => prop)) {
+            stylelint.utils.report({
+              message: ruleMessages.backgroundRepeat(),
+              node: decl.parent,
+              result,
+              ruleName,
+            });
+          }
+
+          backgroundRepeatProps = { ...defaultBackgroundRepeatProps };
         }
+
+        return;
       }
 
       /* CUSTOM PROPERTY FALLBACKS */
       if (options?.['custom-property-fallbacks']) {
         if (decl.value.includes('var(--') && !decl.value.includes(',')) {
-          stylelint.utils.report({
+          return stylelint.utils.report({
             message: ruleMessages.customPropertyFallbacks(),
             node: decl,
             result,
@@ -95,17 +98,20 @@ const ruleFunction = (_, options) => {
           flexWrappingProps.isMissingFlexWrap = false;
         }
 
-        if (
-          isLastStyleDeclaration &&
-          Object.values(flexWrappingProps).every((prop) => prop)
-        ) {
-          stylelint.utils.report({
-            message: ruleMessages.flexWrapping(),
-            node: flexWrappingProps.nodeToReport,
-            result,
-            ruleName,
-          });
+        if (isLastStyleDeclaration) {
+          if (Object.values(flexWrappingProps).every((prop) => prop)) {
+            stylelint.utils.report({
+              message: ruleMessages.flexWrapping(),
+              node: flexWrappingProps.nodeToReport,
+              result,
+              ruleName,
+            });
+          }
+
+          flexWrappingProps = { ...defaultFlexWrappingProps };
         }
+
+        return;
       }
 
       /* GROUPING VENDOR PREFIXES */
@@ -113,7 +119,7 @@ const ruleFunction = (_, options) => {
         const hasMultiplePrefixes = findVendorPrefixes(decl.parent.selector);
 
         if (hasMultiplePrefixes) {
-          stylelint.utils.report({
+          return stylelint.utils.report({
             message: ruleMessages.vendorPrefixWGrouping(),
             node: decl.parent,
             result,

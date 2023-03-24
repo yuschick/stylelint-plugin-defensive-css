@@ -15,7 +15,7 @@ const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
     return 'Flex rows must have a `flex-wrap: wrap;` or `flex-wrap: wrap-reverse` declaration.';
   },
   vendorPrefixWGrouping() {
-    return `It's not recommended to group selectors that are meant to work with different browsers. Instead, split them to separate rules.`;
+    return `Separate different vendor prefixes into their own rules.`;
   },
 });
 
