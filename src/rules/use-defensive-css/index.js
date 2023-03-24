@@ -67,14 +67,12 @@ const ruleFunction = (_, options) => {
 
           backgroundRepeatProps = { ...defaultBackgroundRepeatProps };
         }
-
-        return;
       }
 
       /* CUSTOM PROPERTY FALLBACKS */
       if (options?.['custom-property-fallbacks']) {
         if (decl.value.includes('var(--') && !decl.value.includes(',')) {
-          return stylelint.utils.report({
+          stylelint.utils.report({
             message: ruleMessages.customPropertyFallbacks(),
             node: decl,
             result,
@@ -110,8 +108,6 @@ const ruleFunction = (_, options) => {
 
           flexWrappingProps = { ...defaultFlexWrappingProps };
         }
-
-        return;
       }
 
       /* GROUPING VENDOR PREFIXES */
@@ -119,7 +115,7 @@ const ruleFunction = (_, options) => {
         const hasMultiplePrefixes = findVendorPrefixes(decl.parent.selector);
 
         if (hasMultiplePrefixes) {
-          return stylelint.utils.report({
+          stylelint.utils.report({
             message: ruleMessages.vendorPrefixWGrouping(),
             node: decl.parent,
             result,
