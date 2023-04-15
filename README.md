@@ -114,13 +114,9 @@ div {
 }
 ```
 
-#### Options
-
-There will be time when a custom property will not require a fallback value. For
-example, when a global theme is provided at the top level of the app.
-Additionally, It's possible these custom properties will be namespaced to the
-platform. Whatever the reason, it is possible to ignore linting specific custom
-properties by using the `ignore` rule option.
+| Option | Description                                                                                       |
+| ------ | ------------------------------------------------------------------------------------------------- |
+| ignore | Pass an array of regular expressions and/or strings to ignore linting specific custom properties. |
 
 ```json
 {
@@ -137,7 +133,7 @@ The `ignore` array can support regular expressions and strings. If a string is
 provided, it will be translated into a RegExp like `new RegExp(string)` before
 testing the custom property name.
 
-##### ✅ Passing Examples
+#### ✅ Passing Examples
 
 ```css
 div {
@@ -146,15 +142,6 @@ div {
 
   /* properties with hel- are ignored */
   padding: var(--hel-spacing-200);
-}
-```
-
-##### ❌ Failing Examples
-
-```css
-div {
-  color: var(--color-primary);
-  padding: var(--spacing-200);
 }
 ```
 
