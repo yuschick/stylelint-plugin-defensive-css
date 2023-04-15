@@ -30,10 +30,7 @@ configuration.
 {
   "plugins": ["stylelint-plugin-defensive-css"],
   "rules": {
-    "plugin/use-defensive-css": [
-      true,
-      { "severity": "warning" }
-    ]
+    "plugin/use-defensive-css": [true, { "severity": "warning" }]
   }
 }
 ```
@@ -46,17 +43,16 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/bg-repeat/)
 
-Oftentimes, when using a large image as a background, we tend to forget to account for the case when the design is viewed on a large screen. That background will repeat by default.
+Oftentimes, when using a large image as a background, we tend to forget to
+account for the case when the design is viewed on a large screen. That
+background will repeat by default.
 
 Enable this rule in order to prevent unintentional repeating background.
 
 ```json
 {
   "rules": {
-    "plugin/use-defensive-css": [
-      true,
-      { "background-repeat": true }
-    ]
+    "plugin/use-defensive-css": [true, { "background-repeat": true }]
   }
 }
 ```
@@ -65,41 +61,39 @@ Enable this rule in order to prevent unintentional repeating background.
 
 ```css
 div {
-    background: url('some-image.jpg') repeat black top center;
+  background: url('some-image.jpg') repeat black top center;
 }
 div {
-    background: url('some-image.jpg') black top center;
-    background-repeat: no-repeat;
+  background: url('some-image.jpg') black top center;
+  background-repeat: no-repeat;
 }
-````
+```
 
 #### ❌ Failing Examples
 
 ```css
 div {
-    background: url('some-image.jpg') black top center;
+  background: url('some-image.jpg') black top center;
 }
-div { 
-    background-image: url('some-image.jpg');
+div {
+  background-image: url('some-image.jpg');
 }
 ```
-
 
 ### Custom Property Fallbacks
 
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/css-variable-fallback/)
 
-CSS variables are gaining more and more usage in web design. There is a method that we can apply to use them in a way that doesn’t break the experience, in case the CSS variable value was empty for some reason.
+CSS variables are gaining more and more usage in web design. There is a method
+that we can apply to use them in a way that doesn’t break the experience, in
+case the CSS variable value was empty for some reason.
 
 Enable this rule in order to require fallbacks values for custom properties.
 
 ```json
 {
   "rules": {
-    "plugin/use-defensive-css": [
-      true,
-      { "custom-property-fallbacks": true }
-    ]
+    "plugin/use-defensive-css": [true, { "custom-property-fallbacks": true }]
   }
 }
 ```
@@ -108,15 +102,59 @@ Enable this rule in order to require fallbacks values for custom properties.
 
 ```css
 div {
-    color: var(--color-primary, #000);
+  color: var(--color-primary, #000);
 }
-````
+```
 
 #### ❌ Failing Examples
 
 ```css
 div {
-    color: var(--color-primary);
+  color: var(--color-primary);
+}
+```
+
+#### Options
+
+There will be time when a custom property will not require a fallback value. For
+example, when a global theme is provided at the top level of the app.
+Additionally, It's possible these custom properties will be namespaced to the
+platform. Whatever the reason, it is possible to ignore linting specific custom
+properties by using the `ignore` rule option.
+
+```json
+{
+  "rules": {
+    "plugin/use-defensive-css": [
+      true,
+      { "custom-property-fallbacks": [true, { ignore: [/hel-/, 'theme-']}] }
+    ]
+  }
+}
+```
+
+The `ignore` array can support regular expressions and strings. If a string is
+provided, it will be translated into a RegExp like `new RegExp(string)` before
+testing the custom property name.
+
+##### ✅ Passing Examples
+
+```css
+div {
+  /* properties with theme- are ignored */
+  color: var(--theme-color-primary);
+
+  /* properties with hel- are ignored */
+  padding: var(--hel-spacing-200);
+}
+```
+
+##### ❌ Failing Examples
+
+```css
+div {
+  color: var(--color-primary);
+  padding: var(--spacing-200);
 }
 ```
 
@@ -124,17 +162,18 @@ div {
 
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/flexbox-wrapping/)
 
-CSS flexbox is one of the most useful CSS layout features nowadays. It’s tempting to add `display: flex` to a wrapper and have the child items ordered next to each other. The thing is when there is not enough space, those child items won’t wrap into a new line by default. We need to change that behavior with `flex-wrap: wrap`.
+CSS flexbox is one of the most useful CSS layout features nowadays. It’s
+tempting to add `display: flex` to a wrapper and have the child items ordered
+next to each other. The thing is when there is not enough space, those child
+items won’t wrap into a new line by default. We need to change that behavior
+with `flex-wrap: wrap`.
 
 Enable this rule in order to require all flex rows to have a flex-wrap value.
 
 ```json
 {
   "rules": {
-    "plugin/use-defensive-css": [
-      true,
-      { "flex-wrapping": true }
-    ]
+    "plugin/use-defensive-css": [true, { "flex-wrapping": true }]
   }
 }
 ```
@@ -143,25 +182,25 @@ Enable this rule in order to require all flex rows to have a flex-wrap value.
 
 ```css
 div {
-    display: flex;
-    flex-wrap: wrap; 
+  display: flex;
+  flex-wrap: wrap;
 }
 div {
-    display: flex;
-    flex-direction: row-reverse;
-    flex-wrap: wrap-reverse;
+  display: flex;
+  flex-direction: row-reverse;
+  flex-wrap: wrap-reverse;
 }
-````
+```
 
 #### ❌ Failing Examples
 
 ```css
 div {
-    display: flex;
+  display: flex;
 }
 div {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 ```
 
@@ -169,38 +208,38 @@ div {
 
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/grouping-selectors/)
 
-It's not recommended to group selectors that are meant to work with different browsers. For example, styling an input's placeholder needs multiple selectors per the browser. If we group the selectors, the entire rule will be invalid, according to [w3c](https://www.w3.org/TR/selectors/#grouping).
+It's not recommended to group selectors that are meant to work with different
+browsers. For example, styling an input's placeholder needs multiple selectors
+per the browser. If we group the selectors, the entire rule will be invalid,
+according to [w3c](https://www.w3.org/TR/selectors/#grouping).
 
-Enable this rule in order to require all vendor-prefixed selectors to be split into their own rules.
+Enable this rule in order to require all vendor-prefixed selectors to be split
+into their own rules.
 
 ```json
 {
   "rules": {
-    "plugin/use-defensive-css": [
-      true,
-      { "vendor-prefix-grouping": true }
-    ]
+    "plugin/use-defensive-css": [true, { "vendor-prefix-grouping": true }]
   }
 }
 ```
-
 
 #### ✅ Passing Examples
 
 ```css
 input::-webkit-input-placeholder {
-    color: #222;
+  color: #222;
 }
 input::-moz-placeholder {
-    color: #222;
+  color: #222;
 }
-````
+```
 
 #### ❌ Failing Examples
 
 ```css
 input::-webkit-input-placeholder,
 input::-moz-placeholder {
-    color: #222;
+  color: #222;
 }
 ```
