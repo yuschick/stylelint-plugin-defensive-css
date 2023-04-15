@@ -104,6 +104,55 @@ testRule({
 /* eslint-disable-next-line no-undef  */
 testRule({
   ruleName,
+  config: [true, { 'custom-property-fallbacks': [true, { ignore: [/hel-/] }] }],
+  plugins: ['./index.js'],
+  accept: [
+    {
+      code: `div { color: var(--hel-color-primary); }`,
+      description: 'A custom property with an ignored namespace.',
+    },
+  ],
+
+  reject: [
+    {
+      code: `div { color: var(--color-primary); }`,
+      description: 'A custom property without a fallback color value.',
+      message: messages.customPropertyFallbacks(),
+    },
+  ],
+});
+
+/* eslint-disable-next-line no-undef  */
+testRule({
+  ruleName,
+  config: [
+    true,
+    { 'custom-property-fallbacks': [true, { ignore: [/hel-/, 'mis-'] }] },
+  ],
+  plugins: ['./index.js'],
+  accept: [
+    {
+      code: `div { color: var(--hel-color-primary); }`,
+      description: 'A custom property with an ignored namespace.',
+    },
+    {
+      code: `div { color: var(--mis-color-primary); }`,
+      description: 'A custom property with an ignored namespace.',
+    },
+  ],
+
+  reject: [
+    {
+      code: `div { color: var(--color-primary); }`,
+      description: 'A custom property without a fallback color value.',
+      message: messages.customPropertyFallbacks(),
+    },
+  ],
+});
+
+/* eslint-disable-next-line no-undef  */
+testRule({
+  ruleName,
   config: [true, { 'flex-wrapping': true }],
   plugins: ['./index.js'],
   accept: [

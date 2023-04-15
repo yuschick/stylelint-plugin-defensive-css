@@ -72,6 +72,23 @@ const ruleFunction = (_, options) => {
       /* CUSTOM PROPERTY FALLBACKS */
       if (options?.['custom-property-fallbacks']) {
         if (decl.value.includes('var(--') && !decl.value.includes(',')) {
+          if (Array.isArray(options?.['custom-property-fallbacks'])) {
+            if (options['custom-property-fallbacks'][0]) {
+              const patterns = options['custom-property-fallbacks'][1].ignore;
+              const patternMatched = patterns.some((pattern) =>
+                typeof pattern === 'string'
+                  ? new RegExp(pattern).test(decl.value.slice(4, -1))
+                  : pattern.test(decl.value.slice(4, -1)),
+              );
+
+              if (patternMatched) {
+                return;
+              }
+            } else {
+              return;
+            }
+          }
+
           stylelint.utils.report({
             message: ruleMessages.customPropertyFallbacks(),
             node: decl,
