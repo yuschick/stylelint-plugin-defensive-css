@@ -123,7 +123,7 @@ div {
   "rules": {
     "plugin/use-defensive-css": [
       true,
-      { "custom-property-fallbacks": [true, { ignore: [/hel-/, 'theme-']}] }
+      { "custom-property-fallbacks": [true, { "ignore": [/hel-/, "theme-"]}] }
     ]
   }
 }
