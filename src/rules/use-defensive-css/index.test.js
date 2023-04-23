@@ -222,6 +222,25 @@ testRule({
       description:
         'Split webkit and moz placeholder selectors to separate rules.',
     },
+    {
+      code: `div::before,div::after { color: #222; }`,
+      description:
+        'Combining pseudo elements with the same selector into one rule.',
+    },
+    {
+      code: `
+      .tabs-pink--active strong,
+      .tabs-pink--active svg,
+      .tabs-pink:hover strong,
+      .tab-type-2--active strong,
+      .tab-type-2--active svg,
+      .tab-type-2:hover strong,
+      .tab-resource-item:hover {
+          color: #e20072;
+      }`,
+      description:
+        'Combining a bunch of selectors into one rule. See: https://github.com/yuschick/stylelint-plugin-defensive-css/issues/4',
+    },
   ],
 
   reject: [
