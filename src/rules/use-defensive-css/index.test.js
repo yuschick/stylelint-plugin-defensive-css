@@ -98,6 +98,12 @@ testRule({
       description: 'A custom property without a fallback color value.',
       message: messages.customPropertyFallbacks(),
     },
+    {
+      code: `div { grid-template: var(--page-header-size) 1fr / max-content minmax(0, 1fr) max-content; }`,
+      description:
+        'Using grid template areas without a fallback but a comma elsewhere.',
+      message: messages.customPropertyFallbacks(),
+    },
   ],
 });
 

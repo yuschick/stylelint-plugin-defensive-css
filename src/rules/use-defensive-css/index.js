@@ -7,6 +7,7 @@ const {
   findShorthandBackgroundRepeat,
 } = require('../../utils/findShorthandBackgroundRepeat');
 const { findVendorPrefixes } = require('../../utils/findVendorPrefixes');
+const { findCustomProperties } = require('../../utils/findCustomProperties');
 
 const defaultBackgroundRepeatProps = {
   hasBackgroundImage: false,
@@ -71,14 +72,20 @@ const ruleFunction = (_, options) => {
 
       /* CUSTOM PROPERTY FALLBACKS */
       if (options?.['custom-property-fallbacks']) {
-        if (decl.value.includes('var(--') && !decl.value.includes(',')) {
+        const propertiesWithoutFallback = findCustomProperties(decl.value);
+
+        if (propertiesWithoutFallback.length) {
           if (Array.isArray(options?.['custom-property-fallbacks'])) {
             if (options['custom-property-fallbacks'][0]) {
               const patterns = options['custom-property-fallbacks'][1].ignore;
-              const patternMatched = patterns.some((pattern) =>
-                typeof pattern === 'string'
-                  ? new RegExp(pattern).test(decl.value.slice(4, -1))
-                  : pattern.test(decl.value.slice(4, -1)),
+              const patternMatched = propertiesWithoutFallback.some(
+                (property) => {
+                  return patterns.some((pattern) =>
+                    typeof pattern === 'string'
+                      ? new RegExp(pattern).test(property)
+                      : pattern.test(property),
+                  );
+                },
               );
 
               if (patternMatched) {
