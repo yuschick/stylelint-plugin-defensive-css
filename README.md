@@ -39,6 +39,11 @@ configuration.
 
 The plugin provides multiple rules that can be toggled on and off as needed.
 
+[Background-Repeat](#background-repeat) -
+[Custom Property Fallbacks](#custom-property-fallbacks) -
+[Flex Wrapping](#flex-wrapping) - [Scroll Chaining](#scroll-chaining) -
+[Vendor Prefix Grouping](#vendor-prefix-grouping)
+
 ### Background Repeat
 
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/bg-repeat/)
