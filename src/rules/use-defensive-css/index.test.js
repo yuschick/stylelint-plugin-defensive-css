@@ -7,6 +7,47 @@ const {
 /* eslint-disable-next-line no-undef  */
 testRule({
   ruleName,
+  config: [true, { 'accidental-hover': true }],
+  plugins: ['./index.js'],
+  accept: [
+    {
+      code: `@media (hover: hover) { .btn:hover { color: black; } }`,
+      description: 'Use media query for button hover state.',
+    },
+    {
+      code: `@media (min-width: 1px) { @media (hover: hover) { .btn:hover { color: black; } } }`,
+      description: 'Use nested media queries for button hover state.',
+    },
+    {
+      code: `@media (hover: hover) { @media (min-width: 1px) { .btn:hover { color: black; } } }`,
+      description:
+        'Use nested media queries with hover as the parent for button hover state.',
+    },
+    {
+      code: `@media (min-width: 1px) { @media (hover: hover) { @media (min-width: 1px) { .btn:hover { color: black; } } } }`,
+      description:
+        'Use nested media queries with hover in the middle for button hover state.',
+    },
+  ],
+
+  reject: [
+    {
+      code: `.fail-btn:hover { color: black; }`,
+      description: 'Use a hover pseudo selector not inside of a media query.',
+      message: messages.accidentalHover(),
+    },
+    {
+      code: `@media (min-width: 1px) { .btn:hover { color: black; } }`,
+      description:
+        'Use a hover pseudo selector inside of a min-width media query.',
+      message: messages.accidentalHover(),
+    },
+  ],
+});
+
+/* eslint-disable-next-line no-undef  */
+testRule({
+  ruleName,
   config: [true, { 'background-repeat': true }],
   plugins: ['./index.js'],
   accept: [

@@ -39,10 +39,74 @@ configuration.
 
 The plugin provides multiple rules that can be toggled on and off as needed.
 
+[Accidental Hover](#accidental-hover) -
 [Background-Repeat](#background-repeat) -
 [Custom Property Fallbacks](#custom-property-fallbacks) -
 [Flex Wrapping](#flex-wrapping) - [Scroll Chaining](#scroll-chaining) -
 [Vendor Prefix Grouping](#vendor-prefix-grouping)
+
+### Accidental Hover
+
+> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/hover-media/)
+
+We use hover effects to provide an indication to the user that an element is
+clickable or active. That is fine for devices that have a mouse or a trackpad.
+However, for mobile browsing hover effects can get confusing.
+
+Enable this rule in order to prevent unintentional hover effects on mobile
+devices.
+
+```json
+{
+  "rules": {
+    "plugin/use-defensive-css": [true, { "accidental-hover": true }]
+  }
+}
+```
+
+#### ✅ Passing Examples
+
+```css
+@media (hover: hover) {
+  .btn:hover {
+    color: black;
+  }
+}
+
+/* Will traverse nested media queries */
+@media (hover: hover) {
+  @media (min-width: 1px) {
+    .btn:hover {
+      color: black;
+    }
+  }
+}
+
+/* Will traverse nested media queries */
+@media (min-width: 1px) {
+  @media (hover: hover) {
+    @media (min-width: 100px) {
+      .btn:hover {
+        color: black;
+      }
+    }
+  }
+}
+```
+
+#### ❌ Failing Examples
+
+```css
+.fail-btn:hover {
+  color: black;
+}
+
+@media (min-width: 1px) {
+  .fail-btn:hover {
+    color: black;
+  }
+}
+```
 
 ### Background Repeat
 
