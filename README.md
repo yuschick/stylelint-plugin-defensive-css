@@ -39,11 +39,17 @@ configuration.
 
 The plugin provides multiple rules that can be toggled on and off as needed.
 
-[Accidental Hover](#accidental-hover) -
-[Background-Repeat](#background-repeat) -
-[Custom Property Fallbacks](#custom-property-fallbacks) -
-[Flex Wrapping](#flex-wrapping) - [Scroll Chaining](#scroll-chaining) -
-[Vendor Prefix Grouping](#vendor-prefix-grouping)
+1. [Accidental Hover](#accidental-hover)
+
+2. [Background-Repeat](#background-repeat)
+
+3. [Custom Property Fallbacks](#custom-property-fallbacks)
+
+4. [Flex Wrapping](#flex-wrapping) - [Scroll Chaining](#scroll-chaining)
+
+5. [Vendor Prefix Grouping](#vendor-prefix-grouping)
+
+---
 
 ### Accidental Hover
 
