@@ -191,6 +191,64 @@ div {
 }
 ```
 
+### Scroll Chaining
+
+> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/scroll-chain/)
+
+Have you ever opened a modal and started scrolling, and then when you reach the
+end and keep scrolling, the content underneath the modal (the body element) will
+scroll? This is called scroll chaining.
+
+Enable this rule in order to require all scrollable overflow properties to have
+an overscroll-behavior value.
+
+```json
+{
+  "rules": {
+    "plugin/use-defensive-css": [true, { "scroll-chaining": true }]
+  }
+}
+```
+
+#### ✅ Passing Examples
+
+```css
+div {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}
+
+div {
+  overflow: hidden scroll;
+  overscroll-behavior: contain;
+}
+
+div {
+  overflow: hidden; /* No overscroll-behavior is needed in the case of hidden */
+}
+
+div {
+  overflow-block: auto;
+  overscroll-behavior: none;
+}
+```
+
+#### ❌ Failing Examples
+
+```css
+div {
+  overflow-x: auto;
+}
+
+div {
+  overflow: hidden scroll;
+}
+
+div {
+  overflow-block: auto;
+}
+```
+
 ### Vendor Prefix Grouping
 
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/grouping-selectors/)

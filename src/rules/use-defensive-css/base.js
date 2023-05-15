@@ -14,6 +14,9 @@ const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
   flexWrapping() {
     return 'Flex rows must have a `flex-wrap: wrap;` or `flex-wrap: wrap-reverse` declaration.';
   },
+  scrollChaining() {
+    return `Containers with an auto or scroll 'overflow' must also have an 'overscroll-behavior' property defined.`;
+  },
   vendorPrefixWGrouping() {
     return `Separate different vendor prefixes into their own rules.`;
   },
