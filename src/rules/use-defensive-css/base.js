@@ -5,6 +5,9 @@ const stylelint = require('stylelint');
 const ruleName = 'plugin/use-defensive-css';
 
 const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
+  accidentalHover() {
+    return 'To prevent accidental hover states on mobile devices, wrap :hover selectors inside a @media (hover: hover) { ...your styles } query.';
+  },
   backgroundRepeat() {
     return 'Ensure a background-repeat property is defined when using a background image.';
   },

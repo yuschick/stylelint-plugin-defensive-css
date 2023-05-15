@@ -30,6 +30,22 @@ let backgroundRepeatProps = { ...defaultBackgroundRepeatProps };
 let flexWrappingProps = { ...defaultFlexWrappingProps };
 let scrollChainingProps = { ...defaultScrollChainingProps };
 let isLastStyleDeclaration = false;
+let isWrappedInHoverAtRule = false;
+
+function traverseParentRules(parent) {
+  console.log({ parent });
+  if (parent.parent.type === 'root') {
+    return;
+  }
+
+  if (parent.parent.type === 'atrule') {
+    if (parent.parent.params.includes('hover: hover')) {
+      isWrappedInHoverAtRule = true;
+    } else {
+      traverseParentRules(parent.parent);
+    }
+  }
+}
 
 const ruleFunction = (_, options) => {
   return (root, result) => {
@@ -43,6 +59,27 @@ const ruleFunction = (_, options) => {
       isLastStyleDeclaration =
         JSON.stringify(decl) ===
         JSON.stringify(decl.parent.nodes[decl.parent.nodes.length - 1]);
+
+      /* ACCIDENTAL HOVER */
+      if (options?.['accidental-hover']) {
+        const parent = decl.parent;
+        const selector = parent.selector;
+        const isHoverSelector = selector.includes(':hover');
+        isWrappedInHoverAtRule = false;
+
+        if (isHoverSelector) {
+          traverseParentRules(parent);
+
+          if (!isWrappedInHoverAtRule) {
+            stylelint.utils.report({
+              message: ruleMessages.accidentalHover(),
+              node: decl.parent,
+              result,
+              ruleName,
+            });
+          }
+        }
+      }
 
       /* BACKGROUND REPEAT  */
       if (options?.['background-repeat']) {
