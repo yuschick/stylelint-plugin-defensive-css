@@ -20,9 +20,15 @@ const defaultFlexWrappingProps = {
   isMissingFlexWrap: true,
   nodeToReport: undefined,
 };
+const defaultScrollChainingProps = {
+  hasOverflow: false,
+  hasOverscrollBehavior: false,
+  nodeToReport: undefined,
+};
 
 let backgroundRepeatProps = { ...defaultBackgroundRepeatProps };
 let flexWrappingProps = { ...defaultFlexWrappingProps };
+let scrollChainingProps = { ...defaultScrollChainingProps };
 let isLastStyleDeclaration = false;
 
 const ruleFunction = (_, options) => {
@@ -134,7 +140,45 @@ const ruleFunction = (_, options) => {
         }
       }
 
-      /* GROUPING VENDOR PREFIXES */
+      /* SCROLL CHAINING */
+      if (options?.['scroll-chaining']) {
+        const overflowProperties = [
+          'overflow',
+          'overflow-x',
+          'overflow-y',
+          'overflow-inline',
+          'overflow-block',
+        ];
+        if (
+          overflowProperties.includes(decl.prop) &&
+          (decl.value.includes('auto') || decl.value.includes('scroll'))
+        ) {
+          scrollChainingProps.hasOverflow = true;
+          scrollChainingProps.nodeToReport = decl;
+        }
+
+        if (decl.prop.includes('overscroll-behavior')) {
+          scrollChainingProps.hasOverscrollBehavior = true;
+        }
+
+        if (isLastStyleDeclaration) {
+          if (
+            scrollChainingProps.hasOverflow &&
+            !scrollChainingProps.hasOverscrollBehavior
+          ) {
+            stylelint.utils.report({
+              message: ruleMessages.scrollChaining(),
+              node: scrollChainingProps.nodeToReport,
+              result,
+              ruleName,
+            });
+          }
+
+          scrollChainingProps = { ...defaultScrollChainingProps };
+        }
+      }
+
+      /* VENDOR PREFIX GROUPING */
       if (options?.['vendor-prefix-grouping']) {
         const hasMultiplePrefixes = findVendorPrefixes(decl.parent.selector);
 
