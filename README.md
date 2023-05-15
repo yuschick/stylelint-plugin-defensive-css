@@ -193,7 +193,7 @@ div {
 
 ### Scroll Chaining
 
-> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/scroll-chaining/)
+> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/scroll-chain/)
 
 Have you ever opened a modal and started scrolling, and then when you reach the
 end and keep scrolling, the content underneath the modal (the body element) will
