@@ -215,8 +215,8 @@ div {
 CSS flexbox is one of the most useful CSS layout features nowadays. It’s
 tempting to add `display: flex` to a wrapper and have the child items ordered
 next to each other. The thing is when there is not enough space, those child
-items won’t wrap into a new line by default. We need to change that behavior
-with `flex-wrap: wrap`.
+items won’t wrap into a new line by default. We need to either change that
+behavior with `flex-wrap: wrap` or explicitly define `nowrap` on the container.
 
 Enable this rule in order to require all flex rows to have a flex-wrap value.
 
@@ -234,6 +234,10 @@ Enable this rule in order to require all flex rows to have a flex-wrap value.
 div {
   display: flex;
   flex-wrap: wrap;
+}
+div {
+  display: flex;
+  flex-wrap: nowrap;
 }
 div {
   display: flex;
