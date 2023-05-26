@@ -159,7 +159,7 @@ const ruleFunction = (_, options) => {
           flexWrappingProps.isFlexRow = false;
         }
 
-        if (decl.prop === 'flex-wrap' && decl.value.startsWith('wrap')) {
+        if (decl.prop === 'flex-wrap') {
           flexWrappingProps.isMissingFlexWrap = false;
         }
 

@@ -15,7 +15,7 @@ const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
     return 'Ensure that any custom properties have a fallback value.';
   },
   flexWrapping() {
-    return 'Flex rows must have a `flex-wrap: wrap;` or `flex-wrap: wrap-reverse` declaration.';
+    return 'Flex rows must have a `flex-wrap` value defined.`';
   },
   scrollChaining() {
     return `Containers with an auto or scroll 'overflow' must also have an 'overscroll-behavior' property defined.`;
