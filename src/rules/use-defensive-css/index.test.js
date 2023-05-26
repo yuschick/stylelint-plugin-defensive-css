@@ -204,6 +204,10 @@ testRule({
   plugins: ['./index.js'],
   accept: [
     {
+      code: `div { display: flex; flex-wrap: nowrap; }`,
+      description: 'A container with flex-wrap: wrap defined.',
+    },
+    {
       code: `div { display: flex; flex-wrap: wrap; }`,
       description: 'A container with flex-wrap: wrap defined.',
     },
