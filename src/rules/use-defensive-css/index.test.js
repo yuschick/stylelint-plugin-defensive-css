@@ -28,6 +28,11 @@ testRule({
       description:
         'Use nested media queries with hover in the middle for button hover state.',
     },
+    {
+      code: `@media all and (hover: hover) and (max-width: 699px) { .btn:hover { color: black; } }`,
+      description:
+        'Use nested media queries with hover in the middle for button hover state.',
+    },
   ],
 
   reject: [

@@ -33,13 +33,12 @@ let isLastStyleDeclaration = false;
 let isWrappedInHoverAtRule = false;
 
 function traverseParentRules(parent) {
-  console.log({ parent });
   if (parent.parent.type === 'root') {
     return;
   }
 
   if (parent.parent.type === 'atrule') {
-    if (parent.parent.params.includes('hover: hover')) {
+    if (parent.parent.params && parent.parent.params.includes('hover: hover')) {
       isWrappedInHoverAtRule = true;
     } else {
       traverseParentRules(parent.parent);
@@ -64,7 +63,7 @@ const ruleFunction = (_, options) => {
       if (options?.['accidental-hover']) {
         const parent = decl.parent;
         const selector = parent.selector;
-        const isHoverSelector = selector.includes(':hover');
+        const isHoverSelector = selector?.includes(':hover');
         isWrappedInHoverAtRule = false;
 
         if (isHoverSelector) {
