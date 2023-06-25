@@ -209,6 +209,30 @@ testRule({
   plugins: ['./index.js'],
   accept: [
     {
+      code: `div { display: flex; flex-flow: column; }`,
+      description: 'A container with flex-flow: column defined.',
+    },
+    {
+      code: `div { display: flex; flex-flow: column-reverse wrap; }`,
+      description: 'A container with flex-flow: column wrap defined.',
+    },
+    {
+      code: `div { display: flex; flex-flow: row wrap; }`,
+      description: 'A container with flex-flow: row wrap defined.',
+    },
+    {
+      code: `div { display: flex; flex-flow: row-reverse wrap; }`,
+      description: 'A container with flex-flow: row-reverse wrap defined.',
+    },
+    {
+      code: `div { display: flex; flex-flow: row nowrap; }`,
+      description: 'A container with flex-flow: row nowrap defined.',
+    },
+    {
+      code: `div { display: flex; flex-flow: row-reverse nowrap; }`,
+      description: 'A container with flex-flow: row-reverse nowrap defined.',
+    },
+    {
       code: `div { display: flex; flex-wrap: nowrap; }`,
       description: 'A container with flex-wrap: wrap defined.',
     },
@@ -243,6 +267,16 @@ testRule({
   ],
 
   reject: [
+    {
+      code: `div { display: flex; flex-flow: row; }`,
+      description: 'A flex flow container without a wrap property defined.',
+      message: messages.flexWrapping(),
+    },
+    {
+      code: `div { display: flex; flex-flow: row-reverse; }`,
+      description: 'A flex flow container without a wrap property defined.',
+      message: messages.flexWrapping(),
+    },
     {
       code: `div { display: flex; }`,
       description: 'A flex container without a flex-wrap property defined.',

@@ -154,11 +154,19 @@ const ruleFunction = (_, options) => {
           flexWrappingProps.nodeToReport = decl;
         }
 
+        if (decl.prop === 'flex-flow' && decl.value.includes('column')) {
+          flexWrappingProps.isFlexRow = false;
+          flexWrappingProps.isMissingFlexWrap = false;
+        }
+
         if (decl.prop === 'flex-direction' && decl.value.includes('column')) {
           flexWrappingProps.isFlexRow = false;
         }
 
-        if (decl.prop === 'flex-wrap') {
+        if (
+          decl.prop === 'flex-wrap' ||
+          (decl.prop === 'flex-flow' && decl.value.includes('wrap'))
+        ) {
           flexWrappingProps.isMissingFlexWrap = false;
         }
 
