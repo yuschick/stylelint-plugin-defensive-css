@@ -244,6 +244,14 @@ div {
   flex-direction: row-reverse;
   flex-wrap: wrap-reverse;
 }
+div {
+  display: flex;
+  flex-flow: row wrap;
+}
+div {
+  display: flex;
+  flex-flow: row-reverse nowrap;
+}
 ```
 
 #### ❌ Failing Examples
@@ -255,6 +263,10 @@ div {
 div {
   display: flex;
   flex-direction: row;
+}
+div {
+  display: flex;
+  flex-flow: row;
 }
 ```
 
