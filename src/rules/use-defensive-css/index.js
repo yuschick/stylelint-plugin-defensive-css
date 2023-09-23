@@ -38,7 +38,10 @@ function traverseParentRules(parent) {
   }
 
   if (parent.parent.type === 'atrule') {
-    if (parent.parent.params && parent.parent.params.includes('hover: hover')) {
+    if (
+      parent.parent.params &&
+      /\(hover(: hover)?\)/.test(parent.parent.params)
+    ) {
       isWrappedInHoverAtRule = true;
     } else {
       traverseParentRules(parent.parent);
