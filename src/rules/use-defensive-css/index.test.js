@@ -15,6 +15,10 @@ testRule({
       description: 'Use media query for button hover state.',
     },
     {
+      code: `@media (hover) { .btn:hover { color: black; } }`,
+      description: 'Use shorthand media query for button hover state.',
+    },
+    {
       code: `@media (min-width: 1px) { @media (hover: hover) { .btn:hover { color: black; } } }`,
       description: 'Use nested media queries for button hover state.',
     },
