@@ -15,6 +15,10 @@ testRule({
       description: 'Use media query for button hover state.',
     },
     {
+      code: `@media ( hover: hover ) { .btn:hover { color: black; } }`,
+      description: 'Use media query for button hover state with spaces.',
+    },
+    {
       code: `@media (hover) { .btn:hover { color: black; } }`,
       description: 'Use shorthand media query for button hover state.',
     },
