@@ -38,10 +38,7 @@ function traverseParentRules(parent) {
   }
 
   if (parent.parent.type === 'atrule') {
-    if (
-      parent.parent.params &&
-      /\(hover(: hover)?\)/.test(parent.parent.params)
-    ) {
+    if (parent.parent.params && /hover(: hover)?/.test(parent.parent.params)) {
       isWrappedInHoverAtRule = true;
     } else {
       traverseParentRules(parent.parent);
