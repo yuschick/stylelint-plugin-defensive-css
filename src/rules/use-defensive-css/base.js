@@ -6,25 +6,25 @@ const ruleName = 'plugin/use-defensive-css';
 
 const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
   accidentalHover() {
-    return 'To prevent accidental hover states on mobile devices, wrap :hover selectors inside a @media (hover: hover) { ...your styles } query.';
+    return 'To prevent accidental hover states on mobile devices, wrap `:hover` selectors inside a `@media (hover: hover) { ...your styles }` query. Learn more: https://defensivecss.dev/tip/hover-media/';
   },
   backgroundRepeat() {
-    return 'Ensure a background-repeat property is defined when using a background image.';
+    return 'Whenever setting a background image, be sure to explicitly define a `background-repeat` value. Learn more: https://defensivecss.dev/tip/bg-repeat/';
   },
   customPropertyFallbacks() {
-    return 'Ensure that any custom properties have a fallback value.';
+    return 'Provide a fallback value for a custom property like `var(--your-custom-property, #000000)` to prevent issues in the event the custom property is not defined. Learn more: https://defensivecss.dev/tip/css-variable-fallback/';
   },
   flexWrapping() {
-    return 'Flex rows must have a `flex-wrap` value defined.`';
-  },
-  scrollbarGutter() {
-    return `Containers with an auto or scroll 'overflow' must also have a 'scrollbar-gutter' property defined.`;
+    return 'Whenever setting an element to `display: flex` a `flex-wrap` value must be defined. Set `flex-wrap: nowrap` for the default behavior. Learn more: https://defensivecss.dev/tip/flexbox-wrapping/';
   },
   scrollChaining() {
-    return `Containers with an auto or scroll 'overflow' must also have an 'overscroll-behavior' property defined.`;
+    return 'To prevent scroll chaining between contexts, any container with a scrollable overflow must have a `overscroll-behavior` value defined. Learn more: https://defensivecss.dev/tip/scroll-chain/';
+  },
+  scrollbarGutter() {
+    return 'To prevent potential layout shifts, any container with a scrollable overflow must have a `scrollbar-gutter` value defined. Learn more: https://defensivecss.dev/tip/scrollbar-gutter/';
   },
   vendorPrefixWGrouping() {
-    return `Separate different vendor prefixes into their own rules.`;
+    return `To prevent invalid rules in unsupported environments, split each vendor prefix into its own, individual rule. Learn more: https://defensivecss.dev/tip/grouping-selectors/`;
   },
 });
 
