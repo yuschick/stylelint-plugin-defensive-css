@@ -17,6 +17,9 @@ const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
   flexWrapping() {
     return 'Flex rows must have a `flex-wrap` value defined.`';
   },
+  scrollbarGutter() {
+    return `Containers with an auto or scroll 'overflow' must also have a 'scrollbar-gutter' property defined.`;
+  },
   scrollChaining() {
     return `Containers with an auto or scroll 'overflow' must also have an 'overscroll-behavior' property defined.`;
   },
