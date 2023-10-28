@@ -35,7 +35,8 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 3. [Custom Property Fallbacks](#custom-property-fallbacks)
 4. [Flex Wrapping](#flex-wrapping)
 5. [Scroll Chaining](#scroll-chaining)
-6. [Vendor Prefix Grouping](#vendor-prefix-grouping)
+6. [Scrollbar Gutter](#scrollbar-gutter)
+7. [Vendor Prefix Grouping](#vendor-prefix-grouping)
 
 ---
 
@@ -309,6 +310,66 @@ div {
 div {
   overflow-block: auto;
   overscroll-behavior: none;
+}
+```
+
+#### ❌ Failing Examples
+
+```css
+div {
+  overflow-x: auto;
+}
+
+div {
+  overflow: hidden scroll;
+}
+
+div {
+  overflow-block: auto;
+}
+```
+
+### Scrollbar Gutter
+
+> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/scrollbar-gutter/)
+
+Imagine a container with only a small amount of content with no need to scroll.
+The content would be aligned evenly within the boundaries of its container. Now,
+if that container has more content added, and a scrollbar appears, that
+scrollbar will cause a layout shift, forcing the content to reflow and jump.
+This behavior can be jarring.
+
+To avoid layout shifting with variable content, enforce that a
+`scrollbar-gutter` property is defined for any scrollable container.
+
+```json
+{
+  "rules": {
+    "plugin/use-defensive-css": [true, { "scrollbar-gutter": true }]
+  }
+}
+```
+
+#### ✅ Passing Examples
+
+```css
+div {
+  overflow-x: auto;
+  scrollbar-gutter: auto;
+}
+
+div {
+  overflow: hidden scroll;
+  scrollbar-gutter: stable;
+}
+
+div {
+  overflow: hidden; /* No overscroll-behavior is needed in the case of hidden */
+}
+
+div {
+  overflow-block: auto;
+  scrollbar-gutter: stable both-edges;
 }
 ```
 
