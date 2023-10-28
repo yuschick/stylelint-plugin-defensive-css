@@ -364,7 +364,7 @@ div {
 }
 
 div {
-  overflow: hidden; /* No overscroll-behavior is needed in the case of hidden */
+  overflow: hidden; /* No scrollbar-gutter is needed in the case of hidden */
 }
 
 div {
