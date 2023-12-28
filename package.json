@@ -12,8 +12,8 @@
   "scripts": {
     "prepare": "husky install",
     "jest": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --runInBand --no-cache",
-    "test": "npm run jest",
-    "test:watch": "npm run jest --watch"
+    "test": "npm run jest -- --coverage",
+    "test:watch": "npm run jest -- --watch"
   },
   "repository": {
     "type": "git",
@@ -56,7 +56,7 @@
     "stylelint": "^16.1.0"
   },
   "lint-staged": {
-    "**/*.{js|md}": [
+    "**/*.js|md|json": [
       "eslint",
       "prettier --write"
     ]
