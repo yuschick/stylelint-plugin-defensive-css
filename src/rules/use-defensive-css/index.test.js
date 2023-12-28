@@ -484,6 +484,21 @@ testRule({
   plugins: ['./index.js'],
   accept: [
     {
+      code: `.menu-item {
+	&.menu-item-has-children::after,
+	&.menu-item-has-grandchildren::after {
+		content: '';
+		position: absolute;
+		top: 24px;
+		right: 30px;
+		width: 18px;
+		height: 18px;
+		background-size: contain;
+	}
+}`,
+      description: 'Nested scss with no prefixes defined.',
+    },
+    {
       code: `input::-webkit-input-placeholder { color: #222; } input::-moz-placeholder { color: #222; }`,
       description:
         'Split webkit and moz placeholder selectors to separate rules.',
