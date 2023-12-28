@@ -1,6 +1,6 @@
 const expression = /-\b(moz|ms|o|webkit)\b-/g;
 
-function findVendorPrefixes(selector) {
+export function findVendorPrefixes(selector) {
   console.log(selector);
   if (!selector) return false;
 
@@ -8,7 +8,3 @@ function findVendorPrefixes(selector) {
   console.log(prefixesFound);
   return prefixesFound.length > 1;
 }
-
-module.exports = {
-  findVendorPrefixes,
-};

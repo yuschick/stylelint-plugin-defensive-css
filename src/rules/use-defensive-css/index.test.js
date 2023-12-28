@@ -1,8 +1,5 @@
-'use strict';
-
-const {
-  rule: { messages, ruleName },
-} = require('./index.js');
+import rule from './index.js';
+const { messages, ruleName } = rule.rule;
 
 /* eslint-disable-next-line no-undef  */
 testRule({

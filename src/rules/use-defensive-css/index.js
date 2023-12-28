@@ -1,13 +1,9 @@
-'use strict';
+import stylelint from 'stylelint';
 
-const stylelint = require('stylelint');
-
-const { ruleName, ruleMessages, ruleMeta } = require('./base');
-const {
-  findShorthandBackgroundRepeat,
-} = require('../../utils/findShorthandBackgroundRepeat');
-const { findVendorPrefixes } = require('../../utils/findVendorPrefixes');
-const { findCustomProperties } = require('../../utils/findCustomProperties');
+import { ruleName, ruleMessages, ruleMeta } from './base.js';
+import { findShorthandBackgroundRepeat } from '../../utils/findShorthandBackgroundRepeat.js';
+import { findVendorPrefixes } from '../../utils/findVendorPrefixes.js';
+import { findCustomProperties } from '../../utils/findCustomProperties.js';
 
 const defaultBackgroundRepeatProps = {
   hasBackgroundImage: false,
@@ -283,4 +279,4 @@ ruleFunction.ruleName = ruleName;
 ruleFunction.messages = ruleMessages;
 ruleFunction.meta = ruleMeta;
 
-module.exports = stylelint.createPlugin(ruleName, ruleFunction);
+export default stylelint.createPlugin(ruleName, ruleFunction);

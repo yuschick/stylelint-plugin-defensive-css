@@ -1,10 +1,8 @@
-'use strict';
+import stylelint from 'stylelint';
 
-const stylelint = require('stylelint');
+export const ruleName = 'plugin/use-defensive-css';
 
-const ruleName = 'plugin/use-defensive-css';
-
-const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
+export const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
   accidentalHover() {
     return 'To prevent accidental hover states on mobile devices, wrap `:hover` selectors inside a `@media (hover: hover) { ...your styles }` query. Learn more: https://defensivecss.dev/tip/hover-media/';
   },
@@ -28,12 +26,6 @@ const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
   },
 });
 
-const ruleMeta = {
+export const ruleMeta = {
   url: 'https://github.com/yuschick/stylelint-plugin-defensive-css',
-};
-
-module.exports = {
-  ruleName,
-  ruleMessages,
-  ruleMeta,
 };
