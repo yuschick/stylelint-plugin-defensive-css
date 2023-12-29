@@ -11,8 +11,8 @@
   ],
   "scripts": {
     "prepare": "husky install",
-    "jest": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --runInBand --no-cache",
-    "test": "npm run jest -- --coverage",
+    "jest": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --runInBand",
+    "test": "npm run jest",
     "test:watch": "npm run jest -- --watch"
   },
   "repository": {
