@@ -1,6 +1,6 @@
 const expression = /var\(.+?\)/g;
 
-function findCustomProperties(value) {
+export function findCustomProperties(value) {
   if (!value) return false;
 
   let propertiesFound = [...value.trim().matchAll(expression)];
@@ -8,7 +8,3 @@ function findCustomProperties(value) {
     .map(([property]) => (property.includes(',') ? undefined : property))
     .filter((value) => value);
 }
-
-module.exports = {
-  findCustomProperties,
-};

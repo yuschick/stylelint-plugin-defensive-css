@@ -1,15 +1,19 @@
 {
   "name": "stylelint-plugin-defensive-css",
-  "version": "0.10.4",
+  "version": "1.0.0",
   "description": "A Stylelint plugin to enforce defensive CSS best practices.",
   "main": "src/index.js",
+  "type": "module",
+  "exports": "./src/index.js",
   "files": [
     "src/**/*.js",
     "!**/**/*.test.js"
   ],
   "scripts": {
     "prepare": "husky install",
-    "test": "jest"
+    "jest": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --runInBand",
+    "test": "npm run jest",
+    "test:watch": "npm run jest -- --watch"
   },
   "repository": {
     "type": "git",
@@ -22,33 +26,37 @@
   },
   "homepage": "https://github.com/yuschick/stylelint-plugin-defensive-css#readme",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.12.0"
   },
   "keywords": [
-    "Stylelint",
-    "plugin",
-    "CSS",
-    "defensive CSS",
-    "best practices"
+    "css",
+    "csslint",
+    "defensive css",
+    "lint",
+    "linter",
+    "stylelint",
+    "stylelint-plugin"
   ],
   "peerDependencies": {
-    "stylelint": "^14.0.0 || ^15.0.0"
+    "stylelint": "^14.0.0 || ^15.0.0 || ^16.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.2.0",
-    "@commitlint/config-conventional": "^18.1.0",
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "cross-env": "^7.0.3",
     "eslint": "^8.35.0",
-    "husky": "^8.0.0",
+    "husky": "^8.0.3",
     "jest": "^29.4.3",
     "jest-cli": "^29.4.3",
-    "jest-preset-stylelint": "^6.1.0",
+    "jest-light-runner": "^0.6.0",
+    "jest-preset-stylelint": "^7.0.0",
     "lint-staged": "^15.0.2",
     "prettier": "^3.0.3",
     "prettier-eslint": "^16.1.2",
-    "stylelint": "^15.2.0"
+    "stylelint": "^16.1.0"
   },
   "lint-staged": {
-    "**/*.{js|md}": [
+    "**/*.js|md|json": [
       "eslint",
       "prettier --write"
     ]

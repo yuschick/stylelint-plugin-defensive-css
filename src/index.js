@@ -1,3 +1,3 @@
-const useDefensiveCSS = require('./rules/use-defensive-css');
+import useDefensiveCSS from './rules/use-defensive-css/index.js';
 
-module.exports = [useDefensiveCSS];
+export default [useDefensiveCSS];
