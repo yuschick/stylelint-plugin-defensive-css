@@ -8,6 +8,12 @@ A Stylelint plugin to enforce defensive CSS best practices.
 
 > [Read more about Defensive CSS](https://defensivecss.dev/)
 
+## 🚀 Version 1.0.0
+
+With the release of version 1.0.0 of the plugin, we now support Stylelint 16.
+
+---
+
 ## Getting Started
 
 > Before getting started with the plugin, you must first have
