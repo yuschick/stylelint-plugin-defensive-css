@@ -38,6 +38,14 @@ testRule({
       description:
         'Use nested media queries with hover in the middle for button hover state.',
     },
+    {
+      code: `div:not(:hover) { color: red; }`,
+      description: 'Use :hover selector inside of :not() selector.',
+    },
+    {
+      code: `div:not(:focus-visible, :hover) { color: red; }`,
+      description: 'Use :hover selector inside of a grouped :not() selector.',
+    },
   ],
 
   reject: [

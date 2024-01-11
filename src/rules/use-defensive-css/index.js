@@ -76,6 +76,11 @@ const ruleFunction = (_, options) => {
         const isHoverSelector = selector?.includes(':hover');
         isWrappedInHoverAtRule = false;
 
+        // If the :hover selector is inside a :not() selector, ignore it
+        if (/:not\(([^)]*:hover[^)]*)\)/g.test(selector)) {
+          return;
+        }
+
         if (isHoverSelector) {
           traverseParentRules(parent);
 
