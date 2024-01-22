@@ -490,17 +490,17 @@ testRule({
   accept: [
     {
       code: `.menu-item {
-	&.menu-item-has-children::after,
-	&.menu-item-has-grandchildren::after {
-		content: '';
-		position: absolute;
-		top: 24px;
-		right: 30px;
-		width: 18px;
-		height: 18px;
-		background-size: contain;
-	}
-}`,
+    	&.menu-item-has-children::after,
+    	&.menu-item-has-grandchildren::after {
+    		content: '';
+    		position: absolute;
+    		top: 24px;
+    		right: 30px;
+    		width: 18px;
+    		height: 18px;
+    		background-size: contain;
+    	}
+    }`,
       description: 'Nested scss with no prefixes defined.',
     },
     {
@@ -517,6 +517,14 @@ testRule({
       code: `div::before,div::after { color: #222; }`,
       description:
         'Combining pseudo elements with the same selector into one rule.',
+    },
+    {
+      code: `.a video::-webkit-media-controls-panel
+.b video::-webkit-media-controls-panel {
+    display: none;
+}`,
+      description:
+        'Combine two of the same vendor prefixes into the same selector.',
     },
     {
       code: `
