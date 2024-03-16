@@ -29,8 +29,17 @@ npm i stylelint-plugin-defensive-css --save-dev
 yarn add stylelint-plugin-defensive-css --dev
 ```
 
-With the plugin installed, the individual rule(s) can be added to the project's
-Stylelint configuration.
+With the plugin installed, the rule(s) can be added to the project's Stylelint
+configuration.
+
+```json
+{
+  "plugins": ["stylelint-plugin-defensive-css"],
+  "rules": {
+    "plugin/use-defensive-css": [true, { "severity": "warning" }]
+  }
+}
+```
 
 ## Rules / Options
 
