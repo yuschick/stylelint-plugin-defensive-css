@@ -47,12 +47,10 @@ function traverseParentRules(parent) {
     return;
   }
 
-  if (parent.parent.type === 'atrule') {
-    if (parent.parent.params && /hover(: hover)?/.test(parent.parent.params)) {
-      isWrappedInHoverAtRule = true;
-    } else {
-      traverseParentRules(parent.parent);
-    }
+  if (parent.parent.params && /hover(: hover)?/.test(parent.parent.params)) {
+    isWrappedInHoverAtRule = true;
+  } else {
+    traverseParentRules(parent.parent);
   }
 }
 

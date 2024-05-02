@@ -46,6 +46,36 @@ testRule({
       code: `div:not(:focus-visible, :hover) { color: red; }`,
       description: 'Use :hover selector inside of a grouped :not() selector.',
     },
+    {
+      code: `web-component-name {
+	&:defined {
+		@media ( hover: hover ) {
+			details:not( [open] ) {
+				position: relative;
+				z-index: 1;
+
+				&::before {
+					content: '';
+					position: absolute;
+					top: 0;
+					left: 0;
+					z-index: -1;
+					width: 100%;
+					height: 100%;
+					background-color: #EFEFF0;
+					transition: opacity 0.2s;
+					opacity: 0;
+				}
+
+				&:hover::before {
+					opacity: 1;
+				}
+			}
+		}
+	}
+}`,
+      description: 'False positive complex example',
+    },
   ],
 
   reject: [
