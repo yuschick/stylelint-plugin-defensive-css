@@ -41,7 +41,7 @@
     "stylelint": "^14.0.0 || ^15.0.0 || ^16.0.0"
   },
   "devDependencies": {
-    "@commitlint/cli": "^18.4.3",
+    "@commitlint/cli": "^19.5.0",
     "@commitlint/config-conventional": "^19.5.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.14.0",
