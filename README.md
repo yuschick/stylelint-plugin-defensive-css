@@ -146,6 +146,13 @@ div {
   background: url('some-image.jpg') black top center;
   background-repeat: no-repeat;
 }
+div {
+  mask: url('some-image.jpg') repeat top center;
+}
+div {
+  mask: url('some-image.jpg') top center;
+  mask-repeat: no-repeat;
+}
 ```
 
 #### ❌ Failing Examples
@@ -156,6 +163,12 @@ div {
 }
 div {
   background-image: url('some-image.jpg');
+}
+div {
+  mask: url('some-image.jpg') top center;
+}
+div {
+  mask-image: url('some-image.jpg');
 }
 ```
 
