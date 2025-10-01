@@ -95,14 +95,15 @@ const ruleFunction = (_, options) => {
 
       /* BACKGROUND REPEAT  */
       if (options?.['background-repeat']) {
-        if (decl.prop === 'background' && decl.value.includes('url(')) {
+        const hasUrl = decl.value.includes('url(');
+        if (decl.prop === 'background' && hasUrl) {
           backgroundRepeatProps.hasBackgroundImage = true;
           backgroundRepeatProps.isMissingBackgroundRepeat =
             !findShorthandBackgroundRepeat(decl.value);
           backgroundRepeatProps.nodeToReport = decl;
         }
 
-        if (decl.prop === 'background-image' && decl.value.includes('url(')) {
+        if (decl.prop === 'background-image' && hasUrl) {
           backgroundRepeatProps.hasBackgroundImage = true;
           backgroundRepeatProps.nodeToReport = decl;
         }
