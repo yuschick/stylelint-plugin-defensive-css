@@ -172,6 +172,81 @@ testRule({
 /* eslint-disable-next-line no-undef  */
 testRule({
   ruleName,
+  config: [true, { 'background-repeat': [true, { longhand: false }] }],
+  plugins: ['./index.js'],
+  accept: [
+    {
+      code: `div { background: url('some-image.jpg') repeat black top center; }`,
+      description: "Shorthand background property with 'repeat' value.",
+    },
+    {
+      code: `div { background: url('some-image.jpg') repeat-x black top center; }`,
+      description: "Shorthand background property with 'repeat-x' value.",
+    },
+    {
+      code: `div { background: url('some-image.jpg') repeat-y black top center; }`,
+      description: "Shorthand background property with 'repeat-y' value.",
+    },
+    {
+      code: `div { background: url('some-image.jpg') no-repeat black top center; }`,
+      description: "Shorthand background property with 'no-repeat' value.",
+    },
+    {
+      code: `div { background: url('some-image.jpg') round black top center; }`,
+      description: "Shorthand background property with 'round' value.",
+    },
+    {
+      code: `div { background: url('some-image.jpg') space black top center; }`,
+      description: "Shorthand background property with 'space' value.",
+    },
+    {
+      code: `div { background: url('some-image.jpg') space round black top center; }`,
+      description: "Shorthand background property with 'space round' value.",
+    },
+    {
+      code: `div { background: url('some-image.jpg') black top center; background-repeat: no-repeat; }`,
+      description:
+        'Shorthand background property with background-repeat property.',
+    },
+    {
+      code: `div { background-image: url('some-image.jpg'); background-repeat: no-repeat; }`,
+      description: 'Using background-image with background-repeat properties.',
+    },
+    {
+      code: `div { background-image: linear-gradient(#e66465, #9198e5); }`,
+      description:
+        'Using a linear-gradient background image without background repeat is okay.',
+    },
+    {
+      code: `div { background-image: linear-gradient(#e66465, #9198e5), url('some-image.jpg'); background-repeat: no-repeat; }`,
+      description:
+        'Using background-image with gradient and url with background-repeat property is okay.',
+    },
+    {
+      code: `div { background-image: url('some-image.jpg'); }`,
+      description:
+        'A background-image property without a background-repeat property.',
+    },
+    {
+      code: `div { background-image: linear-gradient(#e66465, #9198e5), url('some-image.jpg'); }`,
+      description:
+        'A background-image property with both a gradient and url() but no background-repeat property.',
+      message: messages.backgroundRepeat(),
+    },
+  ],
+
+  reject: [
+    {
+      code: `div { background: url('some-image.jpg') black top center; }`,
+      description: 'A shorthand background property without a repeat property.',
+      message: messages.backgroundRepeat(),
+    },
+  ],
+});
+
+/* eslint-disable-next-line no-undef  */
+testRule({
+  ruleName,
   config: [true, { 'custom-property-fallbacks': true }],
   plugins: ['./index.js'],
   accept: [

@@ -94,15 +94,35 @@ const ruleFunction = (_, options) => {
       }
 
       /* BACKGROUND REPEAT  */
-      if (options?.['background-repeat']) {
-        if (decl.prop === 'background' && decl.value.includes('url(')) {
+      if (
+        options?.['background-repeat'] &&
+        (!Array.isArray(options?.['background-repeat']) ||
+          options['background-repeat'][0])
+      ) {
+        const backgroundRepeatOptions = {
+          shorthand: true,
+          longhand: true,
+          ...(Array.isArray(options['background-repeat'])
+            ? options['background-repeat'][1]
+            : {}),
+        };
+
+        if (
+          decl.prop === 'background' &&
+          backgroundRepeatOptions.shorthand &&
+          decl.value.includes('url(')
+        ) {
           backgroundRepeatProps.hasBackgroundImage = true;
           backgroundRepeatProps.isMissingBackgroundRepeat =
             !findShorthandBackgroundRepeat(decl.value);
           backgroundRepeatProps.nodeToReport = decl;
         }
 
-        if (decl.prop === 'background-image' && decl.value.includes('url(')) {
+        if (
+          decl.prop === 'background-image' &&
+          backgroundRepeatOptions.longhand &&
+          decl.value.includes('url(')
+        ) {
           backgroundRepeatProps.hasBackgroundImage = true;
           backgroundRepeatProps.nodeToReport = decl;
         }

@@ -159,6 +159,33 @@ div {
 }
 ```
 
+| Option    | Description                                                         |
+| --------- | ------------------------------------------------------------------- |
+| shorthand | Provide false to ignore the shorthand property (`background-image`) |
+| longhand  | Provide false to ignore the longhand property (`background`)        |
+
+```json
+{
+  "rules": {
+    "plugin/use-defensive-css": [
+      true,
+      { "custom-property-fallbacks": [true, { "longhand": false }] }
+    ]
+  }
+}
+```
+
+By default both shorthand and longhand properties are validated. Ignoring either
+will allow using that property type without raising issues.
+
+#### ✅ Passing Examples
+
+```css
+div {
+  background-image: url('some-image.jpg');
+}
+```
+
 ### Custom Property Fallbacks
 
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/css-variable-fallback/)
