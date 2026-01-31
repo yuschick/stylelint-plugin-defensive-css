@@ -6,10 +6,10 @@ import { accidentalHover } from './accidental-hover/index.js';
 import { backgroundRepeat } from './background-repeat/index.js';
 import { customPropertyFallbacks } from './custom-property-fallbacks/index.js';
 import { flexWrapping } from './flex-wrapping/index.js';
+import { gridLineNames } from './grid-line-names/index.js';
 import { scrollChaining } from './scroll-chaining/index.js';
 import { scrollbarGutter } from './scrollbar-gutter/index.js';
 import { vendorPrefixGrouping } from './vendor-prefix-grouping/index.js';
-import { gridLineNames } from './grid-line-names/index.js';
 
 let isLastStyleDeclaration = false;
 
