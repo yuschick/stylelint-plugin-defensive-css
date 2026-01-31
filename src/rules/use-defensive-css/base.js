@@ -9,14 +9,17 @@ export const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
   backgroundRepeat() {
     return 'Whenever setting a background image, be sure to explicitly define a `background-repeat` value. Learn more: https://defensivecss.dev/tip/bg-repeat/';
   },
-  maskRepeat() {
-    return 'Whenever setting a mask image, be sure to explicitly define a `mask-repeat` value. Learn more: https://defensivecss.dev/tip/bg-repeat/';
-  },
   customPropertyFallbacks() {
     return 'Provide a fallback value for a custom property like `var(--your-custom-property, #000000)` to prevent issues in the event the custom property is not defined. Learn more: https://defensivecss.dev/tip/css-variable-fallback/';
   },
   flexWrapping() {
     return 'Whenever setting an element to `display: flex` a `flex-wrap` value must be defined. Set `flex-wrap: nowrap` for the default behavior. Learn more: https://defensivecss.dev/tip/flexbox-wrapping/';
+  },
+  gridLineNames() {
+    return 'When defining grid tracks, name each grid line using the [name] syntax so each track is preceded by a named line. This applies to both rows and columns (depending on configuration). Avoid unnamed tracks like `1fr 1fr` or numeric repeat counts like `repeat(3, 1fr)`. Learn more: https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template';
+  },
+  maskRepeat() {
+    return 'Whenever setting a mask image, be sure to explicitly define a `mask-repeat` value. Learn more: https://defensivecss.dev/tip/bg-repeat/';
   },
   scrollChaining() {
     return 'To prevent scroll chaining between contexts, any container with a scrollable overflow must have a `overscroll-behavior` value defined. Learn more: https://defensivecss.dev/tip/scroll-chain/';
@@ -26,9 +29,6 @@ export const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
   },
   vendorPrefixWGrouping() {
     return `To prevent invalid rules in unsupported environments, split each vendor prefix into its own, individual rule. Learn more: https://defensivecss.dev/tip/grouping-selectors/`;
-  },
-  gridLineNames() {
-    return 'When defining grid tracks, name each grid line using the [name] syntax so each track is preceded by a named line. This applies to both rows and columns (depending on configuration). Avoid unnamed tracks like `1fr 1fr` or numeric repeat counts like `repeat(3, 1fr)`. Learn more: https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template';
   },
 });
 

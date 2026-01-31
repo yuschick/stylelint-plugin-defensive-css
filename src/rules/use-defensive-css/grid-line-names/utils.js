@@ -1,6 +1,3 @@
-// Tokenize a `grid-template-columns` value into meaningful tokens while
-// respecting bracketed line names `[...]` and function parentheses `(...)`.
-// This is a lightweight tokenizer designed for the purposes of the rule.
 export function tokenizeGridColumns(value) {
   const tokens = [];
   let cur = '';
