@@ -9,6 +9,9 @@ export const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
   backgroundRepeat() {
     return 'Whenever setting a background image, be sure to explicitly define a `background-repeat` value. Learn more: https://defensivecss.dev/tip/bg-repeat/';
   },
+  maskRepeat() {
+    return 'Whenever setting a mask image, be sure to explicitly define a `mask-repeat` value. Learn more: https://defensivecss.dev/tip/bg-repeat/';
+  },
   customPropertyFallbacks() {
     return 'Provide a fallback value for a custom property like `var(--your-custom-property, #000000)` to prevent issues in the event the custom property is not defined. Learn more: https://defensivecss.dev/tip/css-variable-fallback/';
   },

@@ -10,6 +10,11 @@ const defaultBackgroundRepeatProps = {
   isMissingBackgroundRepeat: true,
   nodeToReport: undefined,
 };
+const defaultMaskRepeatProps = {
+  hasMaskImage: false,
+  isMissingMaskRepeat: true,
+  nodeToReport: undefined,
+};
 const defaultFlexWrappingProps = {
   isDisplayFlex: false,
   isFlexRow: true,
@@ -28,6 +33,7 @@ const defaultScrollChainingProps = {
 };
 
 let backgroundRepeatProps = { ...defaultBackgroundRepeatProps };
+let maskRepeatProps = { ...defaultMaskRepeatProps };
 let flexWrappingProps = { ...defaultFlexWrappingProps };
 let scrollbarGutterProps = { ...defaultScrollbarGutterProps };
 let scrollChainingProps = { ...defaultScrollChainingProps };
@@ -95,20 +101,35 @@ const ruleFunction = (_, options) => {
 
       /* BACKGROUND REPEAT  */
       if (options?.['background-repeat']) {
-        if (decl.prop === 'background' && decl.value.includes('url(')) {
+        const hasUrl = decl.value.includes('url(');
+        if (decl.prop === 'background' && hasUrl) {
           backgroundRepeatProps.hasBackgroundImage = true;
           backgroundRepeatProps.isMissingBackgroundRepeat =
             !findShorthandBackgroundRepeat(decl.value);
           backgroundRepeatProps.nodeToReport = decl;
         }
+        if (decl.prop === 'mask' && hasUrl) {
+          maskRepeatProps.hasMaskImage = true;
+          maskRepeatProps.isMissingMaskRepeat = !findShorthandBackgroundRepeat(
+            decl.value,
+          );
+          maskRepeatProps.nodeToReport = decl;
+        }
 
-        if (decl.prop === 'background-image' && decl.value.includes('url(')) {
+        if (decl.prop === 'background-image' && hasUrl) {
           backgroundRepeatProps.hasBackgroundImage = true;
           backgroundRepeatProps.nodeToReport = decl;
+        }
+        if (decl.prop === 'mask-image' && hasUrl) {
+          maskRepeatProps.hasMaskImage = true;
+          maskRepeatProps.nodeToReport = decl;
         }
 
         if (decl.prop === 'background-repeat') {
           backgroundRepeatProps.isMissingBackgroundRepeat = false;
+        }
+        if (decl.prop === 'mask-repeat') {
+          maskRepeatProps.isMissingMaskRepeat = false;
         }
 
         if (isLastStyleDeclaration) {
@@ -120,8 +141,17 @@ const ruleFunction = (_, options) => {
               ruleName,
             });
           }
+          if (Object.values(maskRepeatProps).every((prop) => prop)) {
+            stylelint.utils.report({
+              message: ruleMessages.maskRepeat(),
+              node: maskRepeatProps.nodeToReport,
+              result,
+              ruleName,
+            });
+          }
 
           backgroundRepeatProps = { ...defaultBackgroundRepeatProps };
+          maskRepeatProps = { ...defaultMaskRepeatProps };
         }
       }
 
