@@ -1,58 +1,17 @@
 import stylelint from 'stylelint';
 
 import { ruleName, ruleMessages, ruleMeta } from './base.js';
-import { findShorthandBackgroundRepeat } from '../../utils/findShorthandBackgroundRepeat.js';
-import { findVendorPrefixes } from '../../utils/findVendorPrefixes.js';
-import { findCustomProperties } from '../../utils/findCustomProperties.js';
 
-const defaultBackgroundRepeatProps = {
-  hasBackgroundImage: false,
-  isMissingBackgroundRepeat: true,
-  nodeToReport: undefined,
-};
-const defaultFlexWrappingProps = {
-  isDisplayFlex: false,
-  isFlexRow: true,
-  isMissingFlexWrap: true,
-  nodeToReport: undefined,
-};
-const defaultScrollbarGutterProps = {
-  hasOverflow: false,
-  hasScrollbarGutter: false,
-  nodeToReport: undefined,
-};
-const defaultScrollChainingProps = {
-  hasOverflow: false,
-  hasOverscrollBehavior: false,
-  nodeToReport: undefined,
-};
+import { accidentalHover } from './accidental-hover/index.js';
+import { backgroundRepeat } from './background-repeat/index.js';
+import { customPropertyFallbacks } from './custom-property-fallbacks/index.js';
+import { flexWrapping } from './flex-wrapping/index.js';
+import { gridLineNames } from './grid-line-names/index.js';
+import { scrollChaining } from './scroll-chaining/index.js';
+import { scrollbarGutter } from './scrollbar-gutter/index.js';
+import { vendorPrefixGrouping } from './vendor-prefix-grouping/index.js';
 
-let backgroundRepeatProps = { ...defaultBackgroundRepeatProps };
-let flexWrappingProps = { ...defaultFlexWrappingProps };
-let scrollbarGutterProps = { ...defaultScrollbarGutterProps };
-let scrollChainingProps = { ...defaultScrollChainingProps };
 let isLastStyleDeclaration = false;
-let isWrappedInHoverAtRule = false;
-
-const overflowProperties = [
-  'overflow',
-  'overflow-x',
-  'overflow-y',
-  'overflow-inline',
-  'overflow-block',
-];
-
-function traverseParentRules(parent) {
-  if (parent.parent.type === 'root') {
-    return;
-  }
-
-  if (parent.parent.params && /hover(: hover)?/.test(parent.parent.params)) {
-    isWrappedInHoverAtRule = true;
-  } else {
-    traverseParentRules(parent.parent);
-  }
-}
 
 const ruleFunction = (_, options) => {
   return (root, result) => {
@@ -69,208 +28,42 @@ const ruleFunction = (_, options) => {
 
       /* ACCIDENTAL HOVER */
       if (options?.['accidental-hover']) {
-        const parent = decl.parent;
-        const selector = parent.selector;
-        const isHoverSelector = selector?.includes(':hover');
-        isWrappedInHoverAtRule = false;
-
-        // If the :hover selector is inside a :not() selector, ignore it
-        if (/:not\(([^)]*:hover[^)]*)\)/g.test(selector)) {
-          return;
-        }
-
-        if (isHoverSelector) {
-          traverseParentRules(parent);
-
-          if (!isWrappedInHoverAtRule) {
-            stylelint.utils.report({
-              message: ruleMessages.accidentalHover(),
-              node: decl.parent,
-              result,
-              ruleName,
-            });
-          }
-        }
+        accidentalHover({ decl, result });
       }
 
       /* BACKGROUND REPEAT  */
       if (options?.['background-repeat']) {
-        if (decl.prop === 'background' && decl.value.includes('url(')) {
-          backgroundRepeatProps.hasBackgroundImage = true;
-          backgroundRepeatProps.isMissingBackgroundRepeat =
-            !findShorthandBackgroundRepeat(decl.value);
-          backgroundRepeatProps.nodeToReport = decl;
-        }
-
-        if (decl.prop === 'background-image' && decl.value.includes('url(')) {
-          backgroundRepeatProps.hasBackgroundImage = true;
-          backgroundRepeatProps.nodeToReport = decl;
-        }
-
-        if (decl.prop === 'background-repeat') {
-          backgroundRepeatProps.isMissingBackgroundRepeat = false;
-        }
-
-        if (isLastStyleDeclaration) {
-          if (Object.values(backgroundRepeatProps).every((prop) => prop)) {
-            stylelint.utils.report({
-              message: ruleMessages.backgroundRepeat(),
-              node: backgroundRepeatProps.nodeToReport,
-              result,
-              ruleName,
-            });
-          }
-
-          backgroundRepeatProps = { ...defaultBackgroundRepeatProps };
-        }
+        backgroundRepeat({ decl, isLastStyleDeclaration, result });
       }
 
       /* CUSTOM PROPERTY FALLBACKS */
       if (options?.['custom-property-fallbacks']) {
-        const propertiesWithoutFallback = findCustomProperties(decl.value);
-
-        if (propertiesWithoutFallback.length) {
-          if (Array.isArray(options?.['custom-property-fallbacks'])) {
-            if (options['custom-property-fallbacks'][0]) {
-              const patterns = options['custom-property-fallbacks'][1].ignore;
-              const patternMatched = propertiesWithoutFallback.some(
-                (property) => {
-                  return patterns.some((pattern) =>
-                    typeof pattern === 'string'
-                      ? new RegExp(pattern).test(property)
-                      : pattern.test(property),
-                  );
-                },
-              );
-
-              if (patternMatched) {
-                return;
-              }
-            } else {
-              return;
-            }
-          }
-
-          stylelint.utils.report({
-            message: ruleMessages.customPropertyFallbacks(),
-            node: decl,
-            result,
-            ruleName,
-          });
-        }
+        customPropertyFallbacks({ decl, options, result });
       }
 
       /* FLEX WRAPPING */
       if (options?.['flex-wrapping']) {
-        if (decl.prop === 'display' && decl.value.includes('flex')) {
-          flexWrappingProps.isDisplayFlex = true;
-          flexWrappingProps.nodeToReport = decl;
-        }
+        flexWrapping({ decl, isLastStyleDeclaration, result });
+      }
 
-        if (decl.prop === 'flex-flow' && decl.value.includes('column')) {
-          flexWrappingProps.isFlexRow = false;
-          flexWrappingProps.isMissingFlexWrap = false;
-        }
-
-        if (decl.prop === 'flex-direction' && decl.value.includes('column')) {
-          flexWrappingProps.isFlexRow = false;
-        }
-
-        if (
-          decl.prop === 'flex-wrap' ||
-          (decl.prop === 'flex-flow' && decl.value.includes('wrap'))
-        ) {
-          flexWrappingProps.isMissingFlexWrap = false;
-        }
-
-        if (isLastStyleDeclaration) {
-          if (Object.values(flexWrappingProps).every((prop) => prop)) {
-            stylelint.utils.report({
-              message: ruleMessages.flexWrapping(),
-              node: flexWrappingProps.nodeToReport,
-              result,
-              ruleName,
-            });
-          }
-
-          flexWrappingProps = { ...defaultFlexWrappingProps };
-        }
+      /* GRID LINE NAMES */
+      if (options?.['grid-line-names']) {
+        gridLineNames({ decl, options, result });
       }
 
       /* SCROLL CHAINING */
       if (options?.['scroll-chaining']) {
-        if (
-          overflowProperties.includes(decl.prop) &&
-          (decl.value.includes('auto') || decl.value.includes('scroll'))
-        ) {
-          scrollChainingProps.hasOverflow = true;
-          scrollChainingProps.nodeToReport = decl;
-        }
-
-        if (decl.prop.includes('overscroll-behavior')) {
-          scrollChainingProps.hasOverscrollBehavior = true;
-        }
-
-        if (isLastStyleDeclaration) {
-          if (
-            scrollChainingProps.hasOverflow &&
-            !scrollChainingProps.hasOverscrollBehavior
-          ) {
-            stylelint.utils.report({
-              message: ruleMessages.scrollChaining(),
-              node: scrollChainingProps.nodeToReport,
-              result,
-              ruleName,
-            });
-          }
-
-          scrollChainingProps = { ...defaultScrollChainingProps };
-        }
+        scrollChaining({ decl, isLastStyleDeclaration, result });
       }
 
       /* SCROLLBAR GUTTER */
       if (options?.['scrollbar-gutter']) {
-        if (
-          overflowProperties.includes(decl.prop) &&
-          (decl.value.includes('auto') || decl.value.includes('scroll'))
-        ) {
-          scrollbarGutterProps.hasOverflow = true;
-          scrollbarGutterProps.nodeToReport = decl;
-        }
-
-        if (decl.prop.includes('scrollbar-gutter')) {
-          scrollbarGutterProps.hasScrollbarGutter = true;
-        }
-
-        if (isLastStyleDeclaration) {
-          if (
-            scrollbarGutterProps.hasOverflow &&
-            !scrollbarGutterProps.hasScrollbarGutter
-          ) {
-            stylelint.utils.report({
-              message: ruleMessages.scrollbarGutter(),
-              node: scrollbarGutterProps.nodeToReport,
-              result,
-              ruleName,
-            });
-          }
-
-          scrollbarGutterProps = { ...defaultScrollbarGutterProps };
-        }
+        scrollbarGutter({ decl, isLastStyleDeclaration, result });
       }
 
       /* VENDOR PREFIX GROUPING */
       if (options?.['vendor-prefix-grouping']) {
-        const hasMultiplePrefixes = findVendorPrefixes(decl.parent.selector);
-
-        if (hasMultiplePrefixes) {
-          stylelint.utils.report({
-            message: ruleMessages.vendorPrefixWGrouping(),
-            node: decl.parent,
-            result,
-            ruleName,
-          });
-        }
+        vendorPrefixGrouping({ decl, result });
       }
 
       return;
