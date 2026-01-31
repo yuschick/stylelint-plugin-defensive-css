@@ -127,10 +127,6 @@ Oftentimes, when using a large image as a background, we tend to forget to
 account for the case when the design is viewed on a large screen. That
 background will repeat by default.
 
-This rule also validates the equivalent mask properties — `mask` and
-`mask-image`, and ensures a corresponding `mask-repeat` is provided when a mask
-image is present.
-
 Enable this rule in order to prevent unintentional repeating background.
 
 ```json
@@ -147,28 +143,13 @@ Enable this rule in order to prevent unintentional repeating background.
 div {
   background: url('some-image.jpg') repeat black top center;
 }
-
 div {
   background: url('some-image.jpg') black top center;
   background-repeat: no-repeat;
 }
-
-.parent {
-  background-repeat: no-repeat;
-
-  .child {
-    background: url('some-image.jpg') black top center;
-  }
-
-  & .child {
-    background: url('some-image.jpg') black top center;
-  }
-}
-
 div {
   mask: url('some-image.jpg') repeat top center;
 }
-
 div {
   mask: url('some-image.jpg') top center;
   mask-repeat: no-repeat;
