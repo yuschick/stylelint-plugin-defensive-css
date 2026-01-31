@@ -27,6 +27,9 @@ export const ruleMessages = stylelint.utils.ruleMessages(ruleName, {
   vendorPrefixWGrouping() {
     return `To prevent invalid rules in unsupported environments, split each vendor prefix into its own, individual rule. Learn more: https://defensivecss.dev/tip/grouping-selectors/`;
   },
+  gridLineNames() {
+    return 'When defining grid tracks, name each grid line using the [name] syntax so each track is preceded by a named line. This applies to both rows and columns (depending on configuration). Avoid unnamed tracks like `1fr 1fr` or numeric repeat counts like `repeat(3, 1fr)`. Learn more: https://developer.mozilla.org/en-US/docs/Web/CSS/grid-template';
+  },
 });
 
 export const ruleMeta = {

@@ -8,9 +8,9 @@ A Stylelint plugin to enforce defensive CSS best practices.
 
 > [Read more about Defensive CSS](https://defensivecss.dev/)
 
-## 🚀 Version 1.0.0
+## 🚀 Version 1.1.0
 
-With the release of version 1.0.0 of the plugin, we now support Stylelint 16.
+With the release of version 1.1.0 of the plugin, we now support Stylelint 17.
 
 ---
 
@@ -49,9 +49,10 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 2. [Background-Repeat](#background-repeat)
 3. [Custom Property Fallbacks](#custom-property-fallbacks)
 4. [Flex Wrapping](#flex-wrapping)
-5. [Scroll Chaining](#scroll-chaining)
-6. [Scrollbar Gutter](#scrollbar-gutter)
-7. [Vendor Prefix Grouping](#vendor-prefix-grouping)
+5. [Grid Line Names](#grid-line-names)
+6. [Scroll Chaining](#scroll-chaining)
+7. [Scrollbar Gutter](#scrollbar-gutter)
+8. [Vendor Prefix Grouping](#vendor-prefix-grouping)
 
 ---
 
@@ -299,6 +300,118 @@ div {
 }
 ```
 
+### Grid Line Names
+
+Require explicit named grid lines for tracks. When `grid-line-names` is enabled
+the plugin validates `grid-template-columns`, `grid-template-rows`, and the
+`grid` shorthand (the portion before/after the `/`) to ensure each track is
+associated with a named line using the `[name]` syntax.
+
+The rule supports configuring whether to validate columns and/or rows:
+
+```json
+{
+  "rules": {
+    "plugin/use-defensive-css": [true, { "grid-line-names": true }]
+  }
+}
+```
+
+Or with explicit options:
+
+```json
+{
+  "rules": {
+    "plugin/use-defensive-css": [
+      true,
+      { "grid-line-names": { "columns": true, "rows": false } }
+    ]
+  }
+}
+```
+
+- If `true` the rule validates both columns and rows.
+- Pass an object with `columns` and/or `rows` set to `false` to disable one
+  side.
+
+This rule helps avoid ambiguous layouts by rejecting unnamed tracks like
+`1fr 1fr` and numeric `repeat(3, 1fr)` while allowing patterns that explicitly
+name lines, e.g. `repeat(auto-fit, [name] 300px)` or bracketed names such as
+`[a b] 1fr`.
+
+#### ✅ Passing Examples
+
+```css
+div {
+  grid-template-columns: [c-a] 1fr [c-b] 1fr;
+}
+
+div {
+  grid-template-rows: [r-a] 1fr [r-b] 2fr;
+}
+
+div {
+  grid-template-columns: [a] [b] 1fr [c] 2fr;
+}
+
+div {
+  grid-template-columns: repeat(auto-fit, [line-a line-b] 300px);
+}
+
+div {
+  grid-template-rows: repeat(auto-fill, [r1 r2] 100px);
+}
+
+div {
+  grid: [r-a] 1fr / [c-a] 1fr [c-b] 2fr;
+}
+
+div {
+  grid-template-columns: repeat(auto-fit, [a]300px);
+}
+```
+
+#### ❌ Failing Examples
+
+```css
+div {
+  grid-template-columns: 1fr 1fr;
+}
+
+div {
+  grid-template-rows: 1fr 1fr;
+}
+
+div {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+div {
+  grid-template-rows: repeat(3, 1fr);
+}
+
+div {
+  grid: auto / 1fr 1fr;
+}
+
+div {
+  grid: repeat(3, 1fr) / auto;
+}
+
+div {
+  grid-template-columns: 1fr [after] 1fr;
+}
+
+/* Reserved identifiers cannot be used as line names */
+div {
+  grid-template-columns: [auto] 1fr;
+}
+
+div {
+  grid-template-rows: [span] 1fr;
+}
+```
+
 ### Scroll Chaining
 
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/scroll-chain/)
@@ -445,7 +558,6 @@ input::-webkit-input-placeholder {
 }
 input::-moz-placeholder {
   color: #222;
-}
 ```
 
 #### ❌ Failing Examples
