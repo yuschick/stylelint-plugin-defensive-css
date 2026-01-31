@@ -16,6 +16,30 @@ testRule({
       description: "Shorthand background property with 'repeat-x' value.",
     },
     {
+      code: `.parent {
+  background-repeat: no-repeat;
+
+  & [data-child="one"] {
+    background-image: url('one.jpg');
+  }
+
+  &[data-child="two"] {
+    background-image: url('two.jpg');
+  }
+
+  .three {
+    background-image: url('three.jpg');
+  }
+
+ & .four {
+    background-image: url('four.jpg');
+  }
+}
+`,
+      description:
+        'Nested child selectors inside parent with background-repeat should be accepted.',
+    },
+    {
       code: `div { background: url('some-image.jpg') repeat-y black top center; }`,
       description: "Shorthand background property with 'repeat-y' value.",
     },
@@ -100,6 +124,22 @@ testRule({
       description:
         'Using mask-image with gradient and url with mask-repeat property is okay.',
     },
+    {
+      code: `.parent {
+  mask-repeat: no-repeat;
+
+  &[data-child="one"] {
+    mask-image: url('one.jpg');
+  }
+
+  &[data-child="two"] {
+    mask-image: url('two.jpg');
+  }
+}
+`,
+      description:
+        'Nested child selectors inside parent with mask-repeat should be accepted.',
+    },
   ],
 
   reject: [
@@ -135,6 +175,46 @@ testRule({
       description:
         'A mask-image property with both a gradient and url() but no mask-repeat property.',
       message: messages.maskRepeat(),
+    },
+    {
+      code: `.parent {
+  mask-repeat: no-repeat;
+}
+
+.parent--child {
+  mask-image: url('child.jpg');
+}
+
+.parent [data-child="one"] {
+  mask-image: url('one.jpg');
+}
+`,
+      description:
+        'Child selectors outside parent block without mask-repeat should be rejected.',
+      warnings: [
+        { message: messages.maskRepeat(), line: 6 },
+        { message: messages.maskRepeat(), line: 10 },
+      ],
+    },
+    {
+      code: `.parent {
+  background-repeat: no-repeat;
+}
+
+.parent--child {
+  background-image: url('child.jpg');
+}
+
+.parent [data-child="one"] {
+  background-image: url('one.jpg');
+}
+`,
+      description:
+        'Child selectors outside parent block without background-repeat should be rejected.',
+      warnings: [
+        { message: messages.backgroundRepeat() },
+        { message: messages.backgroundRepeat() },
+      ],
     },
   ],
 });

@@ -1,6 +1,9 @@
 import stylelint from 'stylelint';
 import { ruleMessages, ruleName } from '../base.js';
-import { findShorthandBackgroundRepeat } from './utils.js';
+import {
+  findRepeatInAncestors,
+  findShorthandBackgroundRepeat,
+} from './utils.js';
 
 const defaultBackgroundRepeatProps = {
   hasBackgroundImage: false,
@@ -19,12 +22,14 @@ let maskRepeatProps = { ...defaultMaskRepeatProps };
 
 export function backgroundRepeat({ decl, isLastStyleDeclaration, result }) {
   const hasUrl = decl.value.includes('url(');
+
   if (decl.prop === 'background' && hasUrl) {
     backgroundRepeatProps.hasBackgroundImage = true;
     backgroundRepeatProps.isMissingBackgroundRepeat =
       !findShorthandBackgroundRepeat(decl.value);
     backgroundRepeatProps.nodeToReport = decl;
   }
+
   if (decl.prop === 'mask' && hasUrl) {
     maskRepeatProps.hasMaskImage = true;
     maskRepeatProps.isMissingMaskRepeat = !findShorthandBackgroundRepeat(
@@ -36,10 +41,18 @@ export function backgroundRepeat({ decl, isLastStyleDeclaration, result }) {
   if (decl.prop === 'background-image' && hasUrl) {
     backgroundRepeatProps.hasBackgroundImage = true;
     backgroundRepeatProps.nodeToReport = decl;
+
+    if (findRepeatInAncestors({ declNode: decl, forMask: false })) {
+      backgroundRepeatProps.isMissingBackgroundRepeat = false;
+    }
   }
   if (decl.prop === 'mask-image' && hasUrl) {
     maskRepeatProps.hasMaskImage = true;
     maskRepeatProps.nodeToReport = decl;
+
+    if (findRepeatInAncestors({ declNode: decl, forMask: true })) {
+      maskRepeatProps.isMissingMaskRepeat = false;
+    }
   }
 
   if (decl.prop === 'background-repeat') {
