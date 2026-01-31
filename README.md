@@ -147,13 +147,28 @@ Enable this rule in order to prevent unintentional repeating background.
 div {
   background: url('some-image.jpg') repeat black top center;
 }
+
 div {
   background: url('some-image.jpg') black top center;
   background-repeat: no-repeat;
 }
+
+.parent {
+  background-repeat: no-repeat;
+
+  .child {
+    background: url('some-image.jpg') black top center;
+  }
+
+  & .child {
+    background: url('some-image.jpg') black top center;
+  }
+}
+
 div {
   mask: url('some-image.jpg') repeat top center;
 }
+
 div {
   mask: url('some-image.jpg') top center;
   mask-repeat: no-repeat;
