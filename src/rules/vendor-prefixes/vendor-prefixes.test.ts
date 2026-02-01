@@ -1,11 +1,9 @@
-import rule from '../index.js';
-const { messages, ruleName } = rule.rule;
+import { messages, name } from '.';
 
-/* eslint-disable-next-line no-undef  */
 testRule({
-  ruleName,
-  config: [true, { 'vendor-prefix-grouping': true }],
-  plugins: ['./index.js'],
+  config: [true],
+  ruleName: name,
+  /* eslint-disable sort-keys */
   accept: [
     {
       code: `.menu-item {
@@ -24,26 +22,22 @@ testRule({
     },
     {
       code: `input::-webkit-input-placeholder { color: #222; } input::-moz-placeholder { color: #222; }`,
-      description:
-        'Split webkit and moz placeholder selectors to separate rules.',
+      description: 'Split webkit and moz placeholder selectors to separate rules.',
     },
     {
       code: `input::-ms-input-placeholder { color: #222; } input::-o-placeholder { color: #222; }`,
-      description:
-        'Split webkit and moz placeholder selectors to separate rules.',
+      description: 'Split webkit and moz placeholder selectors to separate rules.',
     },
     {
       code: `div::before,div::after { color: #222; }`,
-      description:
-        'Combining pseudo elements with the same selector into one rule.',
+      description: 'Combining pseudo elements with the same selector into one rule.',
     },
     {
       code: `.a video::-webkit-media-controls-panel
 .b video::-webkit-media-controls-panel {
     display: none;
 }`,
-      description:
-        'Combine two of the same vendor prefixes into the same selector.',
+      description: 'Combine two of the same vendor prefixes into the same selector.',
     },
     {
       code: `
@@ -65,12 +59,15 @@ testRule({
     {
       code: `input::-webkit-input-placeholder, input::-moz-placeholder { color: #222; }`,
       description: 'Using webkit and moz placeholder selectors.',
-      message: messages.vendorPrefixWGrouping(),
+      message: messages.rejected(
+        'input::-webkit-input-placeholder, input::-moz-placeholder',
+      ),
     },
     {
       code: `input::-ms-input-placeholder, input::-o-placeholder { color: #222; }`,
       description: 'Using webkit and moz placeholder selectors.',
-      message: messages.vendorPrefixWGrouping(),
+      message: messages.rejected('input::-ms-input-placeholder, input::-o-placeholder'),
     },
   ],
+  /* eslint-enable sort-keys */
 });

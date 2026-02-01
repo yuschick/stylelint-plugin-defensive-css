@@ -1,11 +1,9 @@
-import rule from '../index.js';
-const { messages, ruleName } = rule.rule;
+import { messages, name } from '.';
 
-/* eslint-disable-next-line no-undef  */
 testRule({
-  ruleName,
-  config: [true, { 'accidental-hover': true }],
-  plugins: ['./index.js'],
+  config: [true],
+  ruleName: name,
+  /* eslint-disable sort-keys */
   accept: [
     {
       code: `@media (hover: hover) { .btn:hover { color: black; } }`,
@@ -56,23 +54,13 @@ testRule({
                 @media ( hover: hover ) {
                     details:not( [open] ) {
                         position: relative;
-                        z-index: 1;
 
                         &::before {
-                            content: '';
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            z-index: -1;
-                            width: 100%;
-                            height: 100%;
-                            background-color: #EFEFF0;
-                            transition: opacity 0.2s;
-                            opacity: 0;
+                          content: '';
                         }
 
                         &:hover::before {
-                            opacity: 1;
+                          opacity: 1;
                         }
                     }
                 }
@@ -86,13 +74,13 @@ testRule({
     {
       code: `.fail-btn:hover { color: black; }`,
       description: 'Use a hover pseudo selector not inside of a media query.',
-      message: messages.accidentalHover(),
+      message: messages.rejected('.fail-btn:hover'),
     },
     {
       code: `@media (min-width: 1px) { .btn:hover { color: black; } }`,
-      description:
-        'Use a hover pseudo selector inside of a min-width media query.',
-      message: messages.accidentalHover(),
+      description: 'Use a hover pseudo selector inside of a min-width media query.',
+      message: messages.rejected('.btn:hover'),
     },
   ],
+  /* eslint-enable sort-keys */
 });

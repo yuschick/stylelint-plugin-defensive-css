@@ -1,6 +1,6 @@
 const expression = /-\b(moz|ms|o|webkit)\b-/g;
 
-export function findVendorPrefixes(selector) {
+export function findVendorPrefixes(selector: string): boolean {
   if (!selector) return false;
 
   const prefixesFound = [...selector.trim().matchAll(expression)];

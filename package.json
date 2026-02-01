@@ -2,63 +2,51 @@
   "name": "stylelint-plugin-defensive-css",
   "version": "1.1.0",
   "description": "A Stylelint plugin to enforce defensive CSS best practices.",
-  "main": "src/index.js",
   "type": "module",
-  "exports": "./src/index.js",
-  "files": [
-    "src/**/*.js",
-    "!**/**/*.test.js"
-  ],
+  "author": "Daniel Yuschick <daniel.yuschick@gmail.com>",
+  "license": "MIT",
+  "homepage": "https://github.com/yuschick/stylelint-plugin-defensive-css",
   "scripts": {
-    "prepare": "husky install",
-    "jest": "cross-env NODE_OPTIONS=\"--experimental-vm-modules\" jest --runInBand",
-    "test": "npm run jest",
-    "test:watch": "npm run jest -- --watch"
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^25.1.0",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "globals": "^17.2.0",
+    "jiti": "^2.6.1",
+    "lerna": "^9.0.3",
+    "prettier": "^3.8.1",
+    "stylelint": "^16.1.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0",
+    "vitest": "^3.2.4",
+    "vitest-stylelint-utils": "^2.0.0"
+  },
+  "peerDependencies": {
+    "stylelint": "^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0"
+  },
+  "keywords": [
+    "css",
+    "css lint",
+    "defensive css",
+    "lint",
+    "linter",
+    "stylelint",
+    "stylelint plugin",
+    "stylelint-plugin",
+    "best practices"
+  ],
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yuschick/stylelint-plugin-defensive-css.git"
   },
-  "author": "Daniel Yuschick",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/yuschick/stylelint-plugin-defensive-css/issues"
-  },
-  "homepage": "https://github.com/yuschick/stylelint-plugin-defensive-css#readme",
-  "engines": {
-    "node": ">=18.12.0"
-  },
-  "keywords": [
-    "css",
-    "csslint",
-    "defensive css",
-    "lint",
-    "linter",
-    "stylelint",
-    "stylelint-plugin"
-  ],
-  "peerDependencies": {
-    "stylelint": "^14.0.0 || ^15.0.0 || ^16.0.0"
-  },
-  "devDependencies": {
-    "@commitlint/cli": "^20.4.0",
-    "@commitlint/config-conventional": "^20.4.0",
-    "cross-env": "^10.1.0",
-    "eslint": "^8.57.1",
-    "husky": "^9.1.7",
-    "jest": "^30.2.0",
-    "jest-cli": "^30.2.0",
-    "jest-light-runner": "^0.7.11",
-    "jest-preset-stylelint": "^9.1.0",
-    "lint-staged": "^16.2.7",
-    "prettier": "^3.8.1",
-    "prettier-eslint": "^16.4.2",
-    "stylelint": "^17.1.0"
-  },
-  "lint-staged": {
-    "**/*.js|md|json": [
-      "eslint",
-      "prettier --write"
-    ]
   }
 }
