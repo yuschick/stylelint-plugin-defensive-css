@@ -1,12 +1,13 @@
 export const overflowProperties = [
-  'overflow-inline',
   'overflow',
   'overflow-x',
-  'overflow-block',
   'overflow-y',
+  'overflow-inline',
+  'overflow-block',
 ];
 
-export const test = {
-  apple: 'first',
-  zebra: 'last',
+export const overflowPropertiesByAxis = {
+  both: ['overflow'],
+  x: ['overflow-x', 'overflow-inline'],
+  y: ['overflow-y', 'overflow-block'],
 };

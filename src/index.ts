@@ -4,6 +4,7 @@ import requireBackgroundRepeat from './rules/require-background-repeat';
 import requireCustomPropertyFallback from './rules/require-custom-property-fallback';
 import requireFlexWrap from './rules/require-flex-wrap';
 import requireNamedGridLines from './rules/require-named-grid-lines';
+import requireScrollbarGutter from './rules/require-scrollbar-gutter';
 
 export default [
   noAccidentalHover,
@@ -12,4 +13,5 @@ export default [
   requireCustomPropertyFallback,
   requireFlexWrap,
   requireNamedGridLines,
+  requireScrollbarGutter,
 ];
