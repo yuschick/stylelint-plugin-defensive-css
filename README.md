@@ -4,6 +4,8 @@
 ![Stylelint Plugin Defensive CSS License](https://img.shields.io/github/license/yuschick/stylelint-plugin-defensive-css?style=for-the-badge)
 ![Stylelint PLugin Defensive CSS Latest NPM Version](https://img.shields.io/npm/v/stylelint-plugin-defensive-css?style=for-the-badge)
 ![Stylelint PLugin Defensive CSS Main Workflow Status](https://img.shields.io/github/actions/workflow/status/yuschick/stylelint-plugin-defensive-css/main.yaml?style=for-the-badge)
+![Stylelint PLugin Defensive CSS NPM Downloads](https://img.shields.io/npm/dw/stylelint-plugin-defensive-css?style=for-the-badge)
+
 
 A Stylelint plugin to enforce [Defensive CSS](https://defensivecss.dev/) best practices.
 
@@ -703,7 +705,3 @@ div {
 ```
 
 </details>
-
----
-
-[![](https://img.shields.io/static/v1?label=Sponsor&message=%E2%9D%A4&logo=GitHub&color=%23fe8e86)](https://github.com/sponsors/yuschick)
