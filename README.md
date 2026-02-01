@@ -123,6 +123,8 @@ Enable this rule in order to prevent unintentional hover effects in unsupported 
 
 </details>
 
+---
+
 ### No Mixed Vendor Prefixes
 
 > [!TIP]
@@ -171,6 +173,8 @@ input::-moz-placeholder {
 ```
 
 </details>
+
+---
 
 ### Require Background Repeat
 
@@ -263,6 +267,8 @@ div {
 
 </details>
 
+---
+
 ### Require Custom Property Fallback
 
 > [!TIP]
@@ -325,6 +331,8 @@ div {
 ```
 
 </details>
+
+---
 
 ### Require Flex Wrap
 
@@ -402,6 +410,8 @@ div {
 ```
 
 </details>
+
+---
 
 ### Require Named Grid Lines
 
@@ -526,6 +536,8 @@ div {
 
 </details>
 
+---
+
 ### Require Overscroll Behavior
 
 > [!TIP]
@@ -614,6 +626,8 @@ div {
 ```
 
 </details>
+
+---
 
 ### Require Scrollbar Gutter
 
