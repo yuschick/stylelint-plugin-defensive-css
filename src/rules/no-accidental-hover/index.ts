@@ -1,5 +1,5 @@
 import stylelint, { RuleMeta } from 'stylelint';
-import { noAccidentalHover } from './accidental-hover';
+import { noAccidentalHover } from './rule';
 
 const { ruleMessages } = stylelint.utils;
 
@@ -13,7 +13,7 @@ export const messages = ruleMessages(name, {
 export const meta: RuleMeta = {
   deprecated: false,
   fixable: false,
-  url: 'https://github.com/yuschick/stylelint-plugins',
+  url: 'https://github.com/yuschick/stylelint-plugin-defensive-css',
 };
 
 export default stylelint.createPlugin(name, noAccidentalHover);

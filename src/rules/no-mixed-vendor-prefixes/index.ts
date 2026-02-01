@@ -1,9 +1,9 @@
 import stylelint, { RuleMeta } from 'stylelint';
-import { noGroupedVendorPrefixes } from './vendor-prefixes';
+import { noMixedVendorPrefixes } from './rule';
 
 const { ruleMessages } = stylelint.utils;
 
-export const name = 'defensive-css/no-grouped-vendor-prefixes';
+export const name = 'defensive-css/no-mixed-vendor-prefixes';
 
 export const messages = ruleMessages(name, {
   rejected: (selector) =>
@@ -13,7 +13,7 @@ export const messages = ruleMessages(name, {
 export const meta: RuleMeta = {
   deprecated: false,
   fixable: false,
-  url: 'https://github.com/yuschick/stylelint-plugins',
+  url: 'https://github.com/yuschick/stylelint-plugin-defensive-css',
 };
 
-export default stylelint.createPlugin(name, noGroupedVendorPrefixes);
+export default stylelint.createPlugin(name, noMixedVendorPrefixes);

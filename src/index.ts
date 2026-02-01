@@ -1,4 +1,5 @@
-import accidentalHover from './rules/accidental-hover';
-import vendorPrefixes from './rules/vendor-prefixes';
+import noAccidentalHover from './rules/no-accidental-hover';
+import noMixedVendorPrefixes from './rules/no-mixed-vendor-prefixes';
+import requireBackgroundRepeat from './rules/require-background-repeat';
 
-export default [accidentalHover, vendorPrefixes];
+export default [noAccidentalHover, noMixedVendorPrefixes, requireBackgroundRepeat];

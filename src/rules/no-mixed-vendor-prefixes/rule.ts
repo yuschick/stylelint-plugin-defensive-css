@@ -10,7 +10,7 @@ import { findVendorPrefixes } from './utils';
 
 const { report, validateOptions } = stylelint.utils;
 
-export const noGroupedVendorPrefixes: Rule = (primaryOption) => {
+export const noMixedVendorPrefixes: Rule = (primaryOption) => {
   return (root, result) => {
     const validOptions = validateOptions(result, name, {
       actual: primaryOption,
@@ -36,6 +36,6 @@ export const noGroupedVendorPrefixes: Rule = (primaryOption) => {
   };
 };
 
-noGroupedVendorPrefixes.ruleName = name;
-noGroupedVendorPrefixes.messages = messages;
-noGroupedVendorPrefixes.meta = meta;
+noMixedVendorPrefixes.ruleName = name;
+noMixedVendorPrefixes.messages = messages;
+noMixedVendorPrefixes.meta = meta;
