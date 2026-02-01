@@ -69,6 +69,8 @@ Enable this rule in order to prevent unintentional hover effects in unsupported 
 }
 ```
 
+#### No Accidental Hover Examples
+
 <details>
 <summary>✅ Passing Examples</summary>
 
@@ -140,6 +142,8 @@ into their own rules.
 }
 ```
 
+#### No Mixed Vendor Prefixes Examples
+
 <details>
 <summary>✅ Passing Examples</summary>
 
@@ -206,6 +210,8 @@ interface SecondaryOptions {
   }
 }
 ```
+
+#### Require Background Repeat Examples
 
 <details>
 <summary>✅ Passing Examples</summary>
@@ -294,6 +300,8 @@ interface SecondaryOptions {
 }
 ```
 
+#### Require Custom Property Fallback Examples
+
 <details>
 <summary>✅ Passing Examples</summary>
 
@@ -336,6 +344,8 @@ Enable this rule in order to require all flex rows to have a flex-wrap value.
   }
 }
 ```
+
+#### Require Flex Wrap Examples
 
 <details>
 <summary>✅ Passing Examples</summary>
@@ -432,6 +442,8 @@ interface SecondaryOptions {
   }
 }
 ```
+
+#### Require Named Grid Lines Examples
 
 <details>
 <summary>✅ Passing Examples</summary>
@@ -554,6 +566,8 @@ interface SecondaryOptions {
 }
 ```
 
+#### Require Overscroll Behavior Examples
+
 <details>
 <summary>✅ Passing Examples</summary>
 
@@ -642,6 +656,8 @@ interface SecondaryOptions {
   }
 }
 ```
+
+#### Require Scrollbar Gutter Examples
 
 <details>
 <summary>✅ Passing Examples</summary>
