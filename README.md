@@ -14,7 +14,7 @@ A Stylelint plugin to enforce [Defensive CSS](https://defensivecss.dev/) best pr
 
 ## Table of Contents
 
-[Getting Started](#getting-started) | [Quickstart](#quickstart) | [Plugin Rules](#defensive-css-rules) | [Troubleshooting](#troubleshooting)
+[Getting Started](#getting-started) | [Quickstart](#quickstart) | [Plugin Configs](#defensive-css-configs) |  [Plugin Rules](#defensive-css-rules) | [Troubleshooting](#troubleshooting)
 
 ## Getting Started
 
@@ -49,6 +49,37 @@ After installation, add this to your `.stylelintrc.json`:
 {
   "plugins": ["stylelint-plugin-defensive-css"],
   "extends": ["stylelint-plugin-defensive-css/configs/recommended"]
+}
+```
+
+## Defensive CSS Configs
+
+For quick setup, the plugin provides preset configurations that enable commonly used rules.
+
+### Recommended
+
+The `recommended` preset enables core defensive CSS rules with sensible defaults, suitable for most projects.
+
+**Usage:**
+
+```json
+{
+  "extends": ["stylelint-plugin-defensive-css/configs/recommended"]
+}
+```
+
+**Equivalent to:**
+
+```json
+{
+  "plugins": ["stylelint-plugin-defensive-css"],
+  "rules": {
+    "defensive-css/no-accidental-hover": true,
+    "defensive-css/no-mixed-vendor-prefixes": true,
+    "defensive-css/require-background-repeat": true,
+    "defensive-css/require-flex-wrap": true,
+    "defensive-css/require-named-grid-lines": true,
+  }
 }
 ```
 
