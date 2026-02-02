@@ -100,7 +100,7 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 
 ### No Accidental Hover
 
-> [!TIP]
+> [!INFO]
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/hover-media/)
 
 Hover effects indicate interactivity on devices with mouse or trackpad input. However, on touch devices, hover states can cause confusing user experiences where elements become stuck in a hovered state after being tapped, or trigger unintended actions.
@@ -171,7 +171,7 @@ Hover effects indicate interactivity on devices with mouse or trackpad input. Ho
 
 ### No Mixed Vendor Prefixes
 
-> [!TIP]
+> [!INFO]
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/grouping-selectors)
 
 Grouping vendor-prefixed selectors in a single rule can cause the entire rule to be invalid according to the [W3C selector specification](https://www.w3.org/TR/selectors/#grouping). For example, combining `-webkit-` and `-moz-` placeholder selectors will prevent either from working correctly.
@@ -219,7 +219,7 @@ input::-moz-placeholder {
 
 ### Require Background Repeat
 
-> [!TIP]
+> [!INFO]
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/bg-repeat)
 
 Background and mask images repeat by default when the container is larger than the image dimensions. On large screens, this can result in unintended tiling effects that break the design.
@@ -310,7 +310,7 @@ div {
 
 ### Require Custom Property Fallback
 
-> [!TIP]
+> [!INFO]
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/css-variable-fallback)
 
 CSS custom properties (variables) can fail silently if undefined, potentially breaking layouts or causing visual issues. Providing fallback values ensures graceful degradation when variables are missing or invalid.
@@ -373,7 +373,7 @@ div {
 
 ### Require Flex Wrap
 
-> [!TIP]
+> [!INFO]
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/flex-wrap)
 
 Flex containers do not wrap their children by default. When there isn't enough horizontal space, flex items will overflow rather than wrapping to a new line, potentially breaking layouts on smaller screens.
@@ -567,7 +567,7 @@ div {
 
 ### Require Overscroll Behavior
 
-> [!TIP]
+> [!INFO]
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/scroll-chain)
 
 Scroll chaining occurs when a scrollable element reaches its scroll boundary and the scroll continues to the parent container. This commonly happens in modals where scrolling past the end causes the background content to scroll, creating a disorienting user experience.
@@ -655,7 +655,7 @@ div {
 
 ### Require Scrollbar Gutter
 
-> [!TIP]
+> [!INFO]
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/scrollbar-gutter)
 
 When content grows and triggers a scrollbar, the sudden appearance of the scrollbar causes a layout shift as content reflows to accommodate it. This creates a jarring visual jump, especially in dynamic interfaces where content changes frequently.
