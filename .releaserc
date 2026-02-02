@@ -1,14 +1,16 @@
 {
-  "branches": ["main"],
+  "branches": [
+    "main",
+    {
+      "name": "release/*",
+      "channel": "next",
+      "prerelease": "rc"
+    }
+  ],
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    [
-      "@semantic-release/changelog",
-      {
-        "changelogFile": "CHANGELOG.md"
-      }
-    ],
+    "@semantic-release/changelog",
     [
       "@semantic-release/git",
       {
