@@ -260,6 +260,26 @@ testRule({
         'transition-duration inside prefers-reduced-motion: reduce (anti-pattern)',
       message: messages.rejected('transition-duration'),
     },
+    {
+      code: `
+      @media not (prefers-reduced-motion: no-preference) {
+        .animated { animation: slide-in 1s ease-in-out; }
+      }
+    `,
+      description:
+        'animation inside not (prefers-reduced-motion: no-preference) - equivalent to reduce (anti-pattern)',
+      message: messages.rejected('animation'),
+    },
+    {
+      code: `
+      @media not (prefers-reduced-motion: no-preference) {
+        .animated { transition: transform 0.5s; }
+      }
+    `,
+      description:
+        'transition inside not (prefers-reduced-motion: no-preference) - equivalent to reduce (anti-pattern)',
+      message: messages.rejected('transition'),
+    },
   ],
   /* eslint-enable sort-keys */
 });

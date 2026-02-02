@@ -78,7 +78,6 @@ export function isInsidePrefersReducedMotion(node: any): boolean {
 
 /**
  * Check if currently inside a prefers-reduced-motion: reduce media query
- * This is the WRONG place for animations - they should be removed or instant
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function isInsidePrefersReducedMotionReduce(node: any): boolean {
@@ -94,6 +93,12 @@ export function isInsidePrefersReducedMotionReduce(node: any): boolean {
         /prefers-reduced-motion\s*:\s*reduce/.test(params) &&
         !/not\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/.test(params)
       ) {
+        return true;
+      }
+
+      // Check for not (prefers-reduced-motion: no-preference)
+      // This is equivalent to (prefers-reduced-motion: reduce)
+      if (/not\s*\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/.test(params)) {
         return true;
       }
     }
