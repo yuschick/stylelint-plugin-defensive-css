@@ -1,0 +1,10 @@
+export default {
+  plugins: ['stylelint-plugin-defensive-css'],
+  rules: {
+    'defensive-css/no-accidental-hover': true,
+    'defensive-css/no-mixed-vendor-prefixes': true,
+    'defensive-css/require-background-repeat': true,
+    'defensive-css/require-flex-wrap': true,
+    'defensive-css/require-named-grid-lines': true,
+  },
+};

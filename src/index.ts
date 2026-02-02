@@ -1,3 +1,5 @@
+import recommended from './configs/recommended';
+
 import noAccidentalHover from './rules/no-accidental-hover';
 import noMixedVendorPrefixes from './rules/no-mixed-vendor-prefixes';
 import requireBackgroundRepeat from './rules/require-background-repeat';
@@ -17,3 +19,7 @@ export default [
   requireOverscrollBehavior,
   requireScrollbarGutter,
 ];
+
+export const configs = {
+  recommended,
+};

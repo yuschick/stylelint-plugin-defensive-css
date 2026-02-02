@@ -6,6 +6,11 @@
   "author": "Daniel Yuschick <daniel.yuschick@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/yuschick/stylelint-plugin-defensive-css",
+  "main": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js",
+    "./configs/recommended": "./dist/configs/recommended.js"
+  },
   "scripts": {
     "test": "vitest"
   },
