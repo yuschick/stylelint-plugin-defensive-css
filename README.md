@@ -3,7 +3,7 @@
 
 ![Stylelint Plugin Defensive CSS License](https://img.shields.io/github/license/yuschick/stylelint-plugin-defensive-css?style=for-the-badge)
 ![Stylelint PLugin Defensive CSS Latest NPM Version](https://img.shields.io/npm/v/stylelint-plugin-defensive-css?style=for-the-badge)
-![Stylelint PLugin Defensive CSS Main Workflow Status](https://img.shields.io/github/actions/workflow/status/yuschick/stylelint-plugin-defensive-css/main.yaml?style=for-the-badge)
+![Stylelint PLugin Defensive CSS Main Workflow Status](https://img.shields.io/github/actions/workflow/status/yuschick/stylelint-plugin-defensive-css/pull-request--checks.yaml?style=for-the-badge)
 ![Stylelint PLugin Defensive CSS NPM Downloads](https://img.shields.io/npm/dw/stylelint-plugin-defensive-css?style=for-the-badge)
 
 
