@@ -84,6 +84,18 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
 }
 ```
 
+### Strict
+
+The `strict` preset enables every rule for the most strict linting offered by the plugin.
+
+**Usage:**
+
+```json
+{
+  "extends": ["stylelint-plugin-defensive-css/configs/recommended"]
+}
+```
+
 ## Defensive CSS Rules
 
 The plugin provides multiple rules that can be toggled on and off as needed.
