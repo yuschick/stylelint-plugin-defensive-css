@@ -92,7 +92,7 @@ The `strict` preset enables every rule for the most strict linting offered by th
 
 ```json
 {
-  "extends": ["stylelint-plugin-defensive-css/configs/recommended"]
+  "extends": ["stylelint-plugin-defensive-css/configs/strict"]
 }
 ```
 
