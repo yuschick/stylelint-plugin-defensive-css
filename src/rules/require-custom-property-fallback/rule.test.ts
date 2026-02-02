@@ -1,4 +1,4 @@
-import { messages, name } from '.';
+import { messages, name } from './meta';
 
 /* Test when there is no 'ignore' option passed (default) */
 testRule({

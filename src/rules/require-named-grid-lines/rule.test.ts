@@ -1,4 +1,4 @@
-import { messages, name } from '.';
+import { messages, name } from './meta';
 
 /* Test when both columns and rows are enabled (default) */
 testRule({
