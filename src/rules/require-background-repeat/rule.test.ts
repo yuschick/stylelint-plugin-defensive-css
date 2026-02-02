@@ -22,6 +22,14 @@ testRule({
       code: '.class { mask: url("mask.svg") repeat-x; }',
       description: 'mask shorthand includes repeat value',
     },
+    {
+      code: '.class { background: url(img.jpg) center repeat-y; }',
+      description: 'background shorthand includes repeat-y value',
+    },
+    {
+      code: '.class { background: url(img.jpg) center/cover no-repeat; }',
+      description: 'background shorthand includes no-repeat value',
+    },
   ],
 
   reject: [
