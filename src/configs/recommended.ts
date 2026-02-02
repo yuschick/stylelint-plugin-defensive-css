@@ -7,5 +7,6 @@ export default {
     'defensive-css/require-flex-wrap': true,
     'defensive-css/require-focus-visible': true,
     'defensive-css/require-named-grid-lines': true,
+    'defensive-css/require-prefers-reduced-motion': true,
   },
 };

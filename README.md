@@ -80,6 +80,7 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
     "defensive-css/require-flex-wrap": true,
     "defensive-css/require-focus-visible": true,
     "defensive-css/require-named-grid-lines": true,
+    "defensive-css/require-prefers-reduced-motion": true,
   }
 }
 ```
@@ -108,7 +109,8 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 6. [Require Focus Visible](#require-focus-visible)
 7. [Require Named Grid Lines](#require-named-grid-lines)
 8. [Require Overscroll Behavior](#require-overscroll-behavior)
-9. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+9. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+10. [Require Scrollbar Gutter](#require-scrollbar-gutter)
 
 ---
 
@@ -717,6 +719,98 @@ div {
 
 div {
   overflow-block: auto;
+}
+```
+
+</details>
+
+---
+
+### Require Prefers Reduced Motion
+
+> [!TIP]
+> [Read more about prefers-reduced-motion on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
+
+Some users experience motion sickness or vestibular disorders that make animations uncomfortable or even nauseating. The `prefers-reduced-motion` media query allows users to request minimal animation. Respecting this preference is crucial for accessibility.
+
+**Enable this rule to:** Require all animations and transitions to be wrapped in a `@media (prefers-reduced-motion: no-preference)` or `@media not (prefers-reduced-motion: reduce)` query.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-prefers-reduced-motion": true
+  }
+}
+```
+
+#### Require Prefers Reduced Motion Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+@media (prefers-reduced-motion: no-preference) {
+  .box {
+    transition: transform 0.3s;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .box {
+    animation: slide 1s ease;
+  }
+}
+
+/* Instant transitions are allowed */
+.box {
+  transition: transform 0s;
+}
+
+/* No animation is allowed */
+.box {
+  animation: none;
+}
+
+@media not (prefers-reduced-motion: reduce) {
+  .box {
+    transition: transform 0s;
+  }
+}
+
+/* Nested media queries */
+@media (prefers-reduced-motion: no-preference) {
+  @media (min-width: 768px) {
+    .box {
+      transition: transform 0.3s;
+    }
+  }
+}
+
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+.box {
+  transition: transform 0.3s;
+}
+
+.box {
+  animation: slide 1s ease;
+}
+
+.box {
+  animation-duration: 0.5s;
+}
+
+/* Media query without prefers-reduced-motion */
+@media (min-width: 768px) {
+  .box {
+    transition: transform 0.3s;
+  }
 }
 ```
 

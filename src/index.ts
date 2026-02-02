@@ -5,6 +5,7 @@ import requireCustomPropertyFallback from './rules/require-custom-property-fallb
 import requireFlexWrap from './rules/require-flex-wrap';
 import requireFocusVisible from './rules/require-focus-visible';
 import requireNamedGridLines from './rules/require-named-grid-lines';
+import requirePrefersReducedMotion from './rules/require-prefers-reduced-motion';
 import requireOverscrollBehavior from './rules/require-overscroll-behavior';
 import requireScrollbarGutter from './rules/require-scrollbar-gutter';
 
@@ -16,6 +17,7 @@ export default [
   requireFlexWrap,
   requireFocusVisible,
   requireNamedGridLines,
+  requirePrefersReducedMotion,
   requireOverscrollBehavior,
   requireScrollbarGutter,
 ];
