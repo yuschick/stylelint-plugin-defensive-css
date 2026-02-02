@@ -78,6 +78,7 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
     "defensive-css/no-mixed-vendor-prefixes": true,
     "defensive-css/require-background-repeat": true,
     "defensive-css/require-flex-wrap": true,
+    "defensive-css/require-focus-visible": true,
     "defensive-css/require-named-grid-lines": true,
   }
 }
@@ -92,9 +93,10 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 3. [Require Background Repeat](#require-background-repeat)
 4. [Require Custom Property Fallback](#require-custom-property-fallback)
 5. [Require Flex Wrap](#require-flex-wrap)
-6. [Require Named Grid Lines](#require-named-grid-lines)
-7. [Require Overscroll Behavior](#require-overscroll-behavior)
-8. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+6. [Require Focus Visible](#require-focus-visible)
+7. [Require Named Grid Lines](#require-named-grid-lines)
+8. [Require Overscroll Behavior](#require-overscroll-behavior)
+9. [Require Scrollbar Gutter](#require-scrollbar-gutter)
 
 ---
 
@@ -439,6 +441,63 @@ div {
 div {
   display: flex;
   flex-flow: row;
+}
+```
+
+</details>
+
+---
+
+### Require Focus Visible
+
+The `:focus` pseudo-class shows focus indicators for both mouse clicks and keyboard navigation, which often leads developers to hide focus outlines entirely (creating accessibility issues). The `:focus-visible` pseudo-class only shows focus indicators when the user is navigating with a keyboard, providing a better user experience.
+
+**Enable this rule to:** Require `:focus-visible` instead of `:focus` for better keyboard navigation UX.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-focus-visible": true,
+  }
+}
+```
+
+#### Require Focus Visible Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+.btn:focus-visible {
+  outline: 2px solid blue;
+}
+
+.modal:focus-within {
+  border: 1px solid blue;
+}
+
+/* Intentional exclusion */
+.input:not(:focus) {
+  border: 1px solid gray;
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+.btn:focus {
+  outline: 2px solid blue;
+}
+
+button:focus {
+  outline: none;
+}
+
+.input:focus:hover {
+  border-color: blue;
 }
 ```
 

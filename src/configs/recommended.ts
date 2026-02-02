@@ -5,6 +5,7 @@ export default {
     'defensive-css/no-mixed-vendor-prefixes': true,
     'defensive-css/require-background-repeat': true,
     'defensive-css/require-flex-wrap': true,
+    'defensive-css/require-focus-visible': true,
     'defensive-css/require-named-grid-lines': true,
   },
 };
