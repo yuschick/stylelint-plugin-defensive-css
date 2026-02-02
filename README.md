@@ -9,7 +9,7 @@
 
 A Stylelint plugin to enforce [Defensive CSS](https://defensivecss.dev/) best practices.
 
-> [!IMPORTANT]
+> [!TIP]
 > [V1 documentation can be found here](./V1-DOCUMENTATION.md)
 
 ## Table of Contents
@@ -18,7 +18,7 @@ A Stylelint plugin to enforce [Defensive CSS](https://defensivecss.dev/) best pr
 
 ## Getting Started
 
-> [!TIP]
+> [!IMPORTANT]
 > The plugin requires [Stylelint](https://stylelint.io/) v14.0.0 or greater.
 
 To get started using the plugin, it must first be installed.
