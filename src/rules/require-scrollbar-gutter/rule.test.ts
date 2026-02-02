@@ -1,4 +1,4 @@
-import { messages, name } from '.';
+import { messages, name } from './meta';
 
 /* Test when both x and y are enabled (default) */
 testRule({
