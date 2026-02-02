@@ -5,7 +5,7 @@ const { ruleMessages } = stylelint.utils;
 
 export const name = 'defensive-css/require-overscroll-behavior';
 export const messages = ruleMessages(name, {
-  rejected: (selector) =>
+  rejected: (selector: string) =>
     `Expected overscroll-behavior property when using scrollable overflow at selector "${selector}". Learn more: https://defensivecss.dev/tip/scroll-chain`,
 });
 

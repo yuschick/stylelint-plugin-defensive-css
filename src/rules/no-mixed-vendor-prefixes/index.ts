@@ -6,7 +6,7 @@ const { ruleMessages } = stylelint.utils;
 export const name = 'defensive-css/no-mixed-vendor-prefixes';
 
 export const messages = ruleMessages(name, {
-  rejected: (selector) =>
+  rejected: (selector: string) =>
     `Multiple vendor prefixes found in selector "${selector}". Split each vendor prefix into its own, individual rule. Learn more: https://defensivecss.dev/tip/grouping-selectors`,
 });
 

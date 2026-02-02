@@ -6,9 +6,9 @@ const { ruleMessages } = stylelint.utils;
 export const name = 'defensive-css/require-background-repeat';
 
 export const messages = ruleMessages(name, {
-  rejectedBackground: (selector) =>
+  rejectedBackground: (selector: string) =>
     `Expected background-repeat when using background-image with selector "${selector}". Learn more: https://defensivecss.dev/tip/background-repeat/`,
-  rejectedMask: (selector) =>
+  rejectedMask: (selector: string) =>
     `Expected mask-repeat when using mask-image with selector "${selector}". Learn more: https://defensivecss.dev/tip/background-repeat/`,
 });
 

@@ -5,7 +5,7 @@ const { ruleMessages } = stylelint.utils;
 
 export const name = 'defensive-css/require-custom-property-fallback';
 export const messages = ruleMessages(name, {
-  rejected: (selector) =>
+  rejected: (selector: string) =>
     `Expected custom property fallback when using custom property with selector "${selector}". Learn more: https://defensivecss.dev/tip/css-variable-fallback`,
 });
 

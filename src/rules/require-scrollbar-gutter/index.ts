@@ -5,7 +5,7 @@ const { ruleMessages } = stylelint.utils;
 
 export const name = 'defensive-css/require-scrollbar-gutter';
 export const messages = ruleMessages(name, {
-  rejected: (selector) =>
+  rejected: (selector: string) =>
     `Expected scrollbar-gutter property when using scrollable overflow at selector "${selector}". Learn more: https://defensivecss.dev/tip/scrollbar-gutter`,
 });
 
