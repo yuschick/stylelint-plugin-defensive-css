@@ -14,7 +14,7 @@ A Stylelint plugin to enforce [Defensive CSS](https://defensivecss.dev/) best pr
 
 ## Table of Contents
 
-[Getting Started](#getting-started) — [Quickstart](#quickstart) — [Rules](#defensive-css-rules) — [Troubleshooting](#troubleshooting)
+[Getting Started](#getting-started) | [Quickstart](#quickstart) | [Plugin Rules](#defensive-css-rules) | [Troubleshooting](#troubleshooting)
 
 ## Getting Started
 
