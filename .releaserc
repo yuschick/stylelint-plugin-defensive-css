@@ -5,6 +5,11 @@
       "name": "release/*",
       "channel": "next",
       "prerelease": "rc"
+    },
+    {
+      "name": "feature/*",
+      "channel": "next",
+      "prerelease": "rc"
     }
   ],
   "plugins": [

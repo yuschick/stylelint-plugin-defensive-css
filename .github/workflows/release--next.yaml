@@ -5,6 +5,7 @@ on:
     branches:
       - release/**
       - hotfix/**
+      - feature/**
 
 jobs:
   release-candidate:
