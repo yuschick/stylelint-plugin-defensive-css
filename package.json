@@ -6,12 +6,22 @@
   "author": "Daniel Yuschick <daniel.yuschick@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/yuschick/stylelint-plugin-defensive-css",
-  "main": "./dist/index.js",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.cts",
+  "files": [
+    "dist"
+  ],
   "exports": {
-    ".": "./dist/index.js",
-    "./configs/recommended": "./dist/configs/recommended.js"
+    ".": {
+      "require": "./dist/index.cjs",
+      "import": "./dist/index.mjs"
+    },
+    "./package.json": "./package.json"
   },
   "scripts": {
+    "build": "tsdown",
+    "dev": "tsdown --watch",
     "test": "vitest"
   },
   "devDependencies": {
@@ -25,6 +35,7 @@
     "lerna": "^9.0.3",
     "prettier": "^3.8.1",
     "stylelint": "^16.1.0",
+    "tsdown": "^0.18.1",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.54.0",
     "vitest": "^3.2.4",
