@@ -9,5 +9,5 @@ export default defineConfig({
   },
   exports: true,
   external: ['stylelint'],
-  format: ['cjs', 'es', 'esm'],
+  format: ['cjs', 'es'],
 });
