@@ -1,5 +1,5 @@
-![Stylelint Plugin - Defensive CSS Logo](./assets/logo--dark.jpg#gh-dark-mode-only)
-![Stylelint Plugin - Defensive CSS Logo](./assets/logo--dark.jpg#gh-light-mode-only)
+![Stylelint Plugin - Defensive CSS Logo](./assets/logo--dark.webp#gh-dark-mode-only)
+![Stylelint Plugin - Defensive CSS Logo](./assets/logo--dark.webp#gh-light-mode-only)
 
 ![Stylelint Plugin Defensive CSS License](https://img.shields.io/github/license/yuschick/stylelint-plugin-defensive-css?style=for-the-badge)
 ![Stylelint PLugin Defensive CSS Latest NPM Version](https://img.shields.io/npm/v/stylelint-plugin-defensive-css?style=for-the-badge)
