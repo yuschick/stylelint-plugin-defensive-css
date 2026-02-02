@@ -5,7 +5,7 @@
  */
 
 import stylelint, { Rule } from 'stylelint';
-import { messages, meta, name } from '.';
+import { messages, meta, name } from './meta';
 import { findCustomPropertiesWithoutFallback, matchesIgnorePattern } from './utils';
 
 const { report, validateOptions } = stylelint.utils;

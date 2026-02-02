@@ -17,6 +17,10 @@
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
     },
+    "./configs/recommended": {
+      "require": "./dist/configs/recommended.cjs",
+      "import": "./dist/configs/recommended.mjs"
+    },
     "./package.json": "./package.json"
   },
   "scripts": {
