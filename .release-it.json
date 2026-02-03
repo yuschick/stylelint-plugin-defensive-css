@@ -1,0 +1,39 @@
+{
+  "git": {
+    "commitMessage": "chore: release v${version} [skip ci]",
+    "tagName": "v${version}",
+    "requireCleanWorkingDir": false,
+    "requireBranch": false,
+    "push": true,
+    "commitArgs": ["--no-verify"]
+  },
+  "github": {
+    "release": true,
+    "releaseName": "v${version}"
+  },
+  "npm": {
+    "publish": true
+  },
+  "hooks": {
+    "after:bump": "npm run build"
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": {
+        "name": "conventionalcommits",
+        "types": [
+          { "type": "feat", "section": "Features" },
+          { "type": "fix", "section": "Bug Fixes" },
+          { "type": "perf", "section": "Performance Improvements" },
+          { "type": "docs", "section": "Documentation" },
+          { "type": "chore", "hidden": true },
+          { "type": "style", "hidden": true },
+          { "type": "refactor", "hidden": true },
+          { "type": "test", "hidden": true }
+        ]
+      },
+      "infile": "CHANGELOG.md",
+      "header": "# Changelog\n\nAll notable changes to this project will be documented in this file."
+    }
+  }
+}

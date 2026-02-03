@@ -1,23 +1,24 @@
-# 🦖 Stylelint Plugin Defensive CSS
+![Stylelint Plugin - Defensive CSS Logo](./assets/logo--dark.webp#gh-dark-mode-only)
+![Stylelint Plugin - Defensive CSS Logo](./assets/logo--dark.webp#gh-light-mode-only)
 
-![License](https://img.shields.io/github/license/yuschick/stylelint-plugin-defensive-css?style=for-the-badge)
-![NPM Version](https://img.shields.io/npm/v/stylelint-plugin-defensive-css?style=for-the-badge)
-![Main Workflow Status](https://img.shields.io/github/actions/workflow/status/yuschick/stylelint-plugin-defensive-css/pull-request--checks.yaml?style=for-the-badge)
+![Stylelint Plugin Defensive CSS License](https://img.shields.io/github/license/yuschick/stylelint-plugin-defensive-css?style=for-the-badge)
+![Stylelint PLugin Defensive CSS Latest NPM Version](https://img.shields.io/npm/v/stylelint-plugin-defensive-css?style=for-the-badge)
+![Stylelint PLugin Defensive CSS Main Workflow Status](https://img.shields.io/github/actions/workflow/status/yuschick/stylelint-plugin-defensive-css/pull-request--checks.yaml?style=for-the-badge)
+![Stylelint PLugin Defensive CSS NPM Downloads](https://img.shields.io/npm/dw/stylelint-plugin-defensive-css?style=for-the-badge)
 
-A Stylelint plugin to enforce defensive CSS best practices.
+A Stylelint plugin to enforce [Defensive CSS](https://defensivecss.dev/) best practices.
 
-> [Read more about Defensive CSS](https://defensivecss.dev/)
+> [!TIP]
+> [V1 documentation can be found here](./V1-DOCUMENTATION.md)
 
-## 🚀 Version 1.1.0
+## Table of Contents
 
-With the release of version 1.1.0 of the plugin, we now support Stylelint 17.
-
----
+[Getting Started](#getting-started) | [Quickstart](#quickstart) | [Plugin Configs](#defensive-css-configs) |  [Plugin Rules](#defensive-css-rules) | [Troubleshooting](#troubleshooting)
 
 ## Getting Started
 
-> Before getting started with the plugin, you must first have
-> [Stylelint](https://stylelint.io/) version 14.0.0 or greater installed
+> [!IMPORTANT]
+> The plugin requires [Stylelint](https://stylelint.io/) v14.0.0 or greater.
 
 To get started using the plugin, it must first be installed.
 
@@ -29,53 +30,110 @@ npm i stylelint-plugin-defensive-css --save-dev
 yarn add stylelint-plugin-defensive-css --dev
 ```
 
-With the plugin installed, the rule(s) can be added to the project's Stylelint
-configuration.
+With the plugin installed, it must be added to the `plugins` array of your Stylelint config.
+
+```json
+{
+  "plugins": ["stylelint-plugin-defensive-css"],
+}
+```
+
+After adding the plugin to the configuration file, you now have access to the various rules and options it provides.
+
+## Quickstart
+
+After installation, add this to your `.stylelintrc.json`:
+
+```json
+{
+  "plugins": ["stylelint-plugin-defensive-css"],
+  "extends": ["stylelint-plugin-defensive-css/configs/recommended"]
+}
+```
+
+## Defensive CSS Configs
+
+For quick setup, the plugin provides preset configurations that enable commonly used rules.
+
+### Recommended
+
+The `recommended` preset enables core defensive CSS rules with sensible defaults, suitable for most projects.
+
+**Usage:**
+
+```json
+{
+  "extends": ["stylelint-plugin-defensive-css/configs/recommended"]
+}
+```
+
+**Equivalent to:**
 
 ```json
 {
   "plugins": ["stylelint-plugin-defensive-css"],
   "rules": {
-    "plugin/use-defensive-css": [true, { "severity": "warning" }]
+    "defensive-css/no-accidental-hover": true,
+    "defensive-css/no-mixed-vendor-prefixes": true,
+    "defensive-css/require-background-repeat": true,
+    "defensive-css/require-flex-wrap": true,
+    "defensive-css/require-focus-visible": true,
+    "defensive-css/require-named-grid-lines": true,
+    "defensive-css/require-prefers-reduced-motion": true,
   }
 }
 ```
 
-## Rules / Options
+### Strict
+
+The `strict` preset enables every rule for the most strict linting offered by the plugin.
+
+**Usage:**
+
+```json
+{
+  "extends": ["stylelint-plugin-defensive-css/configs/strict"]
+}
+```
+
+## Defensive CSS Rules
 
 The plugin provides multiple rules that can be toggled on and off as needed.
 
-1. [Accidental Hover](#accidental-hover)
-2. [Background-Repeat](#background-repeat)
-3. [Custom Property Fallbacks](#custom-property-fallbacks)
-4. [Flex Wrapping](#flex-wrapping)
-5. [Grid Line Names](#grid-line-names)
-6. [Scroll Chaining](#scroll-chaining)
-7. [Scrollbar Gutter](#scrollbar-gutter)
-8. [Vendor Prefix Grouping](#vendor-prefix-grouping)
+1. [No Accidental Hover](#no-accidental-hover)
+2. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
+3. [Require Background Repeat](#require-background-repeat)
+4. [Require Custom Property Fallback](#require-custom-property-fallback)
+5. [Require Flex Wrap](#require-flex-wrap)
+6. [Require Focus Visible](#require-focus-visible)
+7. [Require Named Grid Lines](#require-named-grid-lines)
+8. [Require Overscroll Behavior](#require-overscroll-behavior)
+9. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+10. [Require Scrollbar Gutter](#require-scrollbar-gutter)
 
 ---
 
-### Accidental Hover
+### No Accidental Hover
 
+> [!NOTE]
 > [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/hover-media/)
 
-We use hover effects to provide an indication to the user that an element is
-clickable or active. That is fine for devices that have a mouse or a trackpad.
-However, for mobile browsing hover effects can get confusing.
+Hover effects indicate interactivity on devices with mouse or trackpad input. However, on touch devices, hover states can cause confusing user experiences where elements become stuck in a hovered state after being tapped, or trigger unintended actions.
 
-Enable this rule in order to prevent unintentional hover effects on mobile
-devices.
+**Enable this rule to:** Require all `:hover` selectors to be wrapped in `@media (hover: hover)` queries, ensuring hover effects only apply in supported contexts.
 
 ```json
 {
   "rules": {
-    "plugin/use-defensive-css": [true, { "accidental-hover": true }]
+    "defensive-css/no-accidental-hover": true,
   }
 }
 ```
 
-#### ✅ Passing Examples
+#### No Accidental Hover Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
 
 ```css
 @media (hover: hover) {
@@ -105,7 +163,10 @@ devices.
 }
 ```
 
-#### ❌ Failing Examples
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
 
 ```css
 .fail-btn:hover {
@@ -119,79 +180,190 @@ devices.
 }
 ```
 
-### Background Repeat
+</details>
 
-> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/bg-repeat/)
+---
 
-Oftentimes, when using a large image as a background, we tend to forget to
-account for the case when the design is viewed on a large screen. That
-background will repeat by default.
+### No Mixed Vendor Prefixes
 
-Enable this rule in order to prevent unintentional repeating background.
+> [!NOTE]
+> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/grouping-selectors)
+
+Grouping vendor-prefixed selectors in a single rule can cause the entire rule to be invalid according to the [W3C selector specification](https://www.w3.org/TR/selectors/#grouping). For example, combining `-webkit-` and `-moz-` placeholder selectors will prevent either from working correctly.
+
+**Enable this rule to:** Require vendor-prefixed selectors to be separated into individual rules, ensuring browser-specific styles apply correctly.
 
 ```json
 {
   "rules": {
-    "plugin/use-defensive-css": [true, { "background-repeat": true }]
+    "defensive-css/no-mixed-vendor-prefixes": true,
   }
 }
 ```
 
-#### ✅ Passing Examples
+#### No Mixed Vendor Prefixes Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+input::-webkit-input-placeholder {
+  color: #222;
+}
+
+input::-moz-placeholder {
+  color: #222;
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+input::-webkit-input-placeholder,
+input::-moz-placeholder {
+  color: #222;
+}
+```
+
+</details>
+
+---
+
+### Require Background Repeat
+
+> [!NOTE]
+> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/bg-repeat)
+
+Background and mask images repeat by default when the container is larger than the image dimensions. On large screens, this can result in unintended tiling effects that break the design.
+
+**Enable this rule to:** Require an explicit `background-repeat` or `mask-repeat` property whenever `background-image` or `mask-image` is used.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-background-repeat": true,
+  }
+}
+```
+
+#### Require Background Repeat Options
+
+**Configuration:** By default, this rule validates both background and mask images. Use the `background-repeat` and `mask-repeat` options to control which properties are checked.
+
+```ts
+interface SecondaryOptions {
+  'background-repeat'?: boolean;
+  'mask-repeat'?: boolean;
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/require-background-repeat": [true, {
+        "background-repeat": true,
+        "mask-repeat": true
+    }],
+  }
+}
+```
+
+#### Require Background Repeat Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
 
 ```css
 div {
   background: url('some-image.jpg') repeat black top center;
 }
+
 div {
   background: url('some-image.jpg') black top center;
   background-repeat: no-repeat;
 }
+
 div {
   mask: url('some-image.jpg') repeat top center;
 }
+
 div {
   mask: url('some-image.jpg') top center;
   mask-repeat: no-repeat;
 }
 ```
 
-#### ❌ Failing Examples
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
 
 ```css
 div {
   background: url('some-image.jpg') black top center;
 }
+
 div {
   background-image: url('some-image.jpg');
 }
+
 div {
   mask: url('some-image.jpg') top center;
 }
+
 div {
   mask-image: url('some-image.jpg');
 }
 ```
 
-### Custom Property Fallbacks
+</details>
 
-> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/css-variable-fallback/)
+---
 
-CSS variables are gaining more and more usage in web design. There is a method
-that we can apply to use them in a way that doesn’t break the experience, in
-case the CSS variable value was empty for some reason.
+### Require Custom Property Fallback
 
-Enable this rule in order to require fallbacks values for custom properties.
+> [!NOTE]
+> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/css-variable-fallback)
+
+CSS custom properties (variables) can fail silently if undefined, potentially breaking layouts or causing visual issues. Providing fallback values ensures graceful degradation when variables are missing or invalid.
+
+**Enable this rule to:** Require all `var()` functions to include a fallback value (e.g., `var(--color, #000)`).
 
 ```json
 {
   "rules": {
-    "plugin/use-defensive-css": [true, { "custom-property-fallbacks": true }]
+    "defensive-css/require-custom-property-fallback": true,
   }
 }
 ```
 
-#### ✅ Passing Examples
+#### Require Custom Property Fallback Options
+
+**Configuration:** By default, this rule validates all custom properties. Use the `ignore` option to exclude specific patterns, such as global design tokens or component-scoped variables.
+
+```ts
+interface SecondaryOptions {
+  ignore?: (string | RegExp)[];
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/require-custom-property-fallback": [true, {
+        "ignore": ["var\\(--exact-match\\)", /var\(--ds-color-.*\)/]
+    }],
+  }
+}
+```
+
+#### Require Custom Property Fallback Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
 
 ```css
 div {
@@ -199,7 +371,10 @@ div {
 }
 ```
 
-#### ❌ Failing Examples
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
 
 ```css
 div {
@@ -207,139 +382,182 @@ div {
 }
 ```
 
-| Option | Description                                                                                       |
-| ------ | ------------------------------------------------------------------------------------------------- |
-| ignore | Pass an array of regular expressions and/or strings to ignore linting specific custom properties. |
+</details>
+
+---
+
+### Require Flex Wrap
+
+> [!NOTE]
+> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/flex-wrap)
+
+Flex containers do not wrap their children by default. When there isn't enough horizontal space, flex items will overflow rather than wrapping to a new line, potentially breaking layouts on smaller screens.
+
+**Enable this rule to:** Require an explicit `flex-wrap` property (or `flex-flow` shorthand) for all flex containers, ensuring predictable wrapping behavior is defined.
 
 ```json
 {
   "rules": {
-    "plugin/use-defensive-css": [
-      true,
-      { "custom-property-fallbacks": [true, { "ignore": [/hel-/, "theme-"] }] }
-    ]
+    "defensive-css/require-flex-wrap": true,
   }
 }
 ```
 
-The `ignore` array can support regular expressions and strings. If a string is
-provided, it will be translated into a RegExp like `new RegExp(string)` before
-testing the custom property name.
+#### Require Flex Wrap Examples
 
-#### ✅ Passing Examples
-
-```css
-div {
-  /* properties with theme- are ignored */
-  color: var(--theme-color-primary);
-
-  /* properties with hel- are ignored */
-  padding: var(--hel-spacing-200);
-}
-```
-
-### Flex Wrapping
-
-> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/flexbox-wrapping/)
-
-CSS flexbox is one of the most useful CSS layout features nowadays. It’s
-tempting to add `display: flex` to a wrapper and have the child items ordered
-next to each other. The thing is when there is not enough space, those child
-items won’t wrap into a new line by default. We need to either change that
-behavior with `flex-wrap: wrap` or explicitly define `nowrap` on the container.
-
-Enable this rule in order to require all flex rows to have a flex-wrap value.
-
-```json
-{
-  "rules": {
-    "plugin/use-defensive-css": [true, { "flex-wrapping": true }]
-  }
-}
-```
-
-#### ✅ Passing Examples
+<details>
+<summary>✅ Passing Examples</summary>
 
 ```css
 div {
   display: flex;
   flex-wrap: wrap;
 }
+
 div {
   display: flex;
   flex-wrap: nowrap;
 }
+
 div {
   display: flex;
   flex-direction: row-reverse;
   flex-wrap: wrap-reverse;
 }
+
 div {
   display: flex;
   flex-flow: row wrap;
 }
+
 div {
   display: flex;
   flex-flow: row-reverse nowrap;
 }
 ```
 
-#### ❌ Failing Examples
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
 
 ```css
 div {
   display: flex;
 }
+
 div {
   display: flex;
   flex-direction: row;
 }
+
 div {
   display: flex;
   flex-flow: row;
 }
 ```
 
-### Grid Line Names
+</details>
 
-Require explicit named grid lines for tracks. When `grid-line-names` is enabled
-the plugin validates `grid-template-columns`, `grid-template-rows`, and the
-`grid` shorthand (the portion before/after the `/`) to ensure each track is
-associated with a named line using the `[name]` syntax.
+---
 
-The rule supports configuring whether to validate columns and/or rows:
+### Require Focus Visible
 
-```json
-{
-  "rules": {
-    "plugin/use-defensive-css": [true, { "grid-line-names": true }]
-  }
-}
-```
+The `:focus` pseudo-class shows focus indicators for both mouse clicks and keyboard navigation, which often leads developers to hide focus outlines entirely (creating accessibility issues). The `:focus-visible` pseudo-class only shows focus indicators when the user is navigating with a keyboard, providing a better user experience.
 
-Or with explicit options:
+**Enable this rule to:** Require `:focus-visible` instead of `:focus` for better keyboard navigation UX.
 
 ```json
 {
   "rules": {
-    "plugin/use-defensive-css": [
-      true,
-      { "grid-line-names": { "columns": true, "rows": false } }
-    ]
+    "defensive-css/require-focus-visible": true,
   }
 }
 ```
 
-- If `true` the rule validates both columns and rows.
-- Pass an object with `columns` and/or `rows` set to `false` to disable one
-  side.
+#### Require Focus Visible Examples
 
-This rule helps avoid ambiguous layouts by rejecting unnamed tracks like
-`1fr 1fr` and numeric `repeat(3, 1fr)` while allowing patterns that explicitly
-name lines, e.g. `repeat(auto-fit, [name] 300px)` or bracketed names such as
-`[a b] 1fr`.
+<details>
+<summary>✅ Passing Examples</summary>
 
-#### ✅ Passing Examples
+```css
+.btn:focus-visible {
+  outline: 2px solid blue;
+}
+
+.modal:focus-within {
+  border: 1px solid blue;
+}
+
+/* Intentional exclusion */
+.input:not(:focus) {
+  border: 1px solid gray;
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+.btn:focus {
+  outline: 2px solid blue;
+}
+
+button:focus {
+  outline: none;
+}
+
+.input:focus:hover {
+  border-color: blue;
+}
+```
+
+</details>
+
+---
+
+### Require Named Grid Lines
+
+Unnamed grid lines make layouts harder to understand and maintain. Numeric positions like `grid-column: 1 / 3` are ambiguous and prone to errors when the grid structure changes. Named lines like `[sidebar-start]` provide clarity and self-documenting code.
+
+**Enable this rule to:** Require all grid tracks to be associated with named lines using the `[name]` syntax in `grid-template-columns`, `grid-template-rows`, and the `grid` shorthand.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-named-grid-lines": true,
+  }
+}
+```
+
+#### Require Named Grid Lines Options
+
+**Configuration:** By default, this rule validates both row and column lines. Use the `columns` and `rows` options to control which axes are checked.
+
+```ts
+interface SecondaryOptions {
+  columns?: boolean;
+  rows?: boolean;
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/require-named-grid-lines": [true, {
+        "columns": true,
+        "rows": true
+    }],
+  }
+}
+```
+
+#### Require Named Grid Lines Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
 
 ```css
 div {
@@ -371,7 +589,10 @@ div {
 }
 ```
 
-#### ❌ Failing Examples
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
 
 ```css
 div {
@@ -412,26 +633,53 @@ div {
 }
 ```
 
-### Scroll Chaining
+</details>
 
-> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/scroll-chain/)
+---
 
-Have you ever opened a modal and started scrolling, and then when you reach the
-end and keep scrolling, the content underneath the modal (the body element) will
-scroll? This is called scroll chaining.
+### Require Overscroll Behavior
 
-Enable this rule in order to require all scrollable overflow properties to have
-an overscroll-behavior value.
+> [!NOTE]
+> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/scroll-chain)
+
+Scroll chaining occurs when a scrollable element reaches its scroll boundary and the scroll continues to the parent container. This commonly happens in modals where scrolling past the end causes the background content to scroll, creating a disorienting user experience.
+
+**Enable this rule to:** Require an `overscroll-behavior` property for all scrollable containers (`overflow: auto` or `overflow: scroll`), preventing unintended scroll chaining.
 
 ```json
 {
   "rules": {
-    "plugin/use-defensive-css": [true, { "scroll-chaining": true }]
+    "defensive-css/require-overscroll-behavior": true,
   }
 }
 ```
 
-#### ✅ Passing Examples
+#### Require Overscroll Behavior Options
+
+**Configuration:** By default, this rule validates both horizontal and vertical overflow. Use the `x` and `y` options to control which axes are checked.
+
+```ts
+interface SecondaryOptions {
+  x?: boolean;
+  y?: boolean;
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/require-overscroll-behavior": [true, {
+        "x": true,
+        "y": true
+    }],
+  }
+}
+```
+
+#### Require Overscroll Behavior Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
 
 ```css
 div {
@@ -454,7 +702,10 @@ div {
 }
 ```
 
-#### ❌ Failing Examples
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
 
 ```css
 div {
@@ -470,28 +721,145 @@ div {
 }
 ```
 
-### Scrollbar Gutter
+</details>
 
-> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/scrollbar-gutter/)
+---
 
-Imagine a container with only a small amount of content with no need to scroll.
-The content would be aligned evenly within the boundaries of its container. Now,
-if that container has more content added, and a scrollbar appears, that
-scrollbar will cause a layout shift, forcing the content to reflow and jump.
-This behavior can be jarring.
+### Require Prefers Reduced Motion
 
-To avoid layout shifting with variable content, enforce that a
-`scrollbar-gutter` property is defined for any scrollable container.
+> [!TIP]
+> [Read more about prefers-reduced-motion on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-reduced-motion)
+
+Some users experience motion sickness or vestibular disorders that make animations uncomfortable or even nauseating. The `prefers-reduced-motion` media query allows users to request minimal animation. Respecting this preference is crucial for accessibility.
+
+**Enable this rule to:** Require all animations and transitions to be wrapped in a `@media (prefers-reduced-motion: no-preference)` or `@media not (prefers-reduced-motion: reduce)` query.
 
 ```json
 {
   "rules": {
-    "plugin/use-defensive-css": [true, { "scrollbar-gutter": true }]
+    "defensive-css/require-prefers-reduced-motion": true
   }
 }
 ```
 
-#### ✅ Passing Examples
+#### Require Prefers Reduced Motion Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+@media (prefers-reduced-motion: no-preference) {
+  .box {
+    transition: transform 0.3s;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .box {
+    animation: slide 1s ease;
+  }
+}
+
+/* Instant transitions are allowed */
+.box {
+  transition: transform 0s;
+}
+
+/* No animation is allowed */
+.box {
+  animation: none;
+}
+
+@media not (prefers-reduced-motion: reduce) {
+  .box {
+    transition: transform 0s;
+  }
+}
+
+/* Nested media queries */
+@media (prefers-reduced-motion: no-preference) {
+  @media (min-width: 768px) {
+    .box {
+      transition: transform 0.3s;
+    }
+  }
+}
+
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+.box {
+  transition: transform 0.3s;
+}
+
+.box {
+  animation: slide 1s ease;
+}
+
+.box {
+  animation-duration: 0.5s;
+}
+
+/* Media query without prefers-reduced-motion */
+@media (min-width: 768px) {
+  .box {
+    transition: transform 0.3s;
+  }
+}
+```
+
+</details>
+
+---
+
+### Require Scrollbar Gutter
+
+> [!NOTE]
+> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/scrollbar-gutter)
+
+When content grows and triggers a scrollbar, the sudden appearance of the scrollbar causes a layout shift as content reflows to accommodate it. This creates a jarring visual jump, especially in dynamic interfaces where content changes frequently.
+
+**Enable this rule to:** Require a `scrollbar-gutter` property for all scrollable containers, reserving space for the scrollbar and preventing layout shifts.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-scrollbar-gutter": true,
+  }
+}
+```
+
+#### Require Scrollbar Gutter Options
+
+**Configuration:** By default, this rule validates both horizontal and vertical overflow. Use the `x` and `y` options to control which axes are checked.
+
+```ts
+interface SecondaryOptions {
+  x?: boolean;
+  y?: boolean;
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/require-scrollbar-gutter": [true, {
+        "x": true,
+        "y": true
+    }],
+  }
+}
+```
+
+#### Require Scrollbar Gutter Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
 
 ```css
 div {
@@ -514,7 +882,10 @@ div {
 }
 ```
 
-#### ❌ Failing Examples
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
 
 ```css
 div {
@@ -530,41 +901,34 @@ div {
 }
 ```
 
-### Vendor Prefix Grouping
+</details>
 
-> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/grouping-selectors/)
+## Troubleshooting
 
-It's not recommended to group selectors that are meant to work with different
-browsers. For example, styling an input's placeholder needs multiple selectors
-per the browser. If we group the selectors, the entire rule will be invalid,
-according to [w3c](https://www.w3.org/TR/selectors/#grouping).
+### Third-Party False Positives
 
-Enable this rule in order to require all vendor-prefixed selectors to be split
-into their own rules.
+If you're getting warnings for properties you don't control (e.g., from third-party libraries), you can disable the rule for specific files in your Stylelint config file using the `overrides` property.
 
 ```json
 {
-  "rules": {
-    "plugin/use-defensive-css": [true, { "vendor-prefix-grouping": true }]
-  }
+  "overrides": [
+    {
+      "files": ["vendor/**/*.css"],
+      "rules": {
+        "defensive-css/no-mixed-vendor-prefixes": null
+      }
+    }
+  ]
 }
 ```
 
-#### ✅ Passing Examples
+### Ignoring Specific Patterns
+
+As an escape hatch, use Stylelint's built-in `disable` comments to bypass specific rules:
 
 ```css
-input::-webkit-input-placeholder {
-  color: #222;
-}
-input::-moz-placeholder {
-  color: #222;
-```
-
-#### ❌ Failing Examples
-
-```css
-input::-webkit-input-placeholder,
-input::-moz-placeholder {
-  color: #222;
+div {
+  /* stylelint-disable-next-line defensive-css/require-background-repeat */
+  background: url(./some-image.jpg);
 }
 ```
