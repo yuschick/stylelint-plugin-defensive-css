@@ -74,6 +74,7 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
   "plugins": ["stylelint-plugin-defensive-css"],
   "rules": {
     "defensive-css/no-accidental-hover": true,
+    "defensive-css/no-list-style-none": [true, { fix: true }],
     "defensive-css/no-mixed-vendor-prefixes": true,
     "defensive-css/require-background-repeat": true,
     "defensive-css/require-flex-wrap": true,
@@ -101,15 +102,16 @@ The `strict` preset enables every rule for the most strict linting offered by th
 The plugin provides multiple rules that can be toggled on and off as needed.
 
 1. [No Accidental Hover](#no-accidental-hover)
-2. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
-3. [Require Background Repeat](#require-background-repeat)
-4. [Require Custom Property Fallback](#require-custom-property-fallback)
-5. [Require Flex Wrap](#require-flex-wrap)
-6. [Require Focus Visible](#require-focus-visible)
-7. [Require Named Grid Lines](#require-named-grid-lines)
-8. [Require Overscroll Behavior](#require-overscroll-behavior)
-9. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
-10. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+2. [No List Style None](#no-list-style-none)
+3. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
+4. [Require Background Repeat](#require-background-repeat)
+5. [Require Custom Property Fallback](#require-custom-property-fallback)
+6. [Require Flex Wrap](#require-flex-wrap)
+7. [Require Focus Visible](#require-focus-visible)
+8. [Require Named Grid Lines](#require-named-grid-lines)
+9. [Require Overscroll Behavior](#require-overscroll-behavior)
+10. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+11. [Require Scrollbar Gutter](#require-scrollbar-gutter)
 
 ---
 
@@ -177,6 +179,74 @@ Hover effects indicate interactivity on devices with mouse or trackpad input. Ho
   .fail-btn:hover {
     color: black;
   }
+}
+```
+
+</details>
+
+---
+
+### No List Style None
+
+> [!TIP]
+> This rule is fixable by passing the `{ fix: true }` option.
+
+In Safari, using `list-style: none` on `<ul>`, `<ol>`, or `<li>` elements removes list semantics from the accessibility tree, making the list invisible to VoiceOver users. Using `list-style-type: ""` (empty string) achieves the same visual result while preserving accessibility.
+
+**Exception:** Lists inside `<nav>` elements maintain their semantics even with `list-style: none`, so this rule allows that pattern.
+
+**Enable this rule to:** Prevent `list-style: none` on lists outside of navigation, requiring the accessible `list-style-type: ""` approach instead.
+
+```json
+{
+  "rules": {
+    "defensive-css/no-list-style-none": [true, { fix: true }]
+  }
+}
+```
+
+#### No List Style None Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+/* Recommended: Preserves semantics */
+ul {
+  list-style-type: "";
+}
+
+/* Exception: Lists inside nav elements retain semantics */
+nav ul {
+  list-style: none;
+}
+
+/* Other list-style values are fine */
+ul {
+  list-style: disc;
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+ul {
+  list-style: none;
+}
+
+.menu ul {
+  list-style: none;
+}
+
+ol.items {
+  list-style: none;
+}
+
+:not(nav) ul {
+  list-style: none;
 }
 ```
 
