@@ -2,6 +2,7 @@ export default {
   plugins: ['stylelint-plugin-defensive-css'],
   rules: {
     'defensive-css/no-accidental-hover': true,
+    'defensive-css/no-list-style-none': [true, { fix: true }],
     'defensive-css/no-mixed-vendor-prefixes': true,
     'defensive-css/require-background-repeat': true,
     'defensive-css/require-custom-property-fallback': true,
