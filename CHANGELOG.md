@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.0-next.5](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.0.0-next.4...v2.0.0-next.5) (2026-02-03)
+
 ## [2.0.0-next.4](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.0.0-next.3...v2.0.0-next.4) (2026-02-03)
 
 ## [2.0.0-next.3](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.0.0-next.2...v2.0.0-next.3) (2026-02-03)
