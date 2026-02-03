@@ -35,14 +35,5 @@
       "infile": "CHANGELOG.md",
       "header": "# Changelog\n\nAll notable changes to this project will be documented in this file."
     }
-  },
-  "preRelease": {
-    "git": {
-      "tag": false,
-      "push": false
-    },
-    "github": {
-      "release": false
-    }
   }
 }
