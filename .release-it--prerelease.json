@@ -1,0 +1,16 @@
+{
+  "git": {
+    "commitMessage": "chore: release v${version} [skip ci]",
+    "tagName": "v${version}",
+    "requireCleanWorkingDir": false,
+    "requireBranch": false,
+    "push": true,
+    "commitArgs": ["--no-verify"]
+  },
+  "npm": {
+    "publish": true
+  },
+  "hooks": {
+    "after:bump": "npm run build"
+  }
+}
