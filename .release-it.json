@@ -12,7 +12,8 @@
     "releaseName": "v${version}"
   },
   "npm": {
-    "publish": true
+    "publish": true,
+    "tag": "${preRelease ? 'next' : 'latest'}"
   },
   "hooks": {
     "after:bump": "npm run build"
