@@ -30,10 +30,16 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
+    "lint": "eslint '**/*.{js,cjs,mjs,ts,cts,mts}'",
+    "lint:fix": "eslint '**/*.{js,cjs,mjs,ts,cts,mts}' --fix",
+    "release:prerelease": "release-it --preRelease=next --no-git.requireCleanWorkingDir",
+    "release:official": "release-it",
+    "release:dry": "release-it --dry-run",
     "test": "vitest"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
+    "@release-it/conventional-changelog": "^10.0.4",
     "@types/node": "^25.1.0",
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
@@ -42,6 +48,7 @@
     "jiti": "^2.6.1",
     "lerna": "^9.0.3",
     "prettier": "^3.8.1",
+    "release-it": "^19.2.4",
     "stylelint": "^16.1.0",
     "tsdown": "^0.18.1",
     "typescript": "^5.9.3",
