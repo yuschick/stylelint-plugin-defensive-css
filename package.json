@@ -1,6 +1,6 @@
 {
   "name": "stylelint-plugin-defensive-css",
-  "version": "2.0.0-next.6",
+  "version": "2.0.0-next.7",
   "description": "A Stylelint plugin to enforce defensive CSS best practices.",
   "type": "module",
   "author": "Daniel Yuschick <daniel.yuschick@gmail.com>",
