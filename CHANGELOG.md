@@ -4,21 +4,11 @@ All notable changes to this project will be documented in this file.
 
 ## [2.1.1](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.1.1-next.0...v2.1.1) (2026-02-03)
 
+* create no-list-style-none rule ([deb8900](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/deb8900abfe4ef3ba9ba3a2706702755dfa50793))
+* feat: add no-list-style-none rule to recommended and strict configs
+* docs: add documentation for no-list-style-none rule to readme
+
 ## [2.0.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.0.0-next.7...v2.0.0) (2026-02-03)
-
-## [2.0.0-next.7](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.0.0-next.6...v2.0.0-next.7) (2026-02-03)
-
-## [2.0.0-next.6](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.0.0-next.5...v2.0.0-next.6) (2026-02-03)
-
-## [2.0.0-next.5](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.0.0-next.4...v2.0.0-next.5) (2026-02-03)
-
-## [2.0.0-next.4](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.0.0-next.3...v2.0.0-next.4) (2026-02-03)
-
-## [2.0.0-next.3](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.0.0-next.2...v2.0.0-next.3) (2026-02-03)
-
-## [2.0.0-next.2](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.0.0-next.1...v2.0.0-next.2) (2026-02-03)
-
-## [2.0.0-next.1](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v1.1.1...v2.0.0-next.1) (2026-02-03)
 
 ### Features
 
