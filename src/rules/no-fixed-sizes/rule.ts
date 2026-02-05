@@ -19,7 +19,7 @@ import { isValidAtRule, isValidValue } from './utils';
 const { report, validateOptions } = stylelint.utils;
 
 interface SecondaryOptions {
-  atRules?: AtRules;
+  ['at-rules']?: AtRules;
   properties?: Properties;
 }
 
@@ -37,7 +37,7 @@ export const noFixedSizes: Rule = (
 
     const completeAtRulesOptions: AtRules = {
       ...defaultAtRules,
-      ...secondaryOptions.atRules,
+      ...secondaryOptions['at-rules'],
     };
 
     const completePropertyOptions: Properties = {

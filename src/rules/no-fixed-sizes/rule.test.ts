@@ -705,7 +705,7 @@ testRule({
 
 /* Test at-rule configuration */
 testRule({
-  config: [true, { atRules: { '@media': false } }],
+  config: [true, { 'at-rules': { '@media': false } }],
   ruleName: name,
   /* eslint-disable sort-keys */
   accept: [
