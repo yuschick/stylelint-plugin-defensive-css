@@ -6,7 +6,7 @@ export type Properties = Partial<
 
 export type AtRules = Partial<Record<CSS.AtRules, false | SeverityLevel>>;
 
-export const severityLevels = ['error', 'warn'] as const;
+export const severityLevels = ['error', 'warning'] as const;
 export type SeverityLevel = (typeof severityLevels)[number];
 
 export const groups = ['critical', 'decorative', 'positioning', 'spacing', 'typography'];
@@ -73,11 +73,11 @@ export const recommendedPropertyGroups: PropertyGroup = {
       'scroll-padding-bottom',
       'scroll-padding-left',
     ],
-    severity: 'warn',
+    severity: 'warning',
   },
   typography: {
     properties: ['line-height', 'letter-spacing', 'word-spacing'],
-    severity: 'warn',
+    severity: 'warning',
   },
 };
 
@@ -114,7 +114,7 @@ export const strictPropertyGroups: PropertyGroup = {
       'text-decoration-thickness',
       'text-underline-offset',
     ],
-    severity: 'warn',
+    severity: 'warning',
   },
   positioning: {
     properties: [
@@ -132,7 +132,7 @@ export const strictPropertyGroups: PropertyGroup = {
       'translate',
       'transform',
     ],
-    severity: 'warn',
+    severity: 'warning',
   },
 };
 

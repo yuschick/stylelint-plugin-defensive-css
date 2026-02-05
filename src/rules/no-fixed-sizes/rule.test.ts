@@ -202,37 +202,37 @@ testRule({
     {
       code: '.class { margin: 10px 1rem 15px 1rem; }',
       description: 'margin px value',
-      message: messages.warn('margin'),
+      message: messages.warning('margin'),
     },
     {
       code: '.box { margin: 10px 20px; }',
       description: 'margin with all px values',
-      message: messages.warn('margin'),
+      message: messages.warning('margin'),
     },
     {
       code: '.box { padding: 10px 20px 30px 40px; }',
       description: 'padding with all px values (4 values)',
-      message: messages.warn('padding'),
+      message: messages.warning('padding'),
     },
     {
       code: '.box { padding: 1rem 2rem 10px 1rem; }',
       description: 'padding with mixed units including px',
-      message: messages.warn('padding'),
+      message: messages.warning('padding'),
     },
     {
       code: '.box { margin: 0 20px; }',
       description: 'margin with 0 and px',
-      message: messages.warn('margin'),
+      message: messages.warning('margin'),
     },
     {
       code: '.box { gap: 16px; }',
       description: 'gap with px',
-      message: messages.warn('gap'),
+      message: messages.warning('gap'),
     },
     {
       code: '.box { line-height: 24px; }',
       description: 'line-height with px',
-      message: messages.warn('line-height'),
+      message: messages.warning('line-height'),
     },
     {
       code: '.box { grid-template-columns: 24px 1fr; }',
@@ -363,7 +363,7 @@ testRule({
     {
       code: '.box { padding: calc(10px + 5px); }',
       description: 'calc with only px in padding',
-      message: messages.warn('padding'),
+      message: messages.warning('padding'),
     },
   ],
   /* eslint-enable sort-keys */
@@ -512,32 +512,32 @@ testRule({
     {
       code: '.class { padding-left: 20px; }',
       description: 'padding-left with px',
-      message: messages.warn('padding-left'),
+      message: messages.warning('padding-left'),
     },
     {
       code: '.class { margin-top: 15px; }',
       description: 'margin-top with px',
-      message: messages.warn('margin-top'),
+      message: messages.warning('margin-top'),
     },
     {
       code: '.class { padding-block-start: 10px; }',
       description: 'padding-block-start with px',
-      message: messages.warn('padding-block-start'),
+      message: messages.warning('padding-block-start'),
     },
     {
       code: '.class { margin-inline-end: 25px; }',
       description: 'margin-inline-end with px',
-      message: messages.warn('margin-inline-end'),
+      message: messages.warning('margin-inline-end'),
     },
     {
       code: '.class { row-gap: 12px; }',
       description: 'row-gap with px',
-      message: messages.warn('row-gap'),
+      message: messages.warning('row-gap'),
     },
     {
       code: '.class { column-gap: 16px; }',
       description: 'column-gap with px',
-      message: messages.warn('column-gap'),
+      message: messages.warning('column-gap'),
     },
   ],
   /* eslint-enable sort-keys */
@@ -571,17 +571,17 @@ testRule({
     {
       code: '.class { line-height: 24px; }',
       description: 'line-height with px',
-      message: messages.warn('line-height'),
+      message: messages.warning('line-height'),
     },
     {
       code: '.class { letter-spacing: 2px; }',
       description: 'letter-spacing with px',
-      message: messages.warn('letter-spacing'),
+      message: messages.warning('letter-spacing'),
     },
     {
       code: '.class { word-spacing: 4px; }',
       description: 'word-spacing with px',
-      message: messages.warn('word-spacing'),
+      message: messages.warning('word-spacing'),
     },
   ],
   /* eslint-enable sort-keys */
@@ -666,7 +666,7 @@ testRule({
     {
       code: '.class { padding: 20px; }',
       description: 'padding still validated when margin is disabled',
-      message: messages.warn('padding'),
+      message: messages.warning('padding'),
     },
   ],
   /* eslint-enable sort-keys */
@@ -674,7 +674,7 @@ testRule({
 
 /* Test changing severity levels */
 testRule({
-  config: [true, { properties: { padding: 'error', width: 'warn' } }],
+  config: [true, { properties: { padding: 'error', width: 'warning' } }],
   ruleName: name,
   /* eslint-disable sort-keys */
   accept: [
@@ -691,8 +691,8 @@ testRule({
   reject: [
     {
       code: '.class { width: 100px; }',
-      description: 'width with px (changed to warn)',
-      message: messages.warn('width'),
+      description: 'width with px (changed to warning)',
+      message: messages.warning('width'),
     },
     {
       code: '.class { padding: 20px; }',

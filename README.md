@@ -209,7 +209,7 @@ Fixed pixel (px) values prevent layouts from adapting to different screen sizes,
 **Configuration:** By default, this rule validates critical sizing properties (width, height, font-size), spacing properties (margin, padding, gap), typography properties (line-height, letter-spacing), and responsive at-rules (@media, @container). Use the `at-rules` and `properties` options to customize which are checked or adjust their severity levels.
 
 ```ts
-type SeverityLevel = false | 'error' | 'warn';
+type SeverityLevel = false | 'error' | 'warning';
 
 interface SecondaryOptions {
   'at-rules'?: Partial<Record<CSSType.AtRules, SeverityLevel>>;
@@ -222,7 +222,7 @@ interface SecondaryOptions {
   "rules": {
     "defensive-css/no-fixed-sizes": [true, {
         "at-rules": [{ "@container": false }],
-        "properties": [{ "transform": "warn", "scroll-margin": false }],
+        "properties": [{ "transform": "warning", "scroll-margin": false }],
     }],
   }
 }

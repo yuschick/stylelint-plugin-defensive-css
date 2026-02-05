@@ -67,6 +67,7 @@ export const noFixedSizes: Rule = (
           node: atRule,
           result,
           ruleName: name,
+          severity,
           word: atRuleName,
         });
       }
@@ -89,6 +90,7 @@ export const noFixedSizes: Rule = (
           node: decl,
           result,
           ruleName: name,
+          severity,
           word: prop,
         });
       }
