@@ -1,20 +1,16 @@
 import type * as CSS from 'csstype';
+import { Severity } from 'stylelint';
 
-export type Properties = Partial<
-  Record<keyof CSS.PropertiesHyphen, false | SeverityLevel>
->;
+export type Properties = Partial<Record<keyof CSS.PropertiesHyphen, false | Severity>>;
 
-export type AtRules = Partial<Record<CSS.AtRules, false | SeverityLevel>>;
-
-export const severityLevels = ['error', 'warning'] as const;
-export type SeverityLevel = (typeof severityLevels)[number];
+export type AtRules = Partial<Record<CSS.AtRules, false | Severity>>;
 
 export const groups = ['critical', 'decorative', 'positioning', 'spacing', 'typography'];
 export type Group = (typeof groups)[number];
 
 export type PropertyGroup = Record<
   Group,
-  { properties: (keyof CSS.PropertiesHyphen)[]; severity: SeverityLevel }
+  { properties: (keyof CSS.PropertiesHyphen)[]; severity: false | Severity }
 >;
 
 export const recommendedPropertyGroups: PropertyGroup = {
@@ -161,7 +157,7 @@ export const strictOptions: Properties = {
   }, {}),
 };
 
-export const defaultAtRules: Partial<Record<CSS.AtRules, SeverityLevel>> = {
+export const defaultAtRules: Partial<Record<CSS.AtRules, false | Severity>> = {
   '@container': 'error',
   '@media': 'error',
 };
