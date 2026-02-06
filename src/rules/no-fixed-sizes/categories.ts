@@ -1,16 +1,20 @@
 import type * as CSS from 'csstype';
 import { Severity } from 'stylelint';
 
-export type Properties = Partial<Record<keyof CSS.PropertiesHyphen, false | Severity>>;
+export type Properties = Partial<
+  Record<keyof CSS.PropertiesHyphen, boolean | [boolean, { severity?: Severity }]>
+>;
 
-export type AtRules = Partial<Record<CSS.AtRules, false | Severity>>;
+export type AtRules = Partial<
+  Record<CSS.AtRules, boolean | [boolean, { severity?: Severity }]>
+>;
 
 export const groups = ['critical', 'decorative', 'positioning', 'spacing', 'typography'];
 export type Group = (typeof groups)[number];
 
 export type PropertyGroup = Record<
   Group,
-  { properties: (keyof CSS.PropertiesHyphen)[]; severity: false | Severity }
+  { properties: (keyof CSS.PropertiesHyphen)[]; severity: Severity }
 >;
 
 export const recommendedPropertyGroups: PropertyGroup = {
@@ -138,7 +142,7 @@ export const recommendedOptions: Properties = Object.values(
   const { properties, severity } = group;
 
   for (const property of properties) {
-    acc[property] = severity;
+    acc[property] = [true, { severity }];
   }
 
   return acc;
@@ -150,16 +154,18 @@ export const strictOptions: Properties = {
     const { properties, severity } = group;
 
     for (const property of properties) {
-      acc[property] = severity;
+      acc[property] = [true, { severity }];
     }
 
     return acc;
   }, {}),
 };
 
-export const defaultAtRules: Partial<Record<CSS.AtRules, false | Severity>> = {
-  '@container': 'error',
-  '@media': 'error',
+export const defaultAtRules: Partial<
+  Record<CSS.AtRules, boolean | [boolean, { severity?: Severity }]>
+> = {
+  '@container': [true, { severity: 'error' }],
+  '@media': [true, { severity: 'error' }],
 };
 
 export const nonDimensionalAtRules: CSS.AtRules[] = [

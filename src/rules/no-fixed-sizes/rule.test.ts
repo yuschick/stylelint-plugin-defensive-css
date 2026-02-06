@@ -371,7 +371,7 @@ testRule({
 
 /* Test custom property function values behavior */
 testRule({
-  config: [true, { properties: { transform: 'error', translate: 'error' } }],
+  config: [true, { properties: { transform: true, translate: true }, severity: 'error' }],
   ruleName: name,
   /* eslint-disable sort-keys */
   accept: [
@@ -674,7 +674,15 @@ testRule({
 
 /* Test changing severity levels */
 testRule({
-  config: [true, { properties: { padding: 'error', width: 'warning' } }],
+  config: [
+    true,
+    {
+      properties: {
+        padding: [true, { severity: 'error' }],
+        width: [true, { severity: 'warning' }],
+      },
+    },
+  ],
   ruleName: name,
   /* eslint-disable sort-keys */
   accept: [

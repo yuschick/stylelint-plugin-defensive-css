@@ -209,11 +209,20 @@ Fixed pixel (px) values prevent layouts from adapting to different screen sizes,
 **Configuration:** By default, this rule validates critical sizing properties (width, height, font-size), spacing properties (margin, padding, gap), typography properties (line-height, letter-spacing), and responsive at-rules (@media, @container). Use the `at-rules` and `properties` options to customize which are checked or adjust their severity levels.
 
 ```ts
-type SeverityLevel = false | 'error' | 'warning';
+type Severity = 'error' | 'warning';
 
 interface SecondaryOptions {
-  'at-rules'?: Partial<Record<CSSType.AtRules, SeverityLevel>>;
-  'properties'?: Partial<Record<keyof CSSType.PropertiesHyphen, SeverityLevel>>
+  'at-rules'?: Partial<
+    Record<
+      CSSType.AtRules, boolean | [boolean, { severity?: Severity }]
+    >
+  >;
+  'properties'?: Partial<
+    Record<
+      keyof CSSType.PropertiesHyphen, boolean | [boolean, { severity?: Severity }]
+    >
+  >
+  "severity"?: Severity 
 }
 ```
 
@@ -222,7 +231,8 @@ interface SecondaryOptions {
   "rules": {
     "defensive-css/no-fixed-sizes": [true, {
         "at-rules": [{ "@container": false }],
-        "properties": [{ "transform": "warning", "scroll-margin": false }],
+        "properties": [{ "transform": true, "scroll-margin": [true, { "severity": "warning" }] }],
+        "severity": "error"
     }],
   }
 }
@@ -345,7 +355,7 @@ In Safari, using `list-style: none` on `<ul>`, `<ol>`, or `<li>` elements remove
 ```json
 {
   "rules": {
-    "defensive-css/no-list-style-none": [true, { fix: true }]
+    "defensive-css/no-list-style-none": [true, { "fix": true }]
   }
 }
 ```

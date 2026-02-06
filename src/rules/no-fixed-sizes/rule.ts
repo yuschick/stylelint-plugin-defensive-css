@@ -5,7 +5,7 @@
  */
 import type * as CSS from 'csstype';
 
-import stylelint, { Rule } from 'stylelint';
+import stylelint, { Rule, Severity } from 'stylelint';
 import { messages, meta, name } from './meta';
 import {
   AtRules,
@@ -21,6 +21,7 @@ const { report, validateOptions } = stylelint.utils;
 interface SecondaryOptions {
   ['at-rules']?: AtRules;
   properties?: Properties;
+  severity?: Severity;
 }
 
 export const noFixedSizes: Rule = (
@@ -35,6 +36,8 @@ export const noFixedSizes: Rule = (
 
     if (!validOptions) return;
 
+    const { severity } = secondaryOptions;
+
     const completeAtRulesOptions: AtRules = {
       ...defaultAtRules,
       ...secondaryOptions['at-rules'],
@@ -48,12 +51,20 @@ export const noFixedSizes: Rule = (
     /* Check at-rules */
     root.walkAtRules((atRule) => {
       const atRuleName = `@${atRule.name}` as CSS.AtRules;
-      const severity = completeAtRulesOptions[atRuleName] ?? false;
+
+      const ruleOption = completeAtRulesOptions[atRuleName];
+      const ruleIsEnabled = Array.isArray(ruleOption) ? ruleOption[0] : ruleOption;
+      const ruleSeverity = ruleIsEnabled
+        ? Array.isArray(ruleOption)
+          ? ruleOption[1].severity
+          : severity
+        : false;
+
       const isNonDimensionalAtRule = nonDimensionalAtRules.includes(atRuleName);
 
       if (
         !(atRuleName in completeAtRulesOptions) ||
-        !severity ||
+        !ruleSeverity ||
         isNonDimensionalAtRule
       ) {
         return;
@@ -63,11 +74,11 @@ export const noFixedSizes: Rule = (
 
       if (!isValid) {
         report({
-          message: messages[severity](atRuleName),
+          message: messages[ruleSeverity](atRuleName),
           node: atRule,
           result,
           ruleName: name,
-          severity,
+          severity: ruleSeverity,
           word: atRuleName,
         });
       }
@@ -76,9 +87,18 @@ export const noFixedSizes: Rule = (
     /* Check declarations */
     root.walkDecls((decl) => {
       const { prop } = decl;
-      const severity = completePropertyOptions[prop as keyof Properties] ?? false;
 
-      if (!(prop in completePropertyOptions) || !severity) {
+      const ruleOption = completePropertyOptions[prop as keyof Properties];
+      const ruleIsEnabled = Array.isArray(ruleOption) ? ruleOption[0] : ruleOption;
+      const ruleSeverity = ruleIsEnabled
+        ? Array.isArray(ruleOption)
+          ? ruleOption[1].severity
+          : severity
+        : false;
+
+      // const severity = completePropertyOptions[prop as keyof Properties] ?? false;
+
+      if (!(prop in completePropertyOptions) || !ruleSeverity) {
         return;
       }
 
@@ -86,11 +106,11 @@ export const noFixedSizes: Rule = (
 
       if (!isValid) {
         report({
-          message: messages[severity](prop),
+          message: messages[ruleSeverity](prop),
           node: decl,
           result,
           ruleName: name,
-          severity,
+          severity: ruleSeverity,
           word: prop,
         });
       }
