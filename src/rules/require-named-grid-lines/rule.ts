@@ -39,16 +39,64 @@ export const requireNamedGridLines: Rule = (
           ...severityOption,
           columns: [
             (value: unknown) => {
-              return (
-                typeof value === 'boolean' || (Array.isArray(value) && value.length === 2)
-              );
+              if (typeof value === 'boolean') {
+                return true;
+              }
+
+              if (Array.isArray(value) && value.length === 2) {
+                const [enabled, severityProps] = value;
+
+                if (typeof enabled !== 'boolean') {
+                  return false;
+                }
+
+                if (
+                  typeof severityProps !== 'object' ||
+                  severityProps === null ||
+                  Array.isArray(severityProps)
+                ) {
+                  return false;
+                }
+
+                if ('severity' in severityProps) {
+                  return severityOption.severity.includes(severityProps.severity);
+                }
+
+                return true;
+              }
+
+              return false;
             },
           ],
           rows: [
             (value: unknown) => {
-              return (
-                typeof value === 'boolean' || (Array.isArray(value) && value.length === 2)
-              );
+              if (typeof value === 'boolean') {
+                return true;
+              }
+
+              if (Array.isArray(value) && value.length === 2) {
+                const [enabled, severityProps] = value;
+
+                if (typeof enabled !== 'boolean') {
+                  return false;
+                }
+
+                if (
+                  typeof severityProps !== 'object' ||
+                  severityProps === null ||
+                  Array.isArray(severityProps)
+                ) {
+                  return false;
+                }
+
+                if ('severity' in severityProps) {
+                  return severityOption.severity.includes(severityProps.severity);
+                }
+
+                return true;
+              }
+
+              return false;
             },
           ],
         },
