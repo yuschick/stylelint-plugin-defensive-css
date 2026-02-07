@@ -7,10 +7,11 @@
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { findCustomPropertiesWithoutFallback, matchesIgnorePattern } from './utils';
+import { SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
-interface SecondaryOptions {
+interface SecondaryOptions extends SeverityProps {
   ignore?: (string | RegExp)[];
 }
 
@@ -41,6 +42,8 @@ export const requireCustomPropertyFallback: Rule = (
 
     if (!validOptions) return;
 
+    const { severity } = secondaryOptions;
+
     const ignorePatterns = secondaryOptions.ignore || [];
 
     root.walkDecls((decl) => {
@@ -58,6 +61,7 @@ export const requireCustomPropertyFallback: Rule = (
           node: decl,
           result,
           ruleName: name,
+          severity,
           word: property,
         });
       });

@@ -7,10 +7,14 @@
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { isNavSelector, isListStyleNone, listStyleProperties } from './utils';
+import { SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
-export const noListStyleNone: Rule = (primaryOption) => {
+export const noListStyleNone: Rule = (
+  primaryOption,
+  secondaryOptions: SeverityProps = {},
+) => {
   return (root, result) => {
     const validOptions = validateOptions(result, name, {
       actual: primaryOption,
@@ -18,6 +22,8 @@ export const noListStyleNone: Rule = (primaryOption) => {
     });
 
     if (!validOptions) return;
+
+    const { severity } = secondaryOptions;
 
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
@@ -65,6 +71,7 @@ export const noListStyleNone: Rule = (primaryOption) => {
           node: decl,
           result,
           ruleName: name,
+          severity,
           word: selector,
         });
       });

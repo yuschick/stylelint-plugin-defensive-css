@@ -1,6 +1,7 @@
 import noAccidentalHover from './rules/no-accidental-hover';
-import noMixedVendorPrefixes from './rules/no-mixed-vendor-prefixes';
+import noFixedSizes from './rules/no-fixed-sizes';
 import noListStyleNone from './rules/no-list-style-none';
+import noMixedVendorPrefixes from './rules/no-mixed-vendor-prefixes';
 import requireBackgroundRepeat from './rules/require-background-repeat';
 import requireCustomPropertyFallback from './rules/require-custom-property-fallback';
 import requireFlexWrap from './rules/require-flex-wrap';
@@ -12,6 +13,7 @@ import requireScrollbarGutter from './rules/require-scrollbar-gutter';
 
 export default [
   noAccidentalHover,
+  noFixedSizes,
   noListStyleNone,
   noMixedVendorPrefixes,
   requireBackgroundRepeat,

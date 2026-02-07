@@ -4,15 +4,16 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import stylelint, { Rule, Severity } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { findShorthandRepeat, hasUrlValue } from './utils';
+import { SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
-interface SecondaryOptions {
-  'background-repeat'?: boolean;
-  'mask-repeat'?: boolean;
+interface SecondaryOptions extends SeverityProps {
+  'background-repeat'?: boolean | [boolean, SeverityProps];
+  'mask-repeat'?: boolean | [boolean, SeverityProps];
 }
 
 export const requireBackgroundRepeat: Rule = (
@@ -20,22 +21,10 @@ export const requireBackgroundRepeat: Rule = (
   secondaryOptions: SecondaryOptions = {},
 ) => {
   return (root, result) => {
-    const validOptions = validateOptions(
-      result,
-      name,
-      {
-        actual: primaryOption,
-        possible: [true, false],
-      },
-      {
-        actual: secondaryOptions,
-        optional: true,
-        possible: {
-          'background-repeat': [true, false],
-          'mask-repeat': [true, false],
-        },
-      },
-    );
+    const validOptions = validateOptions(result, name, {
+      actual: primaryOption,
+      possible: [true, false],
+    });
 
     if (!validOptions) return;
 
@@ -46,6 +35,18 @@ export const requireBackgroundRepeat: Rule = (
     if (!checkBackgroundRepeat && !checkMaskRepeat) {
       return;
     }
+
+    const { severity } = secondaryOptions;
+    const backgroundRepeatSeverity: Severity | undefined = checkBackgroundRepeat
+      ? Array.isArray(secondaryOptions['background-repeat'])
+        ? secondaryOptions['background-repeat'][1].severity
+        : severity
+      : 'error';
+    const maskRepeatSeverity: Severity | undefined = checkMaskRepeat
+      ? Array.isArray(secondaryOptions['mask-repeat'])
+        ? secondaryOptions['mask-repeat'][1].severity
+        : severity
+      : 'error';
 
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
@@ -117,6 +118,7 @@ export const requireBackgroundRepeat: Rule = (
           node: declMap.backgroundImageNode,
           result,
           ruleName: name,
+          severity: backgroundRepeatSeverity,
           word: selector,
         });
       }
@@ -132,6 +134,7 @@ export const requireBackgroundRepeat: Rule = (
           node: declMap.maskImageNode,
           result,
           ruleName: name,
+          severity: maskRepeatSeverity,
           word: selector,
         });
       }

@@ -11,10 +11,14 @@ import {
   hasAcceptableFocusPseudoClass,
   isFocusInsideNot,
 } from './utils';
+import { SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
-export const requireFocusVisible: Rule = (primaryOption) => {
+export const requireFocusVisible: Rule = (
+  primaryOption,
+  secondaryOptions: SeverityProps = {},
+) => {
   return (root, result) => {
     const validOptions = validateOptions(result, name, {
       actual: primaryOption,
@@ -22,6 +26,8 @@ export const requireFocusVisible: Rule = (primaryOption) => {
     });
 
     if (!validOptions) return;
+
+    const { severity } = secondaryOptions;
 
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
@@ -47,6 +53,7 @@ export const requireFocusVisible: Rule = (primaryOption) => {
         node: ruleNode,
         result,
         ruleName: name,
+        severity,
         word: selector,
       });
     });

@@ -6,10 +6,14 @@
 
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
+import { SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
-export const noAccidentalHover: Rule = (primaryOption) => {
+export const noAccidentalHover: Rule = (
+  primaryOption,
+  secondaryOptions: SeverityProps = {},
+) => {
   return (root, result) => {
     const validOptions = validateOptions(result, name, {
       actual: primaryOption,
@@ -17,6 +21,8 @@ export const noAccidentalHover: Rule = (primaryOption) => {
     });
 
     if (!validOptions) return;
+
+    const { severity } = secondaryOptions;
 
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
@@ -52,6 +58,7 @@ export const noAccidentalHover: Rule = (primaryOption) => {
           node: ruleNode,
           result,
           ruleName: name,
+          severity,
           word: selector,
         });
       }

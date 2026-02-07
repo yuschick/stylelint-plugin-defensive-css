@@ -4,19 +4,20 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import stylelint, { Rule, Severity } from 'stylelint';
 import { messages, meta, name } from './meta';
 import {
   isValueInvalidForLineNames,
   parseGridShorthand,
   shouldSkipRowsValidation,
 } from './utils';
+import { SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
-interface SecondaryOptions {
-  columns?: boolean;
-  rows?: boolean;
+interface SecondaryOptions extends SeverityProps {
+  columns?: boolean | [boolean, SeverityProps];
+  rows?: boolean | [boolean, SeverityProps];
 }
 
 export const requireNamedGridLines: Rule = (
@@ -24,22 +25,10 @@ export const requireNamedGridLines: Rule = (
   secondaryOptions: SecondaryOptions = {},
 ) => {
   return (root, result) => {
-    const validOptions = validateOptions(
-      result,
-      name,
-      {
-        actual: primaryOption,
-        possible: [true, false],
-      },
-      {
-        actual: secondaryOptions,
-        optional: true,
-        possible: {
-          columns: [(value: unknown) => typeof value === 'boolean'],
-          rows: [(value: unknown) => typeof value === 'boolean'],
-        },
-      },
-    );
+    const validOptions = validateOptions(result, name, {
+      actual: primaryOption,
+      possible: [true, false],
+    });
 
     if (!validOptions) return;
 
@@ -49,6 +38,14 @@ export const requireNamedGridLines: Rule = (
 
     // If both are disabled, nothing to check
     if (!validateColumns && !validateRows) return;
+
+    const { severity } = secondaryOptions;
+    const columnsSeverity: Severity | undefined = Array.isArray(secondaryOptions.columns)
+      ? secondaryOptions.columns[1].severity
+      : severity;
+    const rowsSeverity: Severity | undefined = Array.isArray(secondaryOptions.rows)
+      ? secondaryOptions.rows[1].severity
+      : severity;
 
     root.walkDecls((decl) => {
       const { prop, value } = decl;
@@ -61,6 +58,7 @@ export const requireNamedGridLines: Rule = (
             node: decl,
             result,
             ruleName: name,
+            severity: columnsSeverity,
             word: decl.value,
           });
         }
@@ -75,6 +73,7 @@ export const requireNamedGridLines: Rule = (
             node: decl,
             result,
             ruleName: name,
+            severity: rowsSeverity,
             word: decl.value,
           });
         }

@@ -4,15 +4,16 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import stylelint, { Rule, Severity } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { getOverflowAxis, isScrollableOverflow } from './utils';
+import { SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
-interface SecondaryOptions {
-  x?: boolean;
-  y?: boolean;
+interface SecondaryOptions extends SeverityProps {
+  x?: boolean | [boolean, SeverityProps];
+  y?: boolean | [boolean, SeverityProps];
 }
 
 export const requireScrollbarGutter: Rule = (
@@ -20,22 +21,10 @@ export const requireScrollbarGutter: Rule = (
   secondaryOptions: SecondaryOptions = {},
 ) => {
   return (root, result) => {
-    const validOptions = validateOptions(
-      result,
-      name,
-      {
-        actual: primaryOption,
-        possible: [true, false],
-      },
-      {
-        actual: secondaryOptions,
-        optional: true,
-        possible: {
-          x: [(value: unknown) => typeof value === 'boolean'],
-          y: [(value: unknown) => typeof value === 'boolean'],
-        },
-      },
-    );
+    const validOptions = validateOptions(result, name, {
+      actual: primaryOption,
+      possible: [true, false],
+    });
 
     if (!validOptions) return;
 
@@ -45,6 +34,14 @@ export const requireScrollbarGutter: Rule = (
 
     // If both are disabled, nothing to check
     if (!checkX && !checkY) return;
+
+    const { severity } = secondaryOptions;
+    const xSeverity: Severity | undefined = Array.isArray(secondaryOptions.x)
+      ? secondaryOptions.x[1].severity
+      : severity;
+    const ySeverity: Severity | undefined = Array.isArray(secondaryOptions.y)
+      ? secondaryOptions.y[1].severity
+      : severity;
 
     root.walkRules((ruleNode) => {
       let hasScrollableOverflowX = false;
@@ -79,25 +76,30 @@ export const requireScrollbarGutter: Rule = (
         }
       });
 
-      // Determine if we should report
-      let shouldReport = false;
-
-      if (checkX && hasScrollableOverflowX && !hasScrollbarGutter) {
-        shouldReport = true;
-      }
-
-      if (checkY && hasScrollableOverflowY && !hasScrollbarGutter) {
-        shouldReport = true;
-      }
-
-      if (shouldReport && overflowNode) {
+      if (checkX && hasScrollableOverflowX && !hasScrollbarGutter && overflowNode) {
         report({
           message: messages.rejected(ruleNode.selector),
           node: overflowNode,
           result,
           ruleName: name,
+          severity: xSeverity,
           word: ruleNode.selector,
         });
+
+        return;
+      }
+
+      if (checkY && hasScrollableOverflowY && !hasScrollbarGutter && overflowNode) {
+        report({
+          message: messages.rejected(ruleNode.selector),
+          node: overflowNode,
+          result,
+          ruleName: name,
+          severity: ySeverity,
+          word: ruleNode.selector,
+        });
+
+        return;
       }
     });
   };

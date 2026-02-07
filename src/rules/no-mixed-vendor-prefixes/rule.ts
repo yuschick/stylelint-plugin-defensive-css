@@ -7,10 +7,14 @@
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { findVendorPrefixes } from './utils';
+import { SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
-export const noMixedVendorPrefixes: Rule = (primaryOption) => {
+export const noMixedVendorPrefixes: Rule = (
+  primaryOption,
+  secondaryOptions: SeverityProps = {},
+) => {
   return (root, result) => {
     const validOptions = validateOptions(result, name, {
       actual: primaryOption,
@@ -18,6 +22,8 @@ export const noMixedVendorPrefixes: Rule = (primaryOption) => {
     });
 
     if (!validOptions) return;
+
+    const { severity } = secondaryOptions;
 
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
@@ -29,6 +35,7 @@ export const noMixedVendorPrefixes: Rule = (primaryOption) => {
           node: ruleNode,
           result,
           ruleName: name,
+          severity,
           word: selector,
         });
       }

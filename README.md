@@ -1,5 +1,5 @@
 ![Stylelint Plugin - Defensive CSS Logo](./assets/logo--dark.webp#gh-dark-mode-only)
-![Stylelint Plugin - Defensive CSS Logo](./assets/logo--dark.webp#gh-light-mode-only)
+![Stylelint Plugin - Defensive CSS Logo](./assets/logo--light.webp#gh-light-mode-only)
 
 ![Stylelint Plugin Defensive CSS License](https://img.shields.io/github/license/yuschick/stylelint-plugin-defensive-css?style=for-the-badge)
 ![Stylelint PLugin Defensive CSS Latest NPM Version](https://img.shields.io/npm/v/stylelint-plugin-defensive-css?style=for-the-badge)
@@ -73,14 +73,18 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
 {
   "plugins": ["stylelint-plugin-defensive-css"],
   "rules": {
-    "defensive-css/no-accidental-hover": true,
-    "defensive-css/no-list-style-none": [true, { fix: true }],
-    "defensive-css/no-mixed-vendor-prefixes": true,
-    "defensive-css/require-background-repeat": true,
-    "defensive-css/require-flex-wrap": true,
-    "defensive-css/require-focus-visible": true,
-    "defensive-css/require-named-grid-lines": true,
-    "defensive-css/require-prefers-reduced-motion": true,
+    "defensive-css/no-accidental-hover": [true, { "severity": "error" }],
+    "defensive-css/no-list-style-none": [true, { "fix": true, "severity": "error" }],
+    "defensive-css/no-mixed-vendor-prefixes": [true, { "severity": "error" }],
+    "defensive-css/require-background-repeat": [true, { "severity": "error" }],
+    "defensive-css/require-flex-wrap": [true, { "severity": "error" }],
+    "defensive-css/require-focus-visible": [true, { "severity": "error" }],
+    "defensive-css/require-named-grid-lines": [
+      true,
+      { "columns": [true, { "severity": "error" }] },
+      { "rows": [true, { "severity": "warning" }] },
+    ],
+    "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }],
   }
 }
 ```
@@ -102,16 +106,17 @@ The `strict` preset enables every rule for the most strict linting offered by th
 The plugin provides multiple rules that can be toggled on and off as needed.
 
 1. [No Accidental Hover](#no-accidental-hover)
-2. [No List Style None](#no-list-style-none)
-3. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
-4. [Require Background Repeat](#require-background-repeat)
-5. [Require Custom Property Fallback](#require-custom-property-fallback)
-6. [Require Flex Wrap](#require-flex-wrap)
-7. [Require Focus Visible](#require-focus-visible)
-8. [Require Named Grid Lines](#require-named-grid-lines)
-9. [Require Overscroll Behavior](#require-overscroll-behavior)
-10. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
-11. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+2. [No Fixed Sizes](#no-fixed-sizes)
+3. [No List Style None](#no-list-style-none)
+4. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
+5. [Require Background Repeat](#require-background-repeat)
+6. [Require Custom Property Fallback](#require-custom-property-fallback)
+7. [Require Flex Wrap](#require-flex-wrap)
+8. [Require Focus Visible](#require-focus-visible)
+9. [Require Named Grid Lines](#require-named-grid-lines)
+10. [Require Overscroll Behavior](#require-overscroll-behavior)
+11. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+12. [Require Scrollbar Gutter](#require-scrollbar-gutter)
 
 ---
 
@@ -186,6 +191,160 @@ Hover effects indicate interactivity on devices with mouse or trackpad input. Ho
 
 ---
 
+### No Fixed Sizes
+
+> [!NOTE]
+> [Read more about this pattern in Defensive CSS](https://defensivecss.dev/tip/fixed-sizes/)
+
+Fixed pixel (px) values prevent layouts from adapting to different screen sizes, user preferences, and device contexts. When widths, heights, spacing, and breakpoints are defined with px, content can overflow on small screens, create excessive whitespace on large displays, or ignore user font-size preferences set for accessibility.
+
+**Enable this rule to:** Require relative or flexible units (rem, em, %, vw, fr, etc.) for sizing properties and media queries, ensuring layouts adapt gracefully across all contexts.
+
+```json
+{
+  "rules": {
+    "defensive-css/no-fixed-sizes": true
+  }
+}
+```
+
+#### No Fixed Sizes Options
+
+**Configuration:** By default, this rule validates critical sizing properties (width, height, font-size), spacing properties (margin, padding, gap), typography properties (line-height, letter-spacing), and responsive at-rules (@media, @container). Use the `at-rules` and `properties` options to customize which are checked or adjust their severity levels.
+
+```ts
+type Severity = 'error' | 'warning';
+
+interface SecondaryOptions {
+  'at-rules'?: Partial<
+    Record<
+      CSSType.AtRules, boolean | [boolean, { severity?: Severity }]
+    >
+  >;
+  'properties'?: Partial<
+    Record<
+      keyof CSSType.PropertiesHyphen, boolean | [boolean, { severity?: Severity }]
+    >
+  >
+  "severity"?: Severity 
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/no-fixed-sizes": [true, {
+        "at-rules": [{ "@container": false }],
+        "properties": [{ "transform": true, "scroll-margin": [true, { "severity": "warning" }] }],
+        "severity": "error"
+    }],
+  }
+}
+```
+
+#### No Fixed Sizes Examples
+
+> [!NOTE]
+> This rule does not resolve or validate the values of CSS custom properties. Values like `var(--width)` are treated as flexible since their actual values are not determined. Ensure your custom property definitions use relative units if they're used for sizing.
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+/* Sizing with relative units */
+.box {
+  width: 50%;
+  height: 100vh;
+  font-size: 1.5rem;
+}
+
+/* Spacing with flexible units */
+.card {
+  margin: 2rem auto;
+  padding: 1em 2em;
+  gap: 1rem;
+}
+
+/* Grid with fractional units */
+.grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+/* Functions with flexible units */
+.responsive {
+  width: clamp(200px, 50%, 800px);
+  padding: calc(1rem + 2vw);
+}
+
+/* Media queries with relative units */
+@media (min-width: 48rem) {
+  .box {
+    padding: 2rem;
+  }
+}
+
+/* Zero values are allowed */
+.reset {
+  margin: 0;
+  padding: 0px;
+}
+
+/* Custom properties */
+.themed {
+  width: var(--width);
+  margin: var(--spacing, 1rem);
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+/* Fixed sizing */
+.box {
+  width: 500px;
+  height: 300px;
+  font-size: 16px;
+}
+
+/* Fixed spacing */
+.card {
+  margin: 20px;
+  padding: 10px 15px;
+  gap: 24px;
+}
+
+/* Grid with fixed values */
+.grid {
+  grid-template-columns: 100px 1fr 100px;
+}
+
+/* Functions with only px */
+.fixed {
+  width: clamp(200px, 400px, 800px);
+  padding: calc(10px + 5px);
+}
+
+/* Media queries with px */
+@media (min-width: 768px) {
+  .box {
+    padding: 2rem;
+  }
+}
+
+/* Mixed units still fail if px is present */
+.mixed {
+  margin: 1rem 20px;
+  line-height: 24px;
+}
+```
+
+</details>
+
+---
+
 ### No List Style None
 
 > [!TIP]
@@ -200,7 +359,7 @@ In Safari, using `list-style: none` on `<ul>`, `<ol>`, or `<li>` elements remove
 ```json
 {
   "rules": {
-    "defensive-css/no-list-style-none": [true, { fix: true }]
+    "defensive-css/no-list-style-none": [true, { "fix": true }]
   }
 }
 ```
@@ -325,8 +484,8 @@ Background and mask images repeat by default when the container is larger than t
 
 ```ts
 interface SecondaryOptions {
-  'background-repeat'?: boolean;
-  'mask-repeat'?: boolean;
+  'background-repeat'?: boolean | [boolean, { severity?: Severity }];
+  'mask-repeat'?: boolean | [boolean, { severity?: Severity }];
 }
 ```
 
@@ -334,8 +493,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-background-repeat": [true, {
-        "background-repeat": true,
-        "mask-repeat": true
+        "background-repeat": [true, { "severity": "error" }],
+        "mask-repeat": false
     }],
   }
 }
@@ -424,7 +583,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-custom-property-fallback": [true, {
-        "ignore": ["var\\(--exact-match\\)", /var\(--ds-color-.*\)/]
+        "ignore": ["var\\(--exact-match\\)", /var\(--ds-color-.*\)/],
+        "severity": "warning"
     }],
   }
 }
@@ -608,8 +768,8 @@ Unnamed grid lines make layouts harder to understand and maintain. Numeric posit
 
 ```ts
 interface SecondaryOptions {
-  columns?: boolean;
-  rows?: boolean;
+  columns?: boolean | [boolean, { severity?: Severity }];
+  rows?: boolean | [boolean, { severity?: Severity }];
 }
 ```
 
@@ -617,8 +777,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-named-grid-lines": [true, {
-        "columns": true,
-        "rows": true
+        "columns": [true, { "severity": "error" }],
+        "rows": [true, { "severity": "warning" }]
     }],
   }
 }
@@ -730,8 +890,8 @@ Scroll chaining occurs when a scrollable element reaches its scroll boundary and
 
 ```ts
 interface SecondaryOptions {
-  x?: boolean;
-  y?: boolean;
+  x?: boolean | [boolean, { severity?: Severity }];
+  y?: boolean | [boolean, { severity?: Severity }];
 }
 ```
 
@@ -739,8 +899,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-overscroll-behavior": [true, {
-        "x": true,
-        "y": true
+        "x": [true, { "severity": "warning" }],
+        "y": [true, { "severity": "error" }]
     }],
   }
 }
@@ -910,8 +1070,8 @@ When content grows and triggers a scrollbar, the sudden appearance of the scroll
 
 ```ts
 interface SecondaryOptions {
-  x?: boolean;
-  y?: boolean;
+  x?: boolean | [boolean, { severity?: Severity }];
+  y?: boolean | [boolean, { severity?: Severity }];
 }
 ```
 
@@ -919,8 +1079,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-scrollbar-gutter": [true, {
-        "x": true,
-        "y": true
+        "x": [true, { "severity": "warning" }],
+        "y": [true, { "severity": "error" }]
     }],
   }
 }

@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.3.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.1.1...v2.3.0) (2026-02-07)
+
+### Features
+
+* add secondary severity option to all rules ([0140cd6](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/0140cd613438f9a0701ac1962be15276bc960222))
+* extend severity levels to each rule options ([13f7893](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/13f7893ea812f86a577f739bdacaeb16775419b1))
+* setup base rule ofr no-fixed-sizes ([31ad96b](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/31ad96ba2d215c9b2139dc58aec03c357e0eebc0))
+
+### Bug Fixes
+
+* failing tests ([72591f5](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/72591f50cefc2a3b7603e0f48402e47810274542))
+
+### Documentation
+
+* clean up formatting ([5e7862e](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/5e7862e1b886a79e1dfb05654317ed31a14fdb16))
+* create documentation for the no-fixed-sizes rule ([8f076b8](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/8f076b85cfda3e042186f6d8f0a5184fd90e77df))
+* fix light mode logo ([c17fde5](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/c17fde5c1951f70b991fcd21dc900c57a2779aa4))
+* update severity options in docs and configs ([923f74f](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/923f74fb613a44a34a49786627f71c385e07f67c))
+
 ## [2.1.1](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.1.1-next.0...v2.1.1) (2026-02-03)
 
 * create no-list-style-none rule ([deb8900](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/deb8900abfe4ef3ba9ba3a2706702755dfa50793))
