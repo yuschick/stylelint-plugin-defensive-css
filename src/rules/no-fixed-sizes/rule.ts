@@ -5,7 +5,7 @@
  */
 import type * as CSS from 'csstype';
 
-import stylelint, { Rule, Severity } from 'stylelint';
+import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import {
   AtRules,
@@ -15,13 +15,13 @@ import {
   recommendedOptions,
 } from './categories';
 import { isValidAtRule, isValidValue } from './utils';
+import { SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
-interface SecondaryOptions {
+interface SecondaryOptions extends SeverityProps {
   ['at-rules']?: AtRules;
   properties?: Properties;
-  severity?: Severity;
 }
 
 export const noFixedSizes: Rule = (
