@@ -7,7 +7,7 @@
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { findCustomPropertiesWithoutFallback, matchesIgnorePattern } from './utils';
-import { SeverityProps } from '../../utils/types';
+import { severityOption, SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -36,6 +36,7 @@ export const requireCustomPropertyFallback: Rule = (
               return typeof value === 'string' || value instanceof RegExp;
             },
           ],
+          ...severityOption,
         },
       },
     );

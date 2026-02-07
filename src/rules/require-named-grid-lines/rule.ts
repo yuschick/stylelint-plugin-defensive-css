@@ -11,7 +11,7 @@ import {
   parseGridShorthand,
   shouldSkipRowsValidation,
 } from './utils';
-import { SeverityProps } from '../../utils/types';
+import { severityOption, SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -25,10 +25,35 @@ export const requireNamedGridLines: Rule = (
   secondaryOptions: SecondaryOptions = {},
 ) => {
   return (root, result) => {
-    const validOptions = validateOptions(result, name, {
-      actual: primaryOption,
-      possible: [true, false],
-    });
+    const validOptions = validateOptions(
+      result,
+      name,
+      {
+        actual: primaryOption,
+        possible: [true, false],
+      },
+      {
+        actual: secondaryOptions,
+        optional: true,
+        possible: {
+          ...severityOption,
+          columns: [
+            (value: unknown) => {
+              return (
+                typeof value === 'boolean' || (Array.isArray(value) && value.length === 2)
+              );
+            },
+          ],
+          rows: [
+            (value: unknown) => {
+              return (
+                typeof value === 'boolean' || (Array.isArray(value) && value.length === 2)
+              );
+            },
+          ],
+        },
+      },
+    );
 
     if (!validOptions) return;
 

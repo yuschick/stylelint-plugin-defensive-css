@@ -13,9 +13,10 @@ import {
   nonDimensionalAtRules,
   Properties,
   recommendedOptions,
+  strictOptions,
 } from './categories';
 import { isValidAtRule, isValidValue } from './utils';
-import { SeverityProps } from '../../utils/types';
+import { severityOption, SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -29,10 +30,83 @@ export const noFixedSizes: Rule = (
   secondaryOptions: SecondaryOptions = {},
 ) => {
   return (root, result) => {
-    const validOptions = validateOptions(result, name, {
-      actual: primaryOption,
-      possible: [true, false],
-    });
+    const validOptions = validateOptions(
+      result,
+      name,
+      {
+        actual: primaryOption,
+        possible: [true, false],
+      },
+      {
+        actual: secondaryOptions,
+        optional: true,
+        possible: {
+          ...severityOption,
+          'at-rules': [
+            (value: unknown) => {
+              if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+                return false;
+              }
+
+              const props = value as Record<string, unknown>;
+              const completeAtRules = [
+                ...Object.keys(defaultAtRules),
+                ...nonDimensionalAtRules,
+              ];
+
+              return Object.entries(props).every(([key, val]) => {
+                if (!completeAtRules.includes(key)) {
+                  return false;
+                }
+
+                if (typeof val === 'boolean') {
+                  return true;
+                }
+
+                if (Array.isArray(val)) {
+                  if (val.length !== 2) {
+                    return false;
+                  }
+
+                  return true;
+                }
+
+                return false;
+              });
+            },
+          ],
+          properties: [
+            (value: unknown) => {
+              if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+                return false;
+              }
+
+              const props = value as Record<string, unknown>;
+
+              return Object.entries(props).every(([key, val]) => {
+                if (!(key in strictOptions)) {
+                  return false;
+                }
+
+                if (typeof val === 'boolean') {
+                  return true;
+                }
+
+                if (Array.isArray(val)) {
+                  if (val.length !== 2) {
+                    return false;
+                  }
+
+                  return true;
+                }
+
+                return false;
+              });
+            },
+          ],
+        },
+      },
+    );
 
     if (!validOptions) return;
 

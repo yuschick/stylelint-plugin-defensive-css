@@ -1,12 +1,11 @@
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
-import { SeverityProps } from '../../utils/types';
+import { fixOption, FixProps, severityOption, SeverityProps } from '../../utils/types';
 import { hasStaticViewportHeight, Properties, recommendedOptions } from './utils';
 
 const { report, validateOptions } = stylelint.utils;
 
-interface SecondaryOptions extends SeverityProps {
-  fix?: boolean;
+interface SecondaryOptions extends FixProps, SeverityProps {
   properties?: Properties;
 }
 
@@ -15,10 +14,51 @@ export const requireDynamicViewportHeight: Rule = (
   secondaryOptions: SecondaryOptions = {},
 ) => {
   return (root, result) => {
-    const validOptions = validateOptions(result, name, {
-      actual: primaryOption,
-      possible: [true, false],
-    });
+    const validOptions = validateOptions(
+      result,
+      name,
+      {
+        actual: primaryOption,
+        possible: [true, false],
+      },
+      {
+        actual: secondaryOptions,
+        optional: true,
+        possible: {
+          ...fixOption,
+          ...severityOption,
+          properties: [
+            (value: unknown) => {
+              if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+                return false;
+              }
+
+              const props = value as Record<string, unknown>;
+
+              return Object.entries(props).every(([key, val]) => {
+                if (!(key in recommendedOptions)) {
+                  return false;
+                }
+
+                if (typeof val === 'boolean') {
+                  return true;
+                }
+
+                if (Array.isArray(val)) {
+                  if (val.length !== 2) {
+                    return false;
+                  }
+
+                  return true;
+                }
+
+                return false;
+              });
+            },
+          ],
+        },
+      },
+    );
 
     if (!validOptions) return;
 
