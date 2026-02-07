@@ -10,8 +10,7 @@ export default {
     'defensive-css/require-focus-visible': [true, { severity: 'error' }],
     'defensive-css/require-named-grid-lines': [
       true,
-      { columns: [true, { severity: 'error' }] },
-      { rows: [true, { severity: 'warning' }] },
+      { columns: [true, { severity: 'error' }], rows: [true, { severity: 'warning' }] },
     ],
     'defensive-css/require-prefers-reduced-motion': [true, { severity: 'error' }],
   },

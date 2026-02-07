@@ -17,6 +17,7 @@ import {
 } from './categories';
 import { isValidAtRule, isValidValue } from './utils';
 import { severityOption, SeverityProps } from '../../utils/types';
+import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -59,19 +60,7 @@ export const noFixedSizes: Rule = (
                   return false;
                 }
 
-                if (typeof val === 'boolean') {
-                  return true;
-                }
-
-                if (Array.isArray(val)) {
-                  if (val.length !== 2) {
-                    return false;
-                  }
-
-                  return true;
-                }
-
-                return false;
+                return validateBasicOption(val);
               });
             },
           ],
@@ -88,19 +77,7 @@ export const noFixedSizes: Rule = (
                   return false;
                 }
 
-                if (typeof val === 'boolean') {
-                  return true;
-                }
-
-                if (Array.isArray(val)) {
-                  if (val.length !== 2) {
-                    return false;
-                  }
-
-                  return true;
-                }
-
-                return false;
+                return validateBasicOption(val);
               });
             },
           ],

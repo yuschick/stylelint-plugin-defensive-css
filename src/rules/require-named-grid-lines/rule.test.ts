@@ -90,7 +90,7 @@ testRule({
 
 /* Test when columns are disabled and rows are enabled */
 testRule({
-  config: [true, { columns: false }],
+  config: [true, { columns: false, rows: [true, { severity: 'warning' }] }],
   ruleName: name,
   /* eslint-disable sort-keys */
   accept: [

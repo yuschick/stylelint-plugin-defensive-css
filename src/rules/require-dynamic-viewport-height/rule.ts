@@ -2,6 +2,7 @@ import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { fixOption, FixProps, severityOption, SeverityProps } from '../../utils/types';
 import { hasStaticViewportHeight, Properties, recommendedOptions } from './utils';
+import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -40,19 +41,7 @@ export const requireDynamicViewportHeight: Rule = (
                   return false;
                 }
 
-                if (typeof val === 'boolean') {
-                  return true;
-                }
-
-                if (Array.isArray(val)) {
-                  if (val.length !== 2) {
-                    return false;
-                  }
-
-                  return true;
-                }
-
-                return false;
+                return validateBasicOption(val);
               });
             },
           ],

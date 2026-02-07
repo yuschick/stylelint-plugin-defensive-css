@@ -112,7 +112,7 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 4. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
 5. [Require Background Repeat](#require-background-repeat)
 6. [Require Custom Property Fallback](#require-custom-property-fallback)
-7. [Require Dynamic Viewport height](#require-dynamic-viewport-height)
+7. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
 8. [Require Flex Wrap](#require-flex-wrap)
 9. [Require Focus Visible](#require-focus-visible)
 10. [Require Named Grid Lines](#require-named-grid-lines)

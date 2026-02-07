@@ -12,6 +12,7 @@ import {
   isScrollableOverflow,
 } from './utils';
 import { severityOption, SeverityProps } from '../../utils/types';
+import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -37,20 +38,8 @@ export const requireOverscrollBehavior: Rule = (
         optional: true,
         possible: {
           ...severityOption,
-          x: [
-            (value: unknown) => {
-              return (
-                typeof value === 'boolean' || (Array.isArray(value) && value.length === 2)
-              );
-            },
-          ],
-          y: [
-            (value: unknown) => {
-              return (
-                typeof value === 'boolean' || (Array.isArray(value) && value.length === 2)
-              );
-            },
-          ],
+          x: [(value: unknown) => validateBasicOption(value)],
+          y: [(value: unknown) => validateBasicOption(value)],
         },
       },
     );

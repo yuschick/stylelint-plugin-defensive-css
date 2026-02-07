@@ -12,6 +12,7 @@ import {
   shouldSkipRowsValidation,
 } from './utils';
 import { severityOption, SeverityProps } from '../../utils/types';
+import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -37,68 +38,8 @@ export const requireNamedGridLines: Rule = (
         optional: true,
         possible: {
           ...severityOption,
-          columns: [
-            (value: unknown) => {
-              if (typeof value === 'boolean') {
-                return true;
-              }
-
-              if (Array.isArray(value) && value.length === 2) {
-                const [enabled, severityProps] = value;
-
-                if (typeof enabled !== 'boolean') {
-                  return false;
-                }
-
-                if (
-                  typeof severityProps !== 'object' ||
-                  severityProps === null ||
-                  Array.isArray(severityProps)
-                ) {
-                  return false;
-                }
-
-                if ('severity' in severityProps) {
-                  return severityOption.severity.includes(severityProps.severity);
-                }
-
-                return true;
-              }
-
-              return false;
-            },
-          ],
-          rows: [
-            (value: unknown) => {
-              if (typeof value === 'boolean') {
-                return true;
-              }
-
-              if (Array.isArray(value) && value.length === 2) {
-                const [enabled, severityProps] = value;
-
-                if (typeof enabled !== 'boolean') {
-                  return false;
-                }
-
-                if (
-                  typeof severityProps !== 'object' ||
-                  severityProps === null ||
-                  Array.isArray(severityProps)
-                ) {
-                  return false;
-                }
-
-                if ('severity' in severityProps) {
-                  return severityOption.severity.includes(severityProps.severity);
-                }
-
-                return true;
-              }
-
-              return false;
-            },
-          ],
+          columns: [(value: unknown) => validateBasicOption(value)],
+          rows: [(value: unknown) => validateBasicOption(value)],
         },
       },
     );
