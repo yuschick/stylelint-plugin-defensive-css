@@ -7,7 +7,7 @@
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { findVendorPrefixes } from './utils';
-import { SeverityProps } from '../../utils/types';
+import { severityOption, SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -16,10 +16,19 @@ export const noMixedVendorPrefixes: Rule = (
   secondaryOptions: SeverityProps = {},
 ) => {
   return (root, result) => {
-    const validOptions = validateOptions(result, name, {
-      actual: primaryOption,
-      possible: [true, false],
-    });
+    const validOptions = validateOptions(
+      result,
+      name,
+      {
+        actual: primaryOption,
+        possible: [true, false],
+      },
+      {
+        actual: secondaryOptions,
+        optional: true,
+        possible: severityOption,
+      },
+    );
 
     if (!validOptions) return;
 

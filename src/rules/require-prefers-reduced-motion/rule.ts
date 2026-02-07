@@ -12,7 +12,7 @@ import {
   isInsidePrefersReducedMotion,
   isInsidePrefersReducedMotionReduce,
 } from './utils';
-import { SeverityProps } from '../../utils/types';
+import { severityOption, SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -21,10 +21,19 @@ export const requirePrefersReducedMotion: Rule = (
   secondaryOptions: SeverityProps = {},
 ) => {
   return (root, result) => {
-    const validOptions = validateOptions(result, name, {
-      actual: primaryOption,
-      possible: [true, false],
-    });
+    const validOptions = validateOptions(
+      result,
+      name,
+      {
+        actual: primaryOption,
+        possible: [true, false],
+      },
+      {
+        actual: secondaryOptions,
+        optional: true,
+        possible: severityOption,
+      },
+    );
 
     if (!validOptions) return;
 

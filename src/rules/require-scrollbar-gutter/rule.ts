@@ -7,7 +7,8 @@
 import stylelint, { Rule, Severity } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { getOverflowAxis, isScrollableOverflow } from './utils';
-import { SeverityProps } from '../../utils/types';
+import { severityOption, SeverityProps } from '../../utils/types';
+import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -21,10 +22,23 @@ export const requireScrollbarGutter: Rule = (
   secondaryOptions: SecondaryOptions = {},
 ) => {
   return (root, result) => {
-    const validOptions = validateOptions(result, name, {
-      actual: primaryOption,
-      possible: [true, false],
-    });
+    const validOptions = validateOptions(
+      result,
+      name,
+      {
+        actual: primaryOption,
+        possible: [true, false],
+      },
+      {
+        actual: secondaryOptions,
+        optional: true,
+        possible: {
+          ...severityOption,
+          x: [(value: unknown) => validateBasicOption(value)],
+          y: [(value: unknown) => validateBasicOption(value)],
+        },
+      },
+    );
 
     if (!validOptions) return;
 

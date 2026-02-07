@@ -7,7 +7,8 @@
 import stylelint, { Rule, Severity } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { findShorthandRepeat, hasUrlValue } from './utils';
-import { SeverityProps } from '../../utils/types';
+import { severityOption, SeverityProps } from '../../utils/types';
+import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -21,10 +22,23 @@ export const requireBackgroundRepeat: Rule = (
   secondaryOptions: SecondaryOptions = {},
 ) => {
   return (root, result) => {
-    const validOptions = validateOptions(result, name, {
-      actual: primaryOption,
-      possible: [true, false],
-    });
+    const validOptions = validateOptions(
+      result,
+      name,
+      {
+        actual: primaryOption,
+        possible: [true, false],
+      },
+      {
+        actual: secondaryOptions,
+        optional: true,
+        possible: {
+          ...severityOption,
+          'background-repeat': [(value: unknown) => validateBasicOption(value)],
+          'mask-repeat': [(value: unknown) => validateBasicOption(value)],
+        },
+      },
+    );
 
     if (!validOptions) return;
 
