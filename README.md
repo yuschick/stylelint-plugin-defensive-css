@@ -583,7 +583,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-custom-property-fallback": [true, {
-        "ignore": ["var\\(--exact-match\\)", /var\(--ds-color-.*\)/]
+        "ignore": ["var\\(--exact-match\\)", /var\(--ds-color-.*\)/],
+        "severity": "warning"
     }],
   }
 }
@@ -776,8 +777,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-named-grid-lines": [true, {
-        "columns": [true, { "severity": "error"}],
-        "rows": [true, { "severity": "warning"}]
+        "columns": [true, { "severity": "error" }],
+        "rows": [true, { "severity": "warning" }]
     }],
   }
 }
@@ -898,8 +899,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-overscroll-behavior": [true, {
-        "x": [true, { "severity": "warning"}],
-        "y": [true, { "severity": "error"}]
+        "x": [true, { "severity": "warning" }],
+        "y": [true, { "severity": "error" }]
     }],
   }
 }
@@ -1078,8 +1079,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-scrollbar-gutter": [true, {
-        "x": [true, { "severity": "warning"}],
-        "y": [true, { "severity": "error"}]
+        "x": [true, { "severity": "warning" }],
+        "y": [true, { "severity": "error" }]
     }],
   }
 }
