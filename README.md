@@ -77,6 +77,7 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
     "defensive-css/no-list-style-none": [true, { "fix": true, "severity": "error" }],
     "defensive-css/no-mixed-vendor-prefixes": [true, { "severity": "error" }],
     "defensive-css/require-background-repeat": [true, { "severity": "error" }],
+    "defensive-css/require-dynamic-viewport-height": [true, { "severity": "warning" }],
     "defensive-css/require-flex-wrap": [true, { "severity": "error" }],
     "defensive-css/require-focus-visible": [true, { "severity": "error" }],
     "defensive-css/require-named-grid-lines": [
@@ -111,12 +112,13 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 4. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
 5. [Require Background Repeat](#require-background-repeat)
 6. [Require Custom Property Fallback](#require-custom-property-fallback)
-7. [Require Flex Wrap](#require-flex-wrap)
-8. [Require Focus Visible](#require-focus-visible)
-9. [Require Named Grid Lines](#require-named-grid-lines)
-10. [Require Overscroll Behavior](#require-overscroll-behavior)
-11. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
-12. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+7. [Require Dynamic Viewport height](#require-dynamic-viewport-height)
+8. [Require Flex Wrap](#require-flex-wrap)
+9. [Require Focus Visible](#require-focus-visible)
+10. [Require Named Grid Lines](#require-named-grid-lines)
+11. [Require Overscroll Behavior](#require-overscroll-behavior)
+12. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+13. [Require Scrollbar Gutter](#require-scrollbar-gutter)
 
 ---
 
@@ -609,6 +611,135 @@ div {
 ```css
 div {
   color: var(--color-primary);
+}
+```
+
+</details>
+
+---
+
+### Require Dynamic Viewport Height
+
+On mobile browsers, the viewport height can change as the address bar and other UI elements collapse or expand during scrolling. Using static viewport units (`100vh` or `100vb`) can cause content to be cut off or create unexpected layout shifts, particularly on iOS Safari and Chrome mobile.
+
+Dynamic viewport units (`100dvh`, `100dvb`) automatically adjust to the current viewport size, accounting for browser UI changes and providing a more reliable layout on mobile devices.
+
+**Enable this rule to:** Flag usage of `100vh` and `100vb` on height-related properties and automatically fix them to use dynamic viewport units.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-dynamic-viewport-height": true,
+  }
+}
+```
+
+#### Require Dynamic Viewport Height Options
+
+> [!TIP]
+> This rule is fixable by passing the `{ fix: true }` option.
+
+**Configuration:** By default, this rule validates `height`, `block-size`, `max-height`, and `max-block-size` properties. Use the `properties` option to customize which properties are checked and their severity level.
+
+```ts
+interface SecondaryOptions {
+  fix?: boolean;
+  properties?: {
+  'block-size'?: boolean | [boolean, SeverityProps];
+  height?: boolean | [boolean, SeverityProps];
+  'max-block-size'?: boolean | [boolean, SeverityProps];
+  'max-height'?: boolean | [boolean, SeverityProps];
+  'min-block-size'?: boolean | [boolean, SeverityProps];
+  'min-height'?: boolean | [boolean, SeverityProps];
+  };
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/require-dynamic-viewport-height": [true, {
+      "fix": true,
+      "properties": {
+        "height": [true, { "severity": "error" }],
+        "min-block-size": false,
+      },
+      "severity": "warning"
+    }],
+  }
+}
+```
+
+#### Require Dynamic Viewport Height Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+.hero {
+  height: 100dvh;
+}
+
+.container {
+  block-size: 100dvb;
+}
+
+.modal {
+  max-height: 100dvh;
+}
+
+/* Small and large viewport units are also valid */
+.element {
+  height: 100svh;
+  max-height: 100lvh;
+}
+
+/* Non-100 viewport units are allowed */
+.partial {
+  height: 50vh;
+  max-height: 75vb;
+}
+
+/* min-height is not validated */
+.flexible {
+  min-height: 100vh;
+}
+
+/* Width properties are not affected */
+.wide {
+  width: 100vw;
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+.hero {
+  height: 100vh;
+}
+
+.container {
+  block-size: 100vb;
+}
+
+.modal {
+  max-height: 100vh;
+}
+
+.overlay {
+  max-block-size: 100vb;
+}
+
+/* Also flags usage in functions */
+.calculated {
+  height: calc(100vh - 20px);
+}
+
+.clamped {
+  block-size: clamp(100vb, 50vb, 100vb);
 }
 ```
 
