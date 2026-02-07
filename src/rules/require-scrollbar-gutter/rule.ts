@@ -85,6 +85,8 @@ export const requireScrollbarGutter: Rule = (
           severity: xSeverity,
           word: ruleNode.selector,
         });
+
+        return;
       }
 
       if (checkY && hasScrollableOverflowY && !hasScrollbarGutter && overflowNode) {
@@ -96,6 +98,8 @@ export const requireScrollbarGutter: Rule = (
           severity: ySeverity,
           word: ruleNode.selector,
         });
+
+        return;
       }
     });
   };

@@ -98,6 +98,8 @@ export const requireOverscrollBehavior: Rule = (
           severity: xSeverity,
           word: ruleNode.selector,
         });
+
+        return;
       }
 
       if (checkY && hasScrollableOverflowY && !hasOverscrollBehaviorY && overflowNode) {
@@ -109,6 +111,8 @@ export const requireOverscrollBehavior: Rule = (
           severity: ySeverity,
           word: ruleNode.selector,
         });
+
+        return;
       }
     });
   };
