@@ -73,14 +73,18 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
 {
   "plugins": ["stylelint-plugin-defensive-css"],
   "rules": {
-    "defensive-css/no-accidental-hover": true,
-    "defensive-css/no-list-style-none": [true, { fix: true }],
-    "defensive-css/no-mixed-vendor-prefixes": true,
-    "defensive-css/require-background-repeat": true,
-    "defensive-css/require-flex-wrap": true,
-    "defensive-css/require-focus-visible": true,
-    "defensive-css/require-named-grid-lines": true,
-    "defensive-css/require-prefers-reduced-motion": true,
+    "defensive-css/no-accidental-hover": [true, { "severity": "error" }],
+    "defensive-css/no-list-style-none": [true, { "fix": true, "severity": "error" }],
+    "defensive-css/no-mixed-vendor-prefixes": [true, { "severity": "error" }],
+    "defensive-css/require-background-repeat": [true, { "severity": "error" }],
+    "defensive-css/require-flex-wrap": [true, { "severity": "error" }],
+    "defensive-css/require-focus-visible": [true, { "severity": "error" }],
+    "defensive-css/require-named-grid-lines": [
+      true,
+      { "columns": [true, { "severity": "error" }] },
+      { "rows": [true, { "severity": "warning" }] },
+    ],
+    "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }],
   }
 }
 ```
@@ -480,8 +484,8 @@ Background and mask images repeat by default when the container is larger than t
 
 ```ts
 interface SecondaryOptions {
-  'background-repeat'?: boolean;
-  'mask-repeat'?: boolean;
+  'background-repeat'?: boolean | [boolean, { severity?: Severity }];
+  'mask-repeat'?: boolean | [boolean, { severity?: Severity }];
 }
 ```
 
@@ -489,8 +493,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-background-repeat": [true, {
-        "background-repeat": true,
-        "mask-repeat": true
+        "background-repeat": [true, { "severity": "error" }],
+        "mask-repeat": false
     }],
   }
 }
@@ -763,8 +767,8 @@ Unnamed grid lines make layouts harder to understand and maintain. Numeric posit
 
 ```ts
 interface SecondaryOptions {
-  columns?: boolean;
-  rows?: boolean;
+  columns?: boolean | [boolean, { severity?: Severity }];
+  rows?: boolean | [boolean, { severity?: Severity }];
 }
 ```
 
@@ -772,8 +776,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-named-grid-lines": [true, {
-        "columns": true,
-        "rows": true
+        "columns": [true, { "severity": "error"}],
+        "rows": [true, { "severity": "warning"}]
     }],
   }
 }
@@ -885,8 +889,8 @@ Scroll chaining occurs when a scrollable element reaches its scroll boundary and
 
 ```ts
 interface SecondaryOptions {
-  x?: boolean;
-  y?: boolean;
+  x?: boolean | [boolean, { severity?: Severity }];
+  y?: boolean | [boolean, { severity?: Severity }];
 }
 ```
 
@@ -894,8 +898,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-overscroll-behavior": [true, {
-        "x": true,
-        "y": true
+        "x": [true, { "severity": "warning"}],
+        "y": [true, { "severity": "error"}]
     }],
   }
 }
@@ -1065,8 +1069,8 @@ When content grows and triggers a scrollbar, the sudden appearance of the scroll
 
 ```ts
 interface SecondaryOptions {
-  x?: boolean;
-  y?: boolean;
+  x?: boolean | [boolean, { severity?: Severity }];
+  y?: boolean | [boolean, { severity?: Severity }];
 }
 ```
 
@@ -1074,8 +1078,8 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-scrollbar-gutter": [true, {
-        "x": true,
-        "y": true
+        "x": [true, { "severity": "warning"}],
+        "y": [true, { "severity": "error"}]
     }],
   }
 }
