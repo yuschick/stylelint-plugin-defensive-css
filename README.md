@@ -90,6 +90,32 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
 }
 ```
 
+### Accessibility
+
+The `accessibility` preset enables accessibility-focused rules to catch common issues that impact keyboard navigation, screen readers, and user preferences.
+
+**Usage:**
+
+```json
+{
+  "extends": ["stylelint-plugin-defensive-css/configs/accessibility"]
+}
+```
+
+**Equivalent to:**
+
+```json
+{
+  "plugins": ["stylelint-plugin-defensive-css"],
+  "rules": {
+    "defensive-css/no-accidental-hover": [true, { "severity": "error" }],
+    "defensive-css/no-list-style-none": [true, { "fix": true, "severity": "error" }],
+    "defensive-css/require-focus-visible": [true, { "severity": "error" }],
+    "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }],
+  },
+}
+```
+
 ### Strict
 
 The `strict` preset enables every rule for the most strict linting offered by the plugin.
