@@ -17,6 +17,10 @@
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
     },
+    "./configs/accessibility": {
+      "require": "./dist/configs/accessibility.cjs",
+      "import": "./dist/configs/accessibility.mjs"
+    },
     "./configs/recommended": {
       "require": "./dist/configs/recommended.cjs",
       "import": "./dist/configs/recommended.mjs"
