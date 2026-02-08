@@ -7,19 +7,28 @@
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { isNavSelector, isListStyleNone, listStyleProperties } from './utils';
-import { SeverityProps } from '../../utils/types';
+import { fixOption, FixProps, severityOption, SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
 export const noListStyleNone: Rule = (
   primaryOption,
-  secondaryOptions: SeverityProps = {},
+  secondaryOptions: SeverityProps & FixProps = {},
 ) => {
   return (root, result) => {
-    const validOptions = validateOptions(result, name, {
-      actual: primaryOption,
-      possible: [true, false],
-    });
+    const validOptions = validateOptions(
+      result,
+      name,
+      {
+        actual: primaryOption,
+        possible: [true, false],
+      },
+      {
+        actual: secondaryOptions,
+        optional: true,
+        possible: { ...severityOption, ...fixOption },
+      },
+    );
 
     if (!validOptions) return;
 

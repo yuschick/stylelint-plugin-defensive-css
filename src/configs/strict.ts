@@ -1,4 +1,5 @@
-import { strictOptions } from '../rules/no-fixed-sizes/categories';
+import { strictOptions as strictFixedSizesOptions } from '../rules/no-fixed-sizes/categories';
+import { strictOptions as strictDynamicViewportHeightOptions } from '../rules/require-dynamic-viewport-height/utils';
 
 export default {
   plugins: ['stylelint-plugin-defensive-css'],
@@ -6,12 +7,16 @@ export default {
     'defensive-css/no-accidental-hover': [true, { severity: 'error' }],
     'defensive-css/no-fixed-sizes': [
       true,
-      { properties: strictOptions, severity: 'error' },
+      { properties: strictFixedSizesOptions, severity: 'error' },
     ],
     'defensive-css/no-list-style-none': [true, { fix: true, severity: 'error' }],
     'defensive-css/no-mixed-vendor-prefixes': [true, { severity: 'error' }],
     'defensive-css/require-background-repeat': [true, { severity: 'error' }],
     'defensive-css/require-custom-property-fallback': [true, { severity: 'error' }],
+    'defensive-css/require-dynamic-viewport-height': [
+      true,
+      { properties: strictDynamicViewportHeightOptions, severity: 'error' },
+    ],
     'defensive-css/require-flex-wrap': [true, { severity: 'error' }],
     'defensive-css/require-focus-visible': [true, { severity: 'error' }],
     'defensive-css/require-named-grid-lines': [true, { severity: 'error' }],

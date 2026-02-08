@@ -1,6 +1,6 @@
 {
   "name": "stylelint-plugin-defensive-css",
-  "version": "2.3.0",
+  "version": "2.4.0",
   "description": "A Stylelint plugin to enforce defensive CSS best practices.",
   "type": "module",
   "author": "Daniel Yuschick <daniel.yuschick@gmail.com>",
@@ -16,6 +16,10 @@
     ".": {
       "require": "./dist/index.cjs",
       "import": "./dist/index.mjs"
+    },
+    "./configs/accessibility": {
+      "require": "./dist/configs/accessibility.cjs",
+      "import": "./dist/configs/accessibility.mjs"
     },
     "./configs/recommended": {
       "require": "./dist/configs/recommended.cjs",
