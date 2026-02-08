@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.3.0...v2.4.0) (2026-02-08)
+
+### Features
+
+* add accessibility config preset ([10d9be7](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/10d9be7c566eead7cf268bc97acf9d7293294e84))
+* add new require-dynamic-viewport-height rule ([582f105](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/582f105c7cb772a9d9403a728414163c8bbd43c5))
+* add require-dynamic-viewport-height rule to recommended and strict configs ([18fb7a9](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/18fb7a9cb67d0a927dcbb41f445178849abc4b05))
+
+### Bug Fixes
+
+* expose accessibility config from package ([d0321ae](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/d0321ae52394c25c21b3c8b45f783518bc236c4f))
+* secondary option validation ([6094de3](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/6094de32a1b548ee67ce0df0c700ffa0bb81d329))
+* typo in warning message ([6b409e1](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/6b409e1ee0d6967bd4ae4976e7fd574a4b427799))
+
+### Documentation
+
+* updates docs with require-dynamic-viewport-height details ([39a6837](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/39a68372d14efd6ffca833188e7096d6b1be58e2))
+
 ## [2.3.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.1.1...v2.3.0) (2026-02-07)
 
 ### Features
