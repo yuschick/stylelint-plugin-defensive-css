@@ -41,7 +41,7 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^10.0.1",
     "@release-it/conventional-changelog": "^10.0.4",
     "@types/node": "^25.1.0",
     "csstype": "^3.2.3",
