@@ -6,9 +6,9 @@ export const name = 'defensive-css/require-background-repeat';
 
 export const messages = ruleMessages(name, {
   rejectedBackground: (selector: string) =>
-    `Expected background-repeat when using background-image with selector "${selector}". Learn more: https://defensivecss.dev/tip/background-repeat/`,
+    `Expected background-repeat when using background-image with selector "${selector}". Learn more: https://defensivecss.dev/tip/bg-repeat`,
   rejectedMask: (selector: string) =>
-    `Expected mask-repeat when using mask-image with selector "${selector}". Learn more: https://defensivecss.dev/tip/background-repeat/`,
+    `Expected mask-repeat when using mask-image with selector "${selector}". Learn more: https://defensivecss.dev/tip/bg-repeat`,
 });
 
 export const meta: RuleMeta = {
