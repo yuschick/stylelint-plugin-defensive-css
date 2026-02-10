@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.4.2](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.4.0...v2.4.2) (2026-02-10)
+
+### Bug Fixes
+
+* links in background-repeat and flex-wrapping meta ([2a3c617](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/2a3c6177ac5feb713cb118573567ea318c6cfae4))
+
 ## [2.4.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.3.0...v2.4.0) (2026-02-08)
 
 ### Features
