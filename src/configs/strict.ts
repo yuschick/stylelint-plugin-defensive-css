@@ -11,6 +11,7 @@ export default {
     ],
     'defensive-css/no-list-style-none': [true, { fix: true, severity: 'error' }],
     'defensive-css/no-mixed-vendor-prefixes': [true, { severity: 'error' }],
+    'defensive-css/no-unsafe-will-change': [true, { severity: 'error' }],
     'defensive-css/require-background-repeat': [true, { severity: 'error' }],
     'defensive-css/require-custom-property-fallback': [true, { severity: 'error' }],
     'defensive-css/require-dynamic-viewport-height': [

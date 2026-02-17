@@ -4,6 +4,7 @@ export default {
     'defensive-css/no-accidental-hover': [true, { severity: 'error' }],
     'defensive-css/no-list-style-none': [true, { fix: true, severity: 'error' }],
     'defensive-css/no-mixed-vendor-prefixes': [true, { severity: 'error' }],
+    'defensive-css/no-unsafe-will-change': [true, { severity: 'error' }],
     'defensive-css/require-background-repeat': [true, { severity: 'error' }],
     'defensive-css/require-dynamic-viewport-height': [true, { severity: 'warning' }],
     'defensive-css/require-flex-wrap': [true, { severity: 'error' }],
