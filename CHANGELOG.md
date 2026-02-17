@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.5.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.4.2...v2.5.0) (2026-02-17)
+
+### Features
+
+* add no-unsafe-will-change rule ([305b725](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/305b725b520d8aa701d36fb15f816f564b2ee481))
+* add no-unsafe-will-change to recommended and strict presets ([cf73d4e](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/cf73d4e605cf35219805053ccc59b7a5180bdc55))
+
+### Bug Fixes
+
+* add csstype to tsdown externals ([5545532](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/55455320250990829a7937797854ffcd86c0984b))
+
+### Documentation
+
+* add documentation for the no-unsafe-will-change rule ([64dbc12](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/64dbc1266b823560ff0deffe8819ba5e2ef177b3))
+
 ## [2.4.2](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.4.0...v2.4.2) (2026-02-10)
 
 ### Bug Fixes
