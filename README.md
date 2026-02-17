@@ -76,6 +76,7 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
     "defensive-css/no-accidental-hover": [true, { "severity": "error" }],
     "defensive-css/no-list-style-none": [true, { "fix": true, "severity": "error" }],
     "defensive-css/no-mixed-vendor-prefixes": [true, { "severity": "error" }],
+    "defensive-css/no-unsafe-will-change": [true, { "severity": "error" }],
     "defensive-css/require-background-repeat": [true, { "severity": "error" }],
     "defensive-css/require-dynamic-viewport-height": [true, { "severity": "warning" }],
     "defensive-css/require-flex-wrap": [true, { "severity": "error" }],
@@ -136,15 +137,16 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 2. [No Fixed Sizes](#no-fixed-sizes)
 3. [No List Style None](#no-list-style-none)
 4. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
-5. [Require Background Repeat](#require-background-repeat)
-6. [Require Custom Property Fallback](#require-custom-property-fallback)
-7. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
-8. [Require Flex Wrap](#require-flex-wrap)
-9. [Require Focus Visible](#require-focus-visible)
-10. [Require Named Grid Lines](#require-named-grid-lines)
-11. [Require Overscroll Behavior](#require-overscroll-behavior)
-12. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
-13. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+5. [No Unsafe Will-Change](#no-unsafe-will-change)
+6. [Require Background Repeat](#require-background-repeat)
+7. [Require Custom Property Fallback](#require-custom-property-fallback)
+8. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
+9. [Require Flex Wrap](#require-flex-wrap)
+10. [Require Focus Visible](#require-focus-visible)
+11. [Require Named Grid Lines](#require-named-grid-lines)
+12. [Require Overscroll Behavior](#require-overscroll-behavior)
+13. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+14. [Require Scrollbar Gutter](#require-scrollbar-gutter)
 
 ---
 
@@ -573,6 +575,124 @@ div {
 
 div {
   mask-image: url('some-image.jpg');
+}
+```
+
+</details>
+
+---
+
+### No Unsafe Will-Change
+
+> [!WARNING]
+> "`will-change` is intended to be used as a last resort, in order to try to deal with existing performance problems. It should not be used to anticipate performance problems." ~ [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/will-change)
+
+The `will-change` CSS property hints to browsers about expected changes to an element, allowing them to optimize rendering ahead of time. However, misuse can cause serious performance issues: applying it to too many properties consumes excessive GPU memory, using it on non-composite properties provides no benefit, and applying it via the universal selector (`*`) forces GPU layers on every element, causing catastrophic performance degradation.
+
+**Enable this rule to:** Prevent common `will-change` anti-patterns that harm performance rather than improve it.
+
+```json
+{
+  "rules": {
+    "defensive-css/no-unsafe-will-change": true
+  }
+}
+```
+
+#### No Unsafe Will-Change Options
+
+**Configuration:** By default, this rule allows up to 2 properties and errors on violations. Use the options below to customize validation.
+
+```ts
+type Severity = 'error' | 'warning';
+
+interface SecondaryOptions {
+  ignore?: (keyof PropertiesHyphen)[];
+  maxProperties?: number;
+  severity?: Severity;
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/no-unsafe-will-change": [true, {
+        "maxProperties": 3,
+        "ignore": ["width"],
+        "severity": "error"
+    }],
+  }
+}
+```
+
+#### No Unsafe Will-Change Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+
+/* Single composite property */
+.card:hover {
+  will-change: transform;
+}
+
+/* Two composite properties (at default limit) */
+.modal {
+  will-change: transform, opacity;
+}
+
+/* Composite property in pseudo-class */
+.button:focus-visible {
+  will-change: opacity;
+}
+
+/* With ignore option for filter */
+.element {
+  will-change: transform, opacity, filter;
+  /* Passes if maxProperties: 3 and ignore: ['filter'] */
+}
+
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+
+/* Universal selector - forces GPU layers on all elements */
+* {
+  will-change: transform;
+}
+
+/* Exceeds default maxProperties limit (3 > 2) */
+.element {
+  will-change: transform, opacity, filter;
+}
+
+/* Non-composite properties (trigger layout/paint) */
+.box {
+  will-change: width, height;
+}
+
+.positioned {
+  will-change: top, left;
+}
+
+.spaced {
+  will-change: margin, padding;
+}
+
+/* Mixed: exceeds limit AND contains non-composite property */
+.card {
+  will-change: transform, opacity, width, height;
+}
+
+/* Universal selector in descendant */
+.container > * {
+  will-change: opacity;
 }
 ```
 
