@@ -51,6 +51,11 @@ After installation, add this to your `.stylelintrc.json`:
 }
 ```
 
+## Related Plugins
+
+- [stylelint-plugin-logical-css](https://www.npmjs.com/package/stylelint-plugin-logical-css) - Enforce logical properties, values and units for i18n-safe CSS.
+- [stylelint-plugin-rhythmguard](https://www.npmjs.com/package/stylelint-plugin-rhythmguard) - Enforce spacing-scale and token governance for design-system consistency.
+
 ## Defensive CSS Configs
 
 For quick setup, the plugin provides preset configurations that enable commonly used rules.
