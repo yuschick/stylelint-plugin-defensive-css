@@ -54,6 +54,38 @@ testRule({
       description: 'flex-flow column-reverse (exempt)',
     },
     {
+      code: '.class { display: flex; flex-flow: row nowrap; }',
+      description: 'flex-flow with row and nowrap',
+    },
+    {
+      code: '.class { display: flex; flex-flow: nowrap; }',
+      description: 'flex-flow with nowrap shorthand',
+    },
+    {
+      code: '.class { display: flex; flex-flow: row-reverse nowrap; }',
+      description: 'flex-flow with row-reverse and nowrap',
+    },
+    {
+      code: '.class { display: flex; flex-flow: column nowrap; }',
+      description: 'flex-flow with column and nowrap (column exempt)',
+    },
+    {
+      code: `
+        @media (min-width: 768px) {
+          .class { display: flex; flex-flow: row nowrap; }
+        }
+      `,
+      description: 'flex-flow with nowrap inside media query',
+    },
+    {
+      code: `
+        @media (min-width: 768px) {
+          .class { display: flex; flex-wrap: nowrap; }
+        }
+      `,
+      description: 'flex-wrap nowrap inside media query',
+    },
+    {
       code: '.class { display: grid; }',
       description: 'grid display (not flex)',
     },

@@ -7,5 +7,5 @@ export const isColumnDirection = (value: string): boolean => {
 };
 
 export const hasWrapValue = (value: string): boolean => {
-  return /\bwrap(-reverse)?\b/.test(value);
+  return /\b(no)?wrap(-reverse)?\b/.test(value);
 };
