@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.6.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.5.0...v2.6.0) (2026-02-22)
+
+### Features
+
+* improve flexibility and nuance of reduced-motion rule ([10d6d25](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/10d6d2575e7c0548a7bff0c8ffe52cd685d5dfcb))
+
+### Bug Fixes
+
+* recognize nowrap in flex-flow shorthand ([#153](https://github.com/yuschick/stylelint-plugin-defensive-css/issues/153)) ([bdb9ca6](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/bdb9ca65d9040ee59de108331f6462d8159449e3))
+* token usage in publish workflow ([#151](https://github.com/yuschick/stylelint-plugin-defensive-css/issues/151)) ([061a046](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/061a046f9bad5e404c4ed4e57094882abb79ce78))
+
 ## [2.5.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.4.2...v2.5.0) (2026-02-17)
 
 ### Features
