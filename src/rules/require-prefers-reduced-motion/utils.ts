@@ -1,43 +1,50 @@
-/**
- * Animation and transition properties that should respect prefers-reduced-motion
- */
-export const animationProperties = [
+import { PropertiesHyphen } from 'csstype';
+
+export const motionAtRules = ['@view-transition'] as const;
+export type MotionAtRule = (typeof motionAtRules)[number];
+
+export const motionProperties: (keyof PropertiesHyphen)[] = [
   'animation',
   'animation-duration',
+  'background',
+  'background-attachment',
+  'scroll-behavior',
   'transition',
-  'transition-duration',
-];
+  'view-transition-name',
+] as const;
+export type MotionProperty = (typeof motionProperties)[number];
 
-/**
- * Check if a property is an animation/transition property that requires motion wrapping
- * Note: We only check properties that actually create motion (with duration)
- */
-export function isAnimationProperty(prop: string): boolean {
-  return animationProperties.includes(prop);
-}
+export const safeTransitionProperties: (keyof PropertiesHyphen)[] = [
+  'accent-color',
+  'background-color',
+  'backdrop-filter',
+  'border-bottom-color',
+  'border-color',
+  'border-left-color',
+  'border-right-color',
+  'border-top-color',
+  'column-rule-color',
+  'color',
+  'fill',
+  'filter',
+  'mix-blend-mode',
+  'opacity',
+  'outline-color',
+  'stroke',
+  'text-decoration-color',
+] as const;
+export type SafeTransitionProperty = (typeof safeTransitionProperties)[number];
 
-/**
- * Check if a value is effectively instant (no motion)
- * e.g., 0s, 0ms, none
- */
 export function isInstantValue(value: string): boolean {
-  // Check for 'none'
-  if (value.trim() === 'none') {
-    return true;
-  }
+  if (value.trim() === 'none') return true;
 
-  // Check for explicit 0s or 0ms
-  if (/^0(s|ms)?$/.test(value.trim())) {
-    return true;
-  }
+  // For explicit 0 duration
+  if (/^0(\.0+)?\s*(s|ms)?$/.test(value.trim())) return true;
 
-  // For shorthand properties with multiple values (e.g., "color 0.3s, opacity 0s")
-  // Check if ALL durations are 0
-  const durations = value.match(/(\d+\.?\d*)(s|ms)/g);
+  // Extract all durations (handles spaces, decimal points, etc.)
+  const durations = value.match(/(\d*\.?\d+)\s*(s|ms)/g);
 
-  if (!durations) {
-    return true; // No durations found
-  }
+  if (!durations) return true; // No durations found
 
   // Check if all durations are 0
   return durations.every((duration) => {
@@ -46,12 +53,18 @@ export function isInstantValue(value: string): boolean {
   });
 }
 
-/**
- * Check if currently inside a prefers-reduced-motion media query
- * Accepts both:
- * - @media (prefers-reduced-motion: no-preference)
- * - @media not (prefers-reduced-motion: reduce)
- */
+export function hasMotionBackgroundAttachment(value: string): boolean {
+  const backgrounds = value.split(',');
+
+  for (const background of backgrounds) {
+    if (/(?<!url\([^)]*)\bfixed\b(?![^(]*\))/.test(background)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function isInsidePrefersReducedMotion(node: any): boolean {
   let parent = node.parent;
@@ -76,9 +89,6 @@ export function isInsidePrefersReducedMotion(node: any): boolean {
   return false;
 }
 
-/**
- * Check if currently inside a prefers-reduced-motion: reduce media query
- */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export function isInsidePrefersReducedMotionReduce(node: any): boolean {
   let parent = node.parent;
@@ -106,4 +116,34 @@ export function isInsidePrefersReducedMotionReduce(node: any): boolean {
   }
 
   return false;
+}
+
+export function getInvalidTransitionProperties(value: string): string[] {
+  const transitions = value.split(',').map((t) => t.trim());
+  const invalidProperties: string[] = [];
+
+  for (const transition of transitions) {
+    if (isInstantValue(transition)) continue;
+
+    const parts = transition.split(/\s+/);
+
+    let property: string | undefined;
+
+    for (const part of parts) {
+      if (/^\d*\.?\d+\s*(s|ms)/.test(part)) continue;
+      if (/^(ease|linear|ease-in|ease-out|ease-in-out|step-start|step-end)$/.test(part))
+        continue;
+      if (part.startsWith('cubic-bezier(') || part.startsWith('steps(')) continue;
+
+      property = part;
+      break;
+    }
+
+    if (!safeTransitionProperties.includes(property as keyof PropertiesHyphen)) {
+      // if no property is found, the duration and easing will apply to 'all' properties
+      invalidProperties.push(property ?? 'all');
+    }
+  }
+
+  return invalidProperties;
 }

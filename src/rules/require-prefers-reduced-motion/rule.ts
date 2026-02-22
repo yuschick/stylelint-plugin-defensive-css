@@ -7,12 +7,15 @@
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import {
-  isAnimationProperty,
   isInstantValue,
   isInsidePrefersReducedMotion,
+  motionProperties,
+  hasMotionBackgroundAttachment,
+  getInvalidTransitionProperties,
   isInsidePrefersReducedMotionReduce,
 } from './utils';
 import { severityOption, SeverityProps } from '../../utils/types';
+import { PropertiesHyphen } from 'csstype';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -40,38 +43,80 @@ export const requirePrefersReducedMotion: Rule = (
     const { severity } = secondaryOptions;
 
     root.walkDecls((decl) => {
-      const { prop, value } = decl;
-
-      // Only check animation/transition properties
-      if (!isAnimationProperty(prop)) {
-        return;
-      }
-
-      // Allow instant/no animations (0s, none)
-      if (isInstantValue(value)) {
-        return;
-      }
-
-      // REJECT: Animations inside prefers-reduced-motion: reduce
-      if (isInsidePrefersReducedMotionReduce(decl)) {
-        report({
-          message: messages.rejected(prop),
-          node: decl,
-          result,
-          ruleName: name,
-          severity,
-        });
-        return;
-      }
-
       // Check if already inside prefers-reduced-motion media query
-      if (isInsidePrefersReducedMotion(decl)) {
+      if (
+        isInsidePrefersReducedMotion(decl) &&
+        !isInsidePrefersReducedMotionReduce(decl)
+      ) {
         return;
       }
 
-      // Report violation
+      const { prop, value } = decl;
+      let message;
+
+      /* Check against @view-transitions */
+      if (decl.parent?.type === 'atrule' && decl.parent.name === 'view-transition') {
+        if (prop === 'navigation' && value !== 'none') {
+          report({
+            message: messages.viewTransition(),
+            node: decl,
+            result,
+            ruleName: name,
+            severity,
+          });
+          return;
+        }
+      }
+
+      if (!motionProperties.includes(prop as keyof PropertiesHyphen)) {
+        return;
+      }
+
+      switch (prop) {
+        case 'animation': {
+          if (value !== 'none' && !isInstantValue(value)) {
+            message = messages.animation();
+          }
+          break;
+        }
+        case 'animation-duration': {
+          if (!isInstantValue(value)) {
+            message = messages.animationDuration();
+          }
+          break;
+        }
+        case 'background':
+        case 'background-attachment': {
+          if (hasMotionBackgroundAttachment(value)) {
+            message = messages.backgroundAttachment();
+          }
+          break;
+        }
+        case 'scroll-behavior': {
+          if (value === 'smooth') {
+            message = messages.scrollBehavior();
+          }
+          break;
+        }
+        case 'transition': {
+          const invalidTransitionProperties = getInvalidTransitionProperties(value);
+
+          if (invalidTransitionProperties.length > 0) {
+            message = messages.transition(invalidTransitionProperties.join(', '));
+          }
+          break;
+        }
+        case 'view-transition-name':
+          if (value !== 'none') {
+            message = messages.viewTransition();
+          }
+          break;
+      }
+
+      if (!message) return;
+
       report({
-        message: messages.rejected(prop),
+        message,
         node: decl,
         result,
         ruleName: name,
