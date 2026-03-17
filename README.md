@@ -138,15 +138,16 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 3. [No List Style None](#no-list-style-none)
 4. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
 5. [No Unsafe Will-Change](#no-unsafe-will-change)
-6. [Require Background Repeat](#require-background-repeat)
-7. [Require Custom Property Fallback](#require-custom-property-fallback)
-8. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
-9. [Require Flex Wrap](#require-flex-wrap)
-10. [Require Focus Visible](#require-focus-visible)
-11. [Require Named Grid Lines](#require-named-grid-lines)
-12. [Require Overscroll Behavior](#require-overscroll-behavior)
-13. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
-14. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+6. [Require At Layer](#require-at-layer)
+7. [Require Background Repeat](#require-background-repeat)
+8. [Require Custom Property Fallback](#require-custom-property-fallback)
+9. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
+10. [Require Flex Wrap](#require-flex-wrap)
+11. [Require Focus Visible](#require-focus-visible)
+12. [Require Named Grid Lines](#require-named-grid-lines)
+13. [Require Overscroll Behavior](#require-overscroll-behavior)
+14. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+15. [Require Scrollbar Gutter](#require-scrollbar-gutter)
 
 ---
 
@@ -484,6 +485,86 @@ input::-moz-placeholder {
 input::-webkit-input-placeholder,
 input::-moz-placeholder {
   color: #222;
+}
+```
+
+</details>
+
+---
+
+### Require At Layer
+
+CSS cascade layers (`@layer`) provide explicit control over specificity ordering, preventing unexpected style overrides in large codebases or design systems. Without layers, the cascade relies solely on source order and specificity, making it fragile and difficult to manage as styles scale. Scoping component styles to a top-level `@layer` ensures predictable cascade behavior and clearer style boundaries.
+
+**Enable this rule to:** Require all style rules to be wrapped in a top-level `@layer` rule, optionally restricting to a set of supported layer names.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-at-layer": true,
+  }
+}
+```
+
+#### Require At Layer Options
+
+**Configuration:** By default, this rule requires all styles to be inside any `@layer`. Use the `supportedLayerNames` option to restrict which layer names are allowed.
+
+```ts
+interface SecondaryOptions {
+  severity?: Severity;
+  supportedLayerNames?: string[];
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/require-at-layer": [true, {
+        "supportedLayerNames": ["ds.components", "ds.utilities"],
+        "severity": "error"
+    }],
+  }
+}
+```
+
+#### Require At Layer Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+/* Any layer name (without supportedLayerNames) */
+@layer components {
+  div {
+    color: red;
+  }
+}
+
+/* Supported layer name (with supportedLayerNames: ['ds.components']) */
+@layer ds.components {
+  div {
+    color: red;
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+/* Not wrapped in any @layer */
+div {
+  color: red;
+}
+
+/* Unsupported layer name (with supportedLayerNames: ['ds.components']) */
+@layer components {
+  div {
+    color: red;
+  }
 }
 ```
 

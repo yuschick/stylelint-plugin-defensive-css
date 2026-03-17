@@ -3,6 +3,7 @@ import noFixedSizes from './rules/no-fixed-sizes';
 import noListStyleNone from './rules/no-list-style-none';
 import noMixedVendorPrefixes from './rules/no-mixed-vendor-prefixes';
 import NoUnsafeWillChange from './rules/no-unsafe-will-change';
+import requireAtLayer from './rules/require-at-layer';
 import requireBackgroundRepeat from './rules/require-background-repeat';
 import requireCustomPropertyFallback from './rules/require-custom-property-fallback';
 import requireDynamicViewportHeight from './rules/require-dynamic-viewport-height';
@@ -19,6 +20,7 @@ export default [
   noListStyleNone,
   noMixedVendorPrefixes,
   NoUnsafeWillChange,
+  requireAtLayer,
   requireBackgroundRepeat,
   requireCustomPropertyFallback,
   requireDynamicViewportHeight,
