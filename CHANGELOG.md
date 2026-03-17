@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.7.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.6.0...v2.7.0) (2026-03-17)
+
+### Features
+
+* setup new require-at-layer rule ([d5f97e9](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/d5f97e9489c7f1d886c3f2b567fd40703aa8bff7))
+
+### Documentation
+
+* add docs for new require-at-layer rule ([e395935](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/e395935919129ce4123a875ea11a4fdb4249cefb))
+
 ## [2.6.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.5.0...v2.6.0) (2026-02-22)
 
 ### Features
