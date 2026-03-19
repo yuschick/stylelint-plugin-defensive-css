@@ -50,6 +50,7 @@
     "eslint-plugin-prettier": "^5.5.5",
     "globals": "^17.2.0",
     "jiti": "^2.6.1",
+    "postcss-selector-parser": "^7.1.1",
     "prettier": "^3.8.1",
     "release-it": "^19.2.4",
     "stylelint": "^16.1.0",
