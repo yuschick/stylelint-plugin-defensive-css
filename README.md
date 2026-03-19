@@ -87,6 +87,10 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
       { "rows": [true, { "severity": "warning" }] },
     ],
     "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }],
+    "defensive-css/require-pure-selectors": [
+      true,
+      { "ignoreElements": ["*"], "severity": "error" },
+    ],
   }
 }
 ```
@@ -147,7 +151,8 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 12. [Require Named Grid Lines](#require-named-grid-lines)
 13. [Require Overscroll Behavior](#require-overscroll-behavior)
 14. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
-15. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+15. [Require Pure Selectors](#require-pure-selectors)
+16. [Require Scrollbar Gutter](#require-scrollbar-gutter)
 
 ---
 
@@ -1399,6 +1404,127 @@ Some users experience motion sickness or vestibular disorders that make animatio
     transition: transform 0.3s;
   }
 }
+```
+
+</details>
+
+---
+
+### Require Pure Selectors
+
+Element selectors (e.g., `div`, `input`, `section`) couple styles directly to HTML structure, making stylesheets fragile when markup changes. Pure selectors — classes, IDs, and pseudo-classes — keep styles decoupled from the DOM, resulting in more maintainable and portable CSS.
+
+**Enable this rule to:** Require selectors to target classes or IDs rather than HTML element tags, preventing structural coupling between styles and markup.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-pure-selectors": true,
+  }
+}
+```
+
+#### Require Pure Selectors Options
+
+**Configuration:** By default, this rule rejects any selector containing an HTML element tag. Use `ignoreElements` to allowlist specific tags (e.g., `*`, `html`, `body`) and `ignoreAttributeSelectors` to permit element tags that have an attached attribute selector (e.g., `input[type="text"]`).
+
+```ts
+interface SecondaryOptions {
+  ignoreAttributeSelectors?: boolean;
+  ignoreElements?: (keyof HTMLElementTagNameMap)[];
+  severity?: Severity;
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/require-pure-selectors": [true, {
+        "ignoreElements": ["html", "*"],
+        "ignoreAttributeSelectors": true,
+        "severity": "error"
+    }],
+  }
+}
+```
+
+#### Require Pure Selectors Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+/* Standard class selector */
+.card { color: red; }
+
+/* Class-to-class relationship (flat specificity) */
+.nav-item .link { color: red; }
+
+/* ID selector */
+#header { color: red; }
+
+/* Attribute on a class (no tag dependency) */
+.button[disabled] { opacity: 0.5; }
+
+/* Class with pseudo-class */
+.btn:hover { color: blue; }
+
+/* Class with pseudo-element */
+.card::before { content: ""; }
+
+/* Pseudo-class only */
+:root { --color: red; }
+
+/* Child combinator with pure selectors */
+.input-group > .input-field { width: 100%; }
+
+/* Nested class selectors */
+.card { .btn { background: yellow; } }
+
+/* With ignoreElements: ['html', 'body'] */
+html { font-size: 16px; }
+body { margin: 0; }
+
+/* With ignoreAttributeSelectors: true */
+input[type="text"] { border: 1px solid; }
+button[disabled] { opacity: 0.5; }
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+/* Standalone element selector (global pollution) */
+div { color: red; }
+
+/* Descendant element selector (structural dependency) */
+.card div { color: red; }
+
+/* Compound element selector (tag dependency) */
+a.link { color: red; }
+
+/* Direct child element selector (markup fragility) */
+ul > li { margin: 0; }
+
+/* Base element */
+input { border: 1px solid; }
+
+/* Universal selector */
+* { box-sizing: border-box; }
+
+/* Element with pseudo-class */
+button:active { color: red; }
+
+/* Mixed pure and impure in selector list */
+.btn, button { color: red; }
+
+/* Deeply nested tag selectors */
+header nav ul li a { text-decoration: none; }
+
+/* Nested tag inside class */
+.card { span { color: red; } }
 ```
 
 </details>
