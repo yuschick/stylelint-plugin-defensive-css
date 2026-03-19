@@ -12,6 +12,7 @@ import requireFocusVisible from './rules/require-focus-visible';
 import requireNamedGridLines from './rules/require-named-grid-lines';
 import requirePrefersReducedMotion from './rules/require-prefers-reduced-motion';
 import requireOverscrollBehavior from './rules/require-overscroll-behavior';
+import requirePureSelectors from './rules/require-pure-selectors';
 import requireScrollbarGutter from './rules/require-scrollbar-gutter';
 
 export default [
@@ -29,5 +30,6 @@ export default [
   requireNamedGridLines,
   requirePrefersReducedMotion,
   requireOverscrollBehavior,
+  requirePureSelectors,
   requireScrollbarGutter,
 ];

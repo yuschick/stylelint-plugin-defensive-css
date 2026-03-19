@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.8.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.7.0...v2.8.0) (2026-03-19)
+
+### Features
+
+* add require-pure-selectors to recommended and strict presets ([c8d7a3a](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/c8d7a3a12f4875bfbc9fd501f763381a0bfd5ca4))
+* create new require-pure-selectors rule ([8e08aaa](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/8e08aaad6b9f998e8cd312191e035a529097331a))
+
+### Bug Fixes
+
+* tsdown externals array ([ce65b76](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/ce65b768736bf4b1b55fef6253c20f9d5ea2e62d))
+
+### Documentation
+
+* add documentation for the require-pure-selectors rule ([71579bd](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/71579bd79bd73c5583bec0a500fb689daf0160ae))
+
 ## [2.7.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.6.0...v2.7.0) (2026-03-17)
 
 ### Features
