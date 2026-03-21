@@ -183,3 +183,93 @@ testRule({
   ],
   /* eslint-enable sort-keys */
 });
+
+testRule({
+  config: [true, { allowWhenScoped: true }],
+  ruleName: name,
+  /* eslint-disable sort-keys */
+  accept: [
+    {
+      code: '.card td { color: red; }',
+      description: 'element as flat descendant of class',
+    },
+    {
+      code: '.card > td { color: red; }',
+      description: 'element as flat child of class',
+    },
+    {
+      code: '.doc-table thead td { color: red; }',
+      description: 'element chain with class ancestor',
+    },
+    {
+      code: '.card { td { color: red; } }',
+      description: 'element nested under class parent',
+    },
+    {
+      code: '.card { span { color: red; } }',
+      description: 'element nested under class via parent walk',
+    },
+    {
+      code: '.card { thead { td { color: red; } } }',
+      description: 'deeply nested element with class ancestor',
+    },
+    {
+      code: '#main td { color: red; }',
+      description: 'element scoped under ID',
+    },
+    {
+      code: '.card * { box-sizing: border-box; }',
+      description: 'universal selector scoped under class',
+    },
+    {
+      code: '.card { @media (min-width: 768px) { td { color: red; } } }',
+      description: 'element nested under class with at-rule in between',
+    },
+    {
+      code: '.card { &.active td { color: red; } }',
+      description: 'nesting selector with class in flat selector',
+    },
+  ],
+
+  reject: [
+    {
+      code: 'td { color: red; }',
+      description: 'bare element selector',
+      message: messages.rejected('td'),
+    },
+    {
+      code: 'div td { color: red; }',
+      description: 'element under element with no class',
+      message: messages.rejected('div td'),
+    },
+    {
+      code: 'div { td { color: red; } }',
+      description: 'element nested under element with no class ancestor',
+      warnings: [
+        { message: messages.rejected('div') },
+        { message: messages.rejected('td') },
+      ],
+    },
+    {
+      code: '.card + td { color: red; }',
+      description: 'adjacent sibling combinator does not scope',
+      message: messages.rejected('.card + td'),
+    },
+    {
+      code: '.card ~ td { color: red; }',
+      description: 'general sibling combinator does not scope',
+      message: messages.rejected('.card ~ td'),
+    },
+    {
+      code: '.card td, span { color: red; }',
+      description: 'unscoped entry in selector list',
+      message: messages.rejected('.card td, span'),
+    },
+    {
+      code: '* { box-sizing: border-box; }',
+      description: 'bare universal selector',
+      message: messages.rejected('*'),
+    },
+  ],
+  /* eslint-enable sort-keys */
+});
