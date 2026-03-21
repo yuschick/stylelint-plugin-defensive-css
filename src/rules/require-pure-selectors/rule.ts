@@ -12,6 +12,7 @@ import { findImpureElement } from './utils';
 const { report, validateOptions } = stylelint.utils;
 
 export interface SecondaryOptions extends SeverityProps {
+  allowWhenScoped?: boolean;
   ignoreAttributeSelectors?: boolean;
   ignoreElements?: (keyof HTMLElementTagNameMap)[];
 }
@@ -32,6 +33,7 @@ export const requirePureSelectors: Rule = (
         actual: secondaryOptions,
         possible: {
           ...severityOption,
+          allowWhenScoped: [true, false],
           ignoreAttributeSelectors: [true, false],
           ignoreElements: [(value: unknown) => typeof value === 'string'],
         },
@@ -45,7 +47,7 @@ export const requirePureSelectors: Rule = (
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
 
-      const impureNode = findImpureElement(selector, secondaryOptions);
+      const impureNode = findImpureElement(selector, secondaryOptions, ruleNode);
 
       if (impureNode) {
         report({

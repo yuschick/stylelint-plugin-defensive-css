@@ -1426,10 +1426,11 @@ Element selectors (e.g., `div`, `input`, `section`) couple styles directly to HT
 
 #### Require Pure Selectors Options
 
-**Configuration:** By default, this rule rejects any selector containing an HTML element tag. Use `ignoreElements` to allowlist specific tags (e.g., `*`, `html`, `body`) and `ignoreAttributeSelectors` to permit element tags that have an attached attribute selector (e.g., `input[type="text"]`).
+**Configuration:** By default, this rule rejects any selector containing an HTML element tag. Use `ignoreElements` to allowlist specific tags (e.g., `*`, `html`, `body`), `ignoreAttributeSelectors` to permit element tags that have an attached attribute selector (e.g., `input[type="text"]`), and `allowWhenScoped` to permit element tags that appear as descendants of a class or ID selector (e.g., `.card td`, `.wrapper > li`).
 
 ```ts
 interface SecondaryOptions {
+  allowWhenScoped?: boolean;
   ignoreAttributeSelectors?: boolean;
   ignoreElements?: (keyof HTMLElementTagNameMap)[];
   severity?: Severity;
@@ -1440,6 +1441,7 @@ interface SecondaryOptions {
 {
   "rules": {
     "defensive-css/require-pure-selectors": [true, {
+        "allowWhenScoped": true,
         "ignoreElements": ["html", "*"],
         "ignoreAttributeSelectors": true,
         "severity": "error"
@@ -1488,6 +1490,11 @@ body { margin: 0; }
 /* With ignoreAttributeSelectors: true */
 input[type="text"] { border: 1px solid; }
 button[disabled] { opacity: 0.5; }
+
+/* With allowWhenScoped: true */
+.doc-table__wrapper td { padding: 8px; }
+.nav-list > li { margin: 0; }
+.card { span { color: red; } }
 ```
 
 </details>
