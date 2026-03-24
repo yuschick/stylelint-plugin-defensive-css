@@ -27,7 +27,13 @@ export function findImpureElement(
       if (node.type === 'attribute' && !options.ignoreAttributeSelectors) {
         const prevNode = node.prev();
 
-        if (!prevNode || (prevNode.type !== 'class' && prevNode.type !== 'id')) {
+        if (
+          !prevNode ||
+          (prevNode.type === 'tag' &&
+            !options.ignoreElements?.includes(
+              prevNode.value as keyof HTMLElementTagNameMap,
+            ))
+        ) {
           illegalNode = node;
           return false;
         }

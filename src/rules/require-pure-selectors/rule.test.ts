@@ -61,6 +61,10 @@ testRule({
       code: '.input-field[aria-invalid="true"] { border-color: red; }',
       description: 'class with state attribute',
     },
+    {
+      code: ':root[data-theme="light"] {\n' + '  color-scheme: light;\n' + '}',
+      description: 'root pseudo-class with attribute selector',
+    },
   ],
 
   reject: [
@@ -179,6 +183,14 @@ testRule({
     {
       code: 'button { color: red; }',
       description: 'button element selector',
+    },
+    {
+      code: 'button:hover { color: blue; }',
+      description: 'button element with pseudo-class',
+    },
+    {
+      code: 'button[type=reset] { color: red; }',
+      description: 'button element with attribute selector',
     },
   ],
   /* eslint-enable sort-keys */
