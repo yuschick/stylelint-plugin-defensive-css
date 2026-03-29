@@ -14,5 +14,9 @@ export default {
       { columns: [true, { severity: 'error' }], rows: [true, { severity: 'warning' }] },
     ],
     'defensive-css/require-prefers-reduced-motion': [true, { severity: 'error' }],
+    'defensive-css/require-pure-selectors': [
+      true,
+      { ignoreElements: ['*'], severity: 'error' },
+    ],
   },
 };

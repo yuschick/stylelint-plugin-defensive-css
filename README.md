@@ -87,6 +87,10 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
       { "rows": [true, { "severity": "warning" }] },
     ],
     "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }],
+    "defensive-css/require-pure-selectors": [
+      true,
+      { "ignoreElements": ["*"], "severity": "error" },
+    ],
   }
 }
 ```
@@ -138,15 +142,17 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 3. [No List Style None](#no-list-style-none)
 4. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
 5. [No Unsafe Will-Change](#no-unsafe-will-change)
-6. [Require Background Repeat](#require-background-repeat)
-7. [Require Custom Property Fallback](#require-custom-property-fallback)
-8. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
-9. [Require Flex Wrap](#require-flex-wrap)
-10. [Require Focus Visible](#require-focus-visible)
-11. [Require Named Grid Lines](#require-named-grid-lines)
-12. [Require Overscroll Behavior](#require-overscroll-behavior)
-13. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
-14. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+6. [Require At Layer](#require-at-layer)
+7. [Require Background Repeat](#require-background-repeat)
+8. [Require Custom Property Fallback](#require-custom-property-fallback)
+9. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
+10. [Require Flex Wrap](#require-flex-wrap)
+11. [Require Focus Visible](#require-focus-visible)
+12. [Require Named Grid Lines](#require-named-grid-lines)
+13. [Require Overscroll Behavior](#require-overscroll-behavior)
+14. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+15. [Require Pure Selectors](#require-pure-selectors)
+16. [Require Scrollbar Gutter](#require-scrollbar-gutter)
 
 ---
 
@@ -484,6 +490,86 @@ input::-moz-placeholder {
 input::-webkit-input-placeholder,
 input::-moz-placeholder {
   color: #222;
+}
+```
+
+</details>
+
+---
+
+### Require At Layer
+
+CSS cascade layers (`@layer`) provide explicit control over specificity ordering, preventing unexpected style overrides in large codebases or design systems. Without layers, the cascade relies solely on source order and specificity, making it fragile and difficult to manage as styles scale. Scoping component styles to a top-level `@layer` ensures predictable cascade behavior and clearer style boundaries.
+
+**Enable this rule to:** Require all style rules to be wrapped in a top-level `@layer` rule, optionally restricting to a set of supported layer names.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-at-layer": true,
+  }
+}
+```
+
+#### Require At Layer Options
+
+**Configuration:** By default, this rule requires all styles to be inside any `@layer`. Use the `supportedLayerNames` option to restrict which layer names are allowed.
+
+```ts
+interface SecondaryOptions {
+  severity?: Severity;
+  supportedLayerNames?: string[];
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/require-at-layer": [true, {
+        "supportedLayerNames": ["ds.components", "ds.utilities"],
+        "severity": "error"
+    }],
+  }
+}
+```
+
+#### Require At Layer Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+/* Any layer name (without supportedLayerNames) */
+@layer components {
+  div {
+    color: red;
+  }
+}
+
+/* Supported layer name (with supportedLayerNames: ['ds.components']) */
+@layer ds.components {
+  div {
+    color: red;
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+/* Not wrapped in any @layer */
+div {
+  color: red;
+}
+
+/* Unsupported layer name (with supportedLayerNames: ['ds.components']) */
+@layer components {
+  div {
+    color: red;
+  }
 }
 ```
 
@@ -1318,6 +1404,127 @@ Some users experience motion sickness or vestibular disorders that make animatio
     transition: transform 0.3s;
   }
 }
+```
+
+</details>
+
+---
+
+### Require Pure Selectors
+
+Element selectors (e.g., `div`, `input`, `section`) couple styles directly to HTML structure, making stylesheets fragile when markup changes. Pure selectors — classes, IDs, and pseudo-classes — keep styles decoupled from the DOM, resulting in more maintainable and portable CSS.
+
+**Enable this rule to:** Require selectors to target classes or IDs rather than HTML element tags, preventing structural coupling between styles and markup.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-pure-selectors": true,
+  }
+}
+```
+
+#### Require Pure Selectors Options
+
+**Configuration:** By default, this rule rejects any selector containing an HTML element tag. Use `ignoreElements` to allowlist specific tags (e.g., `*`, `html`, `body`) and `ignoreAttributeSelectors` to permit element tags that have an attached attribute selector (e.g., `input[type="text"]`).
+
+```ts
+interface SecondaryOptions {
+  ignoreAttributeSelectors?: boolean;
+  ignoreElements?: (keyof HTMLElementTagNameMap)[];
+  severity?: Severity;
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/require-pure-selectors": [true, {
+        "ignoreElements": ["html", "*"],
+        "ignoreAttributeSelectors": true,
+        "severity": "error"
+    }],
+  }
+}
+```
+
+#### Require Pure Selectors Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+/* Standard class selector */
+.card { color: red; }
+
+/* Class-to-class relationship (flat specificity) */
+.nav-item .link { color: red; }
+
+/* ID selector */
+#header { color: red; }
+
+/* Attribute on a class (no tag dependency) */
+.button[disabled] { opacity: 0.5; }
+
+/* Class with pseudo-class */
+.btn:hover { color: blue; }
+
+/* Class with pseudo-element */
+.card::before { content: ""; }
+
+/* Pseudo-class only */
+:root { --color: red; }
+
+/* Child combinator with pure selectors */
+.input-group > .input-field { width: 100%; }
+
+/* Nested class selectors */
+.card { .btn { background: yellow; } }
+
+/* With ignoreElements: ['html', 'body'] */
+html { font-size: 16px; }
+body { margin: 0; }
+
+/* With ignoreAttributeSelectors: true */
+input[type="text"] { border: 1px solid; }
+button[disabled] { opacity: 0.5; }
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+/* Standalone element selector (global pollution) */
+div { color: red; }
+
+/* Descendant element selector (structural dependency) */
+.card div { color: red; }
+
+/* Compound element selector (tag dependency) */
+a.link { color: red; }
+
+/* Direct child element selector (markup fragility) */
+ul > li { margin: 0; }
+
+/* Base element */
+input { border: 1px solid; }
+
+/* Universal selector */
+* { box-sizing: border-box; }
+
+/* Element with pseudo-class */
+button:active { color: red; }
+
+/* Mixed pure and impure in selector list */
+.btn, button { color: red; }
+
+/* Deeply nested tag selectors */
+header nav ul li a { text-decoration: none; }
+
+/* Nested tag inside class */
+.card { span { color: red; } }
 ```
 
 </details>
