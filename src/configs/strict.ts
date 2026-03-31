@@ -24,7 +24,7 @@ export default {
     'defensive-css/require-named-grid-lines': [true, { severity: 'error' }],
     'defensive-css/require-overscroll-behavior': [true, { severity: 'error' }],
     'defensive-css/require-prefers-reduced-motion': [true, { severity: 'error' }],
-    'defensive-css/require-pure-selectors': [true, { severity: 'error' }],
+    'defensive-css/require-pure-selectors': [true, { severity: 'error', strict: true }],
     'defensive-css/require-scrollbar-gutter': [true, { severity: 'error' }],
   },
 };
