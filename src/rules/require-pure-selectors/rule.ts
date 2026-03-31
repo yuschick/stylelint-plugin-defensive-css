@@ -12,8 +12,14 @@ import { findImpureElement } from './utils';
 const { report, validateOptions } = stylelint.utils;
 
 export interface SecondaryOptions extends SeverityProps {
+  ignoreAttributeModifiers?: boolean;
+  /**
+   * @deprecated Use the 'ignoreAttributeModifiers' prop instead.
+   * The 'ignoreAttributeSelectors' prop will be removed in the next major release.
+   */
   ignoreAttributeSelectors?: boolean;
   ignoreElements?: (keyof HTMLElementTagNameMap)[];
+  strict?: boolean;
 }
 
 export const requirePureSelectors: Rule = (
@@ -32,8 +38,10 @@ export const requirePureSelectors: Rule = (
         actual: secondaryOptions,
         possible: {
           ...severityOption,
+          ignoreAttributeModifiers: [true, false],
           ignoreAttributeSelectors: [true, false],
           ignoreElements: [(value: unknown) => typeof value === 'string'],
+          strict: [true, false],
         },
       },
     );
