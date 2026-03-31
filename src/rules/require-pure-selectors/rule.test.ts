@@ -26,6 +26,10 @@ testRule({
       description: 'chained class selectors',
     },
     {
+      code: '.card button { color: red; }',
+      description: 'mixed class and tag selector in loose mode',
+    },
+    {
       code: '.btn:hover { color: blue; }',
       description: 'class with pseudo-class',
     },
@@ -60,6 +64,18 @@ testRule({
     {
       code: '.input-field[aria-invalid="true"] { border-color: red; }',
       description: 'class with state attribute',
+    },
+    {
+      code: ':where(.btn, #cta) { color: red; }',
+      description: 'pseudo-class wrapper containing pure selectors',
+    },
+    {
+      code: '.item:is(.active, .disabled) { color: red; }',
+      description: 'is() with pure selector branches',
+    },
+    {
+      code: '.item:not(.disabled) { color: red; }',
+      description: 'not() with pure selector branch',
     },
   ],
 
@@ -115,6 +131,16 @@ testRule({
       message: messages.rejected('input[type="checkbox"] + label'),
     },
     {
+      code: ':where(button) { color: red; }',
+      description: 'pseudo-class wrapper containing only a tag selector',
+      message: messages.rejected(':where(button)'),
+    },
+    {
+      code: '.btn, button { color: red; }',
+      description: 'selector list with one impure selector',
+      message: messages.rejected('.btn, button'),
+    },
+    {
       code: '.card { span { color: red; } }',
       description: 'nested tag selector',
       message: messages.rejected('span'),
@@ -144,6 +170,26 @@ testRule({
 });
 
 testRule({
+  config: [true, { ignoreAttributeSelectors: true }],
+  ruleName: name,
+  /* eslint-disable sort-keys */
+  accept: [
+    {
+      code: 'button[disabled] { color: red; }',
+      description: 'button with attribute selector using legacy option',
+    },
+  ],
+  reject: [
+    {
+      code: '[hidden] { display: none }',
+      description: 'global attribute selector remains invalid with legacy option',
+      message: messages.rejected('[hidden]'),
+    },
+  ],
+  /* eslint-enable sort-keys */
+});
+
+testRule({
   config: [true, { ignoreElements: ['button'] }],
   ruleName: name,
   /* eslint-disable sort-keys */
@@ -159,6 +205,26 @@ testRule({
     {
       code: 'button[type=reset] { color: red; }',
       description: 'button element with attribute selector',
+    },
+  ],
+  /* eslint-enable sort-keys */
+});
+
+testRule({
+  config: [true, { ignoreElements: ['*'] }],
+  ruleName: name,
+  /* eslint-disable sort-keys */
+  accept: [
+    {
+      code: '* { box-sizing: border-box; }',
+      description: 'universal selector ignored through ignoreElements',
+    },
+  ],
+  reject: [
+    {
+      code: 'section { display: block; }',
+      description: 'non-ignored element selectors are still rejected',
+      message: messages.rejected('section'),
     },
   ],
   /* eslint-enable sort-keys */
@@ -181,6 +247,14 @@ testRule({
       code: '.btn[type=reset] { color: red; }',
       description: 'a .btn class selector with attribute selector',
     },
+    {
+      code: '.btn, #header { color: red; }',
+      description: 'selector list containing only pure selectors',
+    },
+    {
+      code: '::selection { background: yellow; }',
+      description: 'standalone pseudo-element selector',
+    },
   ],
   reject: [
     {
@@ -198,6 +272,26 @@ testRule({
       description: 'a table cell tag selector',
       message: messages.rejected('.table td'),
     },
+    {
+      code: 'a.link { color: red; }',
+      description: 'compound selector with class and element tag in strict mode',
+      message: messages.rejected('a.link'),
+    },
+    {
+      code: '.card button { color: red; }',
+      description: 'mixed class and element tag selector in strict mode',
+      message: messages.rejected('.card button'),
+    },
+    {
+      code: '.btn, button { color: red; }',
+      description: 'selector list with impure branch in strict mode',
+      message: messages.rejected('.btn, button'),
+    },
+    {
+      code: ':where(button) { color: red; }',
+      description: 'tag selector wrapped in pseudo-class in strict mode',
+      message: messages.rejected(':where(button)'),
+    },
   ],
   /* eslint-enable sort-keys */
 });
@@ -211,6 +305,14 @@ testRule({
       code: 'button { color: red; }',
       description: 'a button tag selector',
     },
+    {
+      code: '.card button { color: red; }',
+      description: 'mixed selector with ignored element tag in strict mode',
+    },
+    {
+      code: 'button[disabled] { color: red; }',
+      description: 'ignored element tag with attribute selector in strict mode',
+    },
   ],
   /* eslint-enable sort-keys */
 });
@@ -223,6 +325,26 @@ testRule({
     {
       code: 'button[disabled] { color: red; }',
       description: 'a button tag with [disabled] attribute selector',
+    },
+  ],
+  /* eslint-enable sort-keys */
+});
+
+testRule({
+  config: [true, { ignoreAttributeSelectors: true, strict: true }],
+  ruleName: name,
+  /* eslint-disable sort-keys */
+  accept: [
+    {
+      code: 'button[disabled] { color: red; }',
+      description: 'legacy option allows element attribute selector in strict mode',
+    },
+  ],
+  reject: [
+    {
+      code: '[hidden] { display: none }',
+      description: 'legacy option still rejects global attribute selector in strict mode',
+      message: messages.rejected('[hidden]'),
     },
   ],
   /* eslint-enable sort-keys */
