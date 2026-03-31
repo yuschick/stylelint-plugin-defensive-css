@@ -1,54 +1,106 @@
 import parser, { Node } from 'postcss-selector-parser';
 import { SecondaryOptions } from './rule';
 
+type Mode = 'loose' | 'strict';
+
 export function findImpureElement(
   selector: string,
   options: SecondaryOptions = {},
 ): Node | null {
-  let illegalNode: Node | null = null;
+  const { ignoreAttributeModifiers, ignoreAttributeSelectors, ignoreElements, strict } =
+    options;
+  const allowAttributeModifiers = ignoreAttributeModifiers ?? ignoreAttributeSelectors;
+  const mode: Mode = strict ? 'strict' : 'loose';
+
+  let nodeToReport: Node | null = null;
 
   const processor = parser((selectors) => {
-    selectors.walk((node) => {
-      if (
-        node.type === 'tag' &&
-        !options.ignoreElements?.includes(node.value as keyof HTMLElementTagNameMap)
-      ) {
-        const nextNode = node.next();
+    selectors.each((container) => {
+      let impureNode: Node | null = null;
+      let isStrictlyPure = true;
+      let isLooselyPure = false;
+      let hasIgnoredTag: boolean | undefined = false;
 
-        const isAllowedByAttribute =
-          options.ignoreAttributeSelectors && nextNode?.type === 'attribute';
-
-        if (!isAllowedByAttribute) {
-          illegalNode = node;
-          return false;
+      container.walk((node) => {
+        if (node.type === 'class' || node.type === 'id') {
+          isLooselyPure = true;
+          return;
         }
+
+        if (node.type === 'tag') {
+          hasIgnoredTag = ignoreElements?.includes(
+            node.value as keyof HTMLElementTagNameMap,
+          );
+
+          if (hasIgnoredTag) {
+            return;
+          }
+
+          isStrictlyPure = false;
+
+          const nextNode = node.next();
+          const hasAttributeModifier = nextNode?.type === 'attribute';
+
+          if (allowAttributeModifiers && hasAttributeModifier) {
+            return;
+          }
+
+          if (!impureNode) {
+            impureNode = node;
+          }
+
+          return;
+        }
+
+        if (node.type === 'attribute') {
+          const prevNode = node.prev();
+
+          const allowAttributeModifier = hasIgnoredTag
+            ? // If the root tag is ignored, ignore the attribute modifier
+              true
+            : allowAttributeModifiers
+              ? // If attribute modifiers are allowed, check if the previous node exists to prevent global attribute selectors
+                !!prevNode?.type
+              : // if attribute modifiers are not allowed, only allow class and id selectors
+                prevNode?.type === 'class' || prevNode?.type === 'id';
+
+          if (allowAttributeModifier) {
+            return;
+          }
+
+          impureNode = node;
+          isStrictlyPure = false;
+          return;
+        }
+
+        if (node.type === 'universal') {
+          const isIgnored = ignoreElements?.includes('*' as keyof HTMLElementTagNameMap);
+
+          if (isIgnored) {
+            return;
+          }
+
+          if (!impureNode) {
+            impureNode = node;
+          }
+
+          isStrictlyPure = false;
+          return;
+        }
+      });
+
+      if (mode === 'strict' && !isStrictlyPure) {
+        nodeToReport = impureNode;
+        return false;
       }
 
-      if (node.type === 'attribute' && !options.ignoreAttributeSelectors) {
-        const prevNode = node.prev();
-
-        if (
-          !prevNode ||
-          (prevNode.type === 'tag' &&
-            !options.ignoreElements?.includes(
-              prevNode.value as keyof HTMLElementTagNameMap,
-            ))
-        ) {
-          illegalNode = node;
-          return false;
-        }
-      }
-
-      if (
-        node.type === 'universal' &&
-        !options.ignoreElements?.includes('*' as keyof HTMLElementTagNameMap)
-      ) {
-        illegalNode = node;
+      if (mode === 'loose' && !isStrictlyPure && !isLooselyPure) {
+        nodeToReport = impureNode;
         return false;
       }
     });
   });
 
   processor.processSync(selector);
-  return illegalNode;
+  return nodeToReport;
 }

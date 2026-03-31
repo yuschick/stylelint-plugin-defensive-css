@@ -1426,13 +1426,15 @@ Element selectors (e.g., `div`, `input`, `section`) couple styles directly to HT
 
 #### Require Pure Selectors Options
 
-**Configuration:** By default, this rule rejects any selector containing an HTML element tag. Use `ignoreElements` to allowlist specific tags (e.g., `*`, `html`, `body`) and `ignoreAttributeSelectors` to permit element tags that have an attached attribute selector (e.g., `input[type="text"]`).
+**Configuration:** By default (`strict: false`), this rule rejects selectors that are entirely element-based and requires at least one class or ID when element tags are present. Set `strict: true` to reject any non-ignored element tag in a selector (even when a class or ID is also present, e.g., `.card button`). Use `ignoreElements` to allowlist specific tags (e.g., `*`, `html`, `body`) and `ignoreAttributeModifiers` (_or deprecated `ignoreAttributeSelectors`_) to permit element tags that have an attached attribute selector (e.g., `input[type="text"]`).
 
 ```ts
 interface SecondaryOptions {
+  ignoreAttributeModifiers?: boolean;
   ignoreAttributeSelectors?: boolean;
   ignoreElements?: (keyof HTMLElementTagNameMap)[];
   severity?: Severity;
+  strict?: boolean;
 }
 ```
 
@@ -1441,8 +1443,9 @@ interface SecondaryOptions {
   "rules": {
     "defensive-css/require-pure-selectors": [true, {
         "ignoreElements": ["html", "*"],
-        "ignoreAttributeSelectors": true,
-        "severity": "error"
+        "ignoreAttributeModifiers": true,
+        "severity": "error",
+        "strict": true,
     }],
   }
 }
@@ -1459,6 +1462,9 @@ interface SecondaryOptions {
 
 /* Class-to-class relationship (flat specificity) */
 .nav-item .link { color: red; }
+
+/* Default mode (strict: false): mixed class + tag selector is allowed */
+.card button { color: red; }
 
 /* ID selector */
 #header { color: red; }
@@ -1485,7 +1491,7 @@ interface SecondaryOptions {
 html { font-size: 16px; }
 body { margin: 0; }
 
-/* With ignoreAttributeSelectors: true */
+/* With ignoreAttributeModifiers: true */
 input[type="text"] { border: 1px solid; }
 button[disabled] { opacity: 0.5; }
 ```
@@ -1498,12 +1504,6 @@ button[disabled] { opacity: 0.5; }
 ```css
 /* Standalone element selector (global pollution) */
 div { color: red; }
-
-/* Descendant element selector (structural dependency) */
-.card div { color: red; }
-
-/* Compound element selector (tag dependency) */
-a.link { color: red; }
 
 /* Direct child element selector (markup fragility) */
 ul > li { margin: 0; }
@@ -1525,6 +1525,9 @@ header nav ul li a { text-decoration: none; }
 
 /* Nested tag inside class */
 .card { span { color: red; } }
+
+/* With strict: true, mixed class + tag selectors are also rejected */
+.table td { display: none; }
 ```
 
 </details>

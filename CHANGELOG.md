@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.8.1](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.8.0...v2.8.1) (2026-03-31)
+
+### Bug Fixes
+
+* non-type attribute selector combinations ([#174](https://github.com/yuschick/stylelint-plugin-defensive-css/issues/174)) ([40bf633](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/40bf633c13ff6b819fffd8a76ebe32bf63e459f1))
+
+### Documentation
+
+* update require pure selectors documentation ([ca17580](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/ca1758043dc4fe238431fc3d56b450a8b1a49bd7))
+
 ## [2.8.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.7.0...v2.8.0) (2026-03-19)
 
 ### Features
