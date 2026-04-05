@@ -91,6 +91,7 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
       true,
       { "ignoreElements": ["*"], "severity": "error" },
     ],
+    "defensive-css/require-system-font-fallback": [true, { "severity": "error" }],
   }
 }
 ```
@@ -153,6 +154,7 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 14. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
 15. [Require Pure Selectors](#require-pure-selectors)
 16. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+17. [Require System Font Fallback](#require-system-font-fallback)
 
 ---
 
@@ -1616,6 +1618,152 @@ div {
 div {
   overflow-block: auto;
 }
+```
+
+</details>
+
+---
+
+### Require System Font Fallback
+
+Custom or non-standard fonts can fail to load due to network issues, font licensing, or missing system installations. Without a proper fallback, users may see invisible text (FOIT) or a jarring font swap (FOUT). Including a web-safe or CSS system font fallback ensures text remains readable under all conditions.
+
+**Enable this rule to:** Require `font` and `font-family` declarations to include a web-safe and/or CSS system font fallback.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-system-font-fallback": true,
+  }
+}
+```
+
+#### Require System Font Fallback Options
+
+**Configuration:** By default (loose mode), this rule accepts either a web-safe font (e.g., `Arial`, `Georgia`) or a CSS system font generic (e.g., `sans-serif`, `monospace`) as a valid fallback. Enable `strict` mode to require a CSS system font generic specifically. Use the `ignore` option to exclude patterns such as CSS variables or design tokens.
+
+> [!NOTE]
+> **Web-safe fonts** (e.g., `Arial`, `Georgia`, `Verdana`) are pre-installed on most operating systems and are accepted in **loose mode only**.
+>
+> **CSS system font generics** (e.g., `sans-serif`, `serif`, `monospace`, `system-ui`) are resolved by the browser itself and are accepted in **both loose and strict modes**.
+>
+> CSS global keywords (`inherit`, `initial`, `unset`, `revert`, `revert-layer`) are always accepted since they delegate font resolution to the cascade.
+
+```ts
+interface SecondaryOptions {
+  ignore?: (string | RegExp)[];
+  strict?: boolean;
+}
+```
+
+**Loose mode (default):** Accepts web-safe fonts or CSS system font generics as fallbacks.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-system-font-fallback": [true, {
+        "severity": "warning"
+    }],
+  }
+}
+```
+
+**Strict mode:** Requires a CSS system font generic — web-safe fonts alone are not enough.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-system-font-fallback": [true, {
+        "strict": true,
+        "severity": "error"
+    }],
+  }
+}
+```
+
+**Ignore patterns:** Exclude specific fonts or CSS variable patterns from being flagged.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-system-font-fallback": [true, {
+        "ignore": ["var\\(--ds-font-family.*\\)", "Exact Font"]
+    }],
+  }
+}
+```
+
+#### Require System Font Fallback Examples
+
+<details>
+<summary>✅ Passing Examples (Loose Mode)</summary>
+
+```css
+/* Web-safe font alone — accepted in loose mode */
+.heading { font-family: Arial; }
+
+/* CSS system font generic as fallback */
+.heading { font-family: "Fira Sans", sans-serif; }
+
+/* System font keyword in font shorthand */
+.heading { font: caption; }
+
+/* Newer generic families */
+.heading { font-family: "Custom Font", ui-sans-serif; }
+
+/* CSS global keywords are always accepted */
+.heading { font-family: inherit; }
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples (Loose Mode)</summary>
+
+```css
+/* No fallback at all */
+.heading { font-family: "Fira Sans"; }
+
+/* Quoted generic names are treated as custom families */
+.heading { font-family: "sans-serif"; }
+
+/* Multiple custom fonts with no fallback */
+.heading { font-family: "Custom Font", "Another Font"; }
+```
+
+</details>
+
+<details>
+<summary>✅ Passing Examples (Strict Mode)</summary>
+
+```css
+/* CSS system font generic as fallback */
+.heading { font-family: "Fira Sans", sans-serif; }
+
+/* Web-safe font with a system font generic */
+.heading { font-family: Arial, sans-serif; }
+
+/* Standalone system font generic */
+.heading { font-family: system-ui; }
+
+/* Newer CSS system font generics */
+.heading { font-family: "Custom Font", ui-serif; }
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples (Strict Mode)</summary>
+
+```css
+/* Web-safe font alone — not enough in strict mode */
+.heading { font-family: Arial; }
+
+/* Web-safe fallback without a system font generic */
+.heading { font-family: "Custom Font", Helvetica; }
+
+/* Two web-safe fonts, no system font generic */
+.heading { font-family: Verdana, Georgia; }
 ```
 
 </details>
