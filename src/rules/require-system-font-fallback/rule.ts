@@ -1,6 +1,6 @@
 /**
  * @author Daniel Yuschick
- * @fileoverview Rule to require a fallback value for custom properties.
+ * @fileoverview Rule to require a supported fallback font family.
  * @license MIT
  */
 
