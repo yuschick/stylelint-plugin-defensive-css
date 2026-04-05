@@ -14,6 +14,7 @@ import requirePrefersReducedMotion from './rules/require-prefers-reduced-motion'
 import requireOverscrollBehavior from './rules/require-overscroll-behavior';
 import requirePureSelectors from './rules/require-pure-selectors';
 import requireScrollbarGutter from './rules/require-scrollbar-gutter';
+import requireSystemFontFallback from './rules/require-system-font-fallback';
 
 export default [
   noAccidentalHover,
@@ -32,4 +33,5 @@ export default [
   requireOverscrollBehavior,
   requirePureSelectors,
   requireScrollbarGutter,
+  requireSystemFontFallback,
 ];

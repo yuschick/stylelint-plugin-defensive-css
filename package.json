@@ -38,7 +38,8 @@
     "lint:fix": "eslint '**/*.{js,cjs,mjs,ts,cts,mts}' --fix",
     "release:official": "release-it --config .release-it--official.json",
     "release:dry": "release-it --dry-run",
-    "test": "vitest"
+    "test": "vitest",
+    "test:watch": "vitest --watch --changed"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",

@@ -6,8 +6,9 @@
 
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
-import { findCustomPropertiesWithoutFallback, matchesIgnorePattern } from './utils';
+import { findCustomPropertiesWithoutFallback } from './utils';
 import { severityOption, SeverityProps } from '../../utils/types';
+import { matchesIgnorePattern } from '../../utils/ignore';
 
 const { report, validateOptions } = stylelint.utils;
 
