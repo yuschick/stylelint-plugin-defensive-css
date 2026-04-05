@@ -18,5 +18,6 @@ export default {
       true,
       { ignoreElements: ['*'], severity: 'error' },
     ],
+    'defensive-css/require-system-font-fallback': [true, { severity: 'error' }],
   },
 };

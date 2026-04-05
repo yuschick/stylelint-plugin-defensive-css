@@ -26,5 +26,9 @@ export default {
     'defensive-css/require-prefers-reduced-motion': [true, { severity: 'error' }],
     'defensive-css/require-pure-selectors': [true, { severity: 'error', strict: true }],
     'defensive-css/require-scrollbar-gutter': [true, { severity: 'error' }],
+    'defensive-css/require-system-font-fallback': [
+      true,
+      { severity: 'error', strict: true },
+    ],
   },
 };
