@@ -81,6 +81,7 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
     "defensive-css/require-dynamic-viewport-height": [true, { "severity": "warning" }],
     "defensive-css/require-flex-wrap": [true, { "severity": "error" }],
     "defensive-css/require-focus-visible": [true, { "severity": "error" }],
+    "defensive-css/require-forced-colors-focus": [true, { "severity": "error" }],
     "defensive-css/require-named-grid-lines": [
       true,
       { "columns": [true, { "severity": "error" }] },
@@ -117,6 +118,7 @@ The `accessibility` preset enables accessibility-focused rules to catch common i
     "defensive-css/no-accidental-hover": [true, { "severity": "error" }],
     "defensive-css/no-list-style-none": [true, { "fix": true, "severity": "error" }],
     "defensive-css/require-focus-visible": [true, { "severity": "error" }],
+    "defensive-css/require-forced-colors-focus": [true, { "severity": "error" }],
     "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }],
   },
 }
@@ -149,12 +151,13 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 9. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
 10. [Require Flex Wrap](#require-flex-wrap)
 11. [Require Focus Visible](#require-focus-visible)
-12. [Require Named Grid Lines](#require-named-grid-lines)
-13. [Require Overscroll Behavior](#require-overscroll-behavior)
-14. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
-15. [Require Pure Selectors](#require-pure-selectors)
-16. [Require Scrollbar Gutter](#require-scrollbar-gutter)
-17. [Require System Font Fallback](#require-system-font-fallback)
+12. [Require Forced Colors Focus](#require-forced-colors-focus)
+13. [Require Named Grid Lines](#require-named-grid-lines)
+14. [Require Overscroll Behavior](#require-overscroll-behavior)
+15. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+16. [Require Pure Selectors](#require-pure-selectors)
+17. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+18. [Require System Font Fallback](#require-system-font-fallback)
 
 ---
 
@@ -1106,6 +1109,126 @@ button:focus {
 
 .input:focus:hover {
   border-color: blue;
+}
+```
+
+</details>
+
+---
+
+### Require Forced Colors Focus
+
+In [Forced Colors Mode](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/forced-colors) (e.g., Windows High Contrast Mode), the browser overrides many CSS properties to ensure readability. Notably, `box-shadow` is completely removed. This means focus indicators that rely solely on `box-shadow`, a common pattern when `outline` has been set to `none` or `0` and translating designs from Figma, become invisible, breaking keyboard accessibility.
+
+**Enable this rule to:** Detect when `:focus` or `:focus-visible` selectors remove the outline and use `box-shadow` as the only focus indicator, which is unsafe in Forced Colors Mode. A common fix is to use `outline: 2px solid transparent` which remains invisible by default but becomes visible in Forced Colors Mode.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-forced-colors-focus": true,
+  }
+}
+```
+
+#### Require Forced Colors Focus Detection Logic
+
+This rule reports when **all** of the following are true:
+
+1. The selector targets a focused element (`:focus`, `:focus-visible`)
+2. The `outline` has been removed (`none`, `0`, `0px`, etc.)
+3. A `box-shadow` is present as the apparent focus indicator
+4. No visible `border` is present as a fallback (borders survive Forced Colors Mode)
+5. The rule is **not** wrapped in `@media (forced-colors: none)` or `@media not (forced-colors: active)`
+
+The rule gives the benefit of the doubt to `var()`, `inherit`, `revert`, and other values it cannot resolve statically.
+
+#### Require Forced Colors Focus Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+/* Transparent outline becomes visible in Forced Colors Mode */
+.btn:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow: 0 0 0 2px blue;
+}
+
+/* Visible outline alongside decorative box-shadow */
+.btn:focus-visible {
+  outline: 2px solid blue;
+  box-shadow: 0 0 0 4px rgba(0, 0, 255, 0.3);
+}
+
+/* box-shadow without outline removal — default browser outline remains */
+.btn:focus-visible {
+  box-shadow: 0 0 0 2px blue;
+}
+
+/* outline removed but visible border present — borders survive FCM */
+.btn:focus-visible {
+  outline: none;
+  border: 2px solid blue;
+  box-shadow: 0 0 0 2px blue;
+}
+
+/* Inside forced-colors: none — outside FCM context */
+@media (forced-colors: none) {
+  .btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px blue;
+  }
+}
+
+/* Nested CSS — parent removes outline, child restores it */
+.btn {
+  outline: none;
+
+  &:focus-visible {
+    outline: 2px solid transparent;
+    box-shadow: 0 0 0 2px blue;
+  }
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+/* outline: none with box-shadow as only focus indicator */
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px blue;
+}
+
+/* outline-width: 0 with box-shadow */
+.btn:focus-visible {
+  outline-width: 0;
+  box-shadow: 0 0 0 2px blue;
+}
+
+/* Shorthand with 0 width — invisible even with style and color */
+.btn:focus-visible {
+  outline: 0 solid red;
+  box-shadow: 0 0 0 2px blue;
+}
+
+/* Nested CSS — parent removes outline, focus uses only box-shadow */
+.btn {
+  outline: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 2px blue;
+  }
+}
+
+/* transparent border does not count as a visible FCM-safe indicator */
+.btn:focus-visible {
+  outline: none;
+  border: 2px solid transparent;
+  box-shadow: 0 0 0 2px blue;
 }
 ```
 

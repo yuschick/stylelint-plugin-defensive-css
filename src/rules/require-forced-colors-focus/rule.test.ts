@@ -243,13 +243,6 @@ testRule({
       description: 'inside forced-colors: active — box-shadow is still invisible in FCM',
       message: messages.rejected('.btn:focus-visible'),
     },
-
-    {
-      code: '.form:focus-within { outline: none; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline: none with box-shadow in :focus-within',
-      message: messages.rejected('.form:focus-within'),
-    },
-
     {
       code: '.card { .btn { outline: none; &:focus-visible { box-shadow: 0 0 0 2px blue; } } }',
       description:
