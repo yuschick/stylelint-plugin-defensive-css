@@ -21,6 +21,7 @@ export default {
     ],
     'defensive-css/require-flex-wrap': [true, { severity: 'error' }],
     'defensive-css/require-focus-visible': [true, { severity: 'error' }],
+    'defensive-css/require-forced-colors-focus': [true, { severity: 'error' }],
     'defensive-css/require-named-grid-lines': [true, { severity: 'error' }],
     'defensive-css/require-overscroll-behavior': [true, { severity: 'error' }],
     'defensive-css/require-prefers-reduced-motion': [true, { severity: 'error' }],
