@@ -6,7 +6,7 @@ export const name = 'defensive-css/no-user-select-none';
 
 export const messages = ruleMessages(name, {
   rejected: () =>
-    `Expected "user-select: none" to be avoided because it can negatively impact accessibility.`,
+    `Expected "user-select: none" to be avoided because it can negatively impact usability and accessibility.`,
 });
 
 export const meta: RuleMeta = {

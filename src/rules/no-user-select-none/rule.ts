@@ -1,6 +1,6 @@
 /**
  * @author Daniel Yuschick
- * @fileoverview Rule to prevent user-select: none which can negatively impact accessibility.
+ * @fileoverview Rule to prevent user-select: none which can negatively impact usability and accessibility.
  * @license MIT
  */
 
