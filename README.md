@@ -77,6 +77,7 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
     "defensive-css/no-list-style-none": [true, { "fix": true, "severity": "error" }],
     "defensive-css/no-mixed-vendor-prefixes": [true, { "severity": "error" }],
     "defensive-css/no-unsafe-will-change": [true, { "severity": "error" }],
+    "defensive-css/no-user-select-none": [true, { "severity": "error" }],
     "defensive-css/require-background-repeat": [true, { "severity": "error" }],
     "defensive-css/require-dynamic-viewport-height": [true, { "severity": "warning" }],
     "defensive-css/require-flex-wrap": [true, { "severity": "error" }],
@@ -117,6 +118,7 @@ The `accessibility` preset enables accessibility-focused rules to catch common i
   "rules": {
     "defensive-css/no-accidental-hover": [true, { "severity": "error" }],
     "defensive-css/no-list-style-none": [true, { "fix": true, "severity": "error" }],
+    "defensive-css/no-user-select-none": [true, { "severity": "error" }],
     "defensive-css/require-focus-visible": [true, { "severity": "error" }],
     "defensive-css/require-forced-colors-focus": [true, { "severity": "error" }],
     "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }],
@@ -145,19 +147,20 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 3. [No List Style None](#no-list-style-none)
 4. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
 5. [No Unsafe Will-Change](#no-unsafe-will-change)
-6. [Require At Layer](#require-at-layer)
-7. [Require Background Repeat](#require-background-repeat)
-8. [Require Custom Property Fallback](#require-custom-property-fallback)
-9. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
-10. [Require Flex Wrap](#require-flex-wrap)
-11. [Require Focus Visible](#require-focus-visible)
-12. [Require Forced Colors Focus](#require-forced-colors-focus)
-13. [Require Named Grid Lines](#require-named-grid-lines)
-14. [Require Overscroll Behavior](#require-overscroll-behavior)
-15. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
-16. [Require Pure Selectors](#require-pure-selectors)
-17. [Require Scrollbar Gutter](#require-scrollbar-gutter)
-18. [Require System Font Fallback](#require-system-font-fallback)
+6. [No User Select None](#no-user-select-none)
+7. [Require At Layer](#require-at-layer)
+8. [Require Background Repeat](#require-background-repeat)
+9. [Require Custom Property Fallback](#require-custom-property-fallback)
+10. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
+11. [Require Flex Wrap](#require-flex-wrap)
+12. [Require Focus Visible](#require-focus-visible)
+13. [Require Forced Colors Focus](#require-forced-colors-focus)
+14. [Require Named Grid Lines](#require-named-grid-lines)
+15. [Require Overscroll Behavior](#require-overscroll-behavior)
+16. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+17. [Require Pure Selectors](#require-pure-selectors)
+18. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+19. [Require System Font Fallback](#require-system-font-fallback)
 
 ---
 
@@ -784,6 +787,97 @@ interface SecondaryOptions {
 /* Universal selector in descendant */
 .container > * {
   will-change: opacity;
+}
+```
+
+</details>
+
+---
+
+### No User Select None
+
+Disabling text selection with `user-select: none` prevents users from copying content, interferes with screen reader text navigation, and breaks expected browser behavior. While there are legitimate use cases (e.g., drag handles, icon-only buttons), applying it broadly to text content harms usability and accessibility.
+
+**Enable this rule to:** Disallow `user-select: none` usage
+
+```json
+{
+  "rules": {
+    "defensive-css/no-user-select-none": true,
+  }
+}
+```
+
+#### No User Select None Options
+
+**`ignore`:** An array of string or regex patterns for selectors that should be excluded from this rule. The rule checks all ancestor selectors, so nested children of ignored selectors are also excluded.
+
+```json
+{
+  "rules": {
+    "defensive-css/no-user-select-none": [true, {
+      "ignore": [".drag-handle", "/^\\.icon-/"]
+    }],
+  }
+}
+```
+
+#### No User Select None Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+.class {
+  user-select: auto;
+}
+
+.class {
+  user-select: text;
+}
+
+.class {
+  user-select: all;
+}
+
+.class {
+  user-select: contain;
+}
+
+/* With ignore option: [".drag-handle"] */
+.drag-handle {
+  user-select: none;
+}
+
+/* Nested child of ignored selector is also excluded */
+.drag-handle .icon {
+  user-select: none;
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+.class {
+  user-select: none;
+}
+
+.class {
+  -webkit-user-select: none;
+}
+
+.class {
+  -moz-user-select: none;
+}
+
+/* Nested CSS is also flagged */
+.parent {
+  .child {
+    user-select: none;
+  }
 }
 ```
 
