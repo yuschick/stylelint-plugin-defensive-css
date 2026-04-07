@@ -9,6 +9,7 @@ import requireCustomPropertyFallback from './rules/require-custom-property-fallb
 import requireDynamicViewportHeight from './rules/require-dynamic-viewport-height';
 import requireFlexWrap from './rules/require-flex-wrap';
 import requireFocusVisible from './rules/require-focus-visible';
+import requireForcedColorsFocus from './rules/require-forced-colors-focus';
 import requireNamedGridLines from './rules/require-named-grid-lines';
 import requirePrefersReducedMotion from './rules/require-prefers-reduced-motion';
 import requireOverscrollBehavior from './rules/require-overscroll-behavior';
@@ -28,6 +29,7 @@ export default [
   requireDynamicViewportHeight,
   requireFlexWrap,
   requireFocusVisible,
+  requireForcedColorsFocus,
   requireNamedGridLines,
   requirePrefersReducedMotion,
   requireOverscrollBehavior,

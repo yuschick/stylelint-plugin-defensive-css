@@ -39,7 +39,7 @@
     "release:official": "release-it --config .release-it--official.json",
     "release:dry": "release-it --dry-run",
     "test": "vitest",
-    "test:watch": "vitest --watch --changed"
+    "test:watch": "vitest --watch"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
