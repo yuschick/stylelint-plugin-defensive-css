@@ -6,7 +6,7 @@
 ![Stylelint PLugin Defensive CSS Main Workflow Status](https://img.shields.io/github/actions/workflow/status/yuschick/stylelint-plugin-defensive-css/pull-request--checks.yaml?style=for-the-badge)
 ![Stylelint PLugin Defensive CSS NPM Downloads](https://img.shields.io/npm/dw/stylelint-plugin-defensive-css?style=for-the-badge)
 
-A Stylelint plugin to enforce [Defensive CSS](https://defensivecss.dev/) best practices.
+A Stylelint plugin to help you write more defensive, accessible, and maintainable CSS. Catch layout and accessibility bugs before they ship, enforce team-wide best practices, and guard against the subtle CSS pitfalls that break real-world experiences.
 
 > [!TIP]
 > [V1 documentation can be found here](./V1-DOCUMENTATION.md)
