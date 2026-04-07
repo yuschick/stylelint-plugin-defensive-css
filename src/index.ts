@@ -2,6 +2,7 @@ import noAccidentalHover from './rules/no-accidental-hover';
 import noFixedSizes from './rules/no-fixed-sizes';
 import noListStyleNone from './rules/no-list-style-none';
 import noMixedVendorPrefixes from './rules/no-mixed-vendor-prefixes';
+import noUserSelectNone from './rules/no-user-select-none';
 import NoUnsafeWillChange from './rules/no-unsafe-will-change';
 import requireAtLayer from './rules/require-at-layer';
 import requireBackgroundRepeat from './rules/require-background-repeat';
@@ -22,6 +23,7 @@ export default [
   noFixedSizes,
   noListStyleNone,
   noMixedVendorPrefixes,
+  noUserSelectNone,
   NoUnsafeWillChange,
   requireAtLayer,
   requireBackgroundRepeat,
