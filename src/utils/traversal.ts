@@ -1,4 +1,4 @@
-import type { ChildNode, Node, Root, Rule } from 'postcss';
+import type { AtRule, ChildNode, Node, Root, Rule } from 'postcss';
 
 /**
  * Walk up the ancestor chain from a node, testing each ancestor against a predicate.
@@ -6,7 +6,7 @@ import type { ChildNode, Node, Root, Rule } from 'postcss';
  */
 export function hasMatchingAncestor(
   node: ChildNode,
-  predicate: (ancestor: Root | Rule) => boolean,
+  predicate: (ancestor: AtRule | Root | Rule) => boolean,
 ): boolean {
   let ancestor: Node | undefined = node.parent;
 
@@ -19,6 +19,12 @@ export function hasMatchingAncestor(
 
     if (ancestor.type === 'rule') {
       if (predicate(ancestor as Rule)) {
+        return true;
+      }
+    }
+
+    if (ancestor.type === 'atrule') {
+      if (predicate(ancestor as AtRule)) {
         return true;
       }
     }

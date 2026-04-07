@@ -1,4 +1,6 @@
 import { PropertiesHyphen } from 'csstype';
+import type { ChildNode } from 'postcss';
+import { hasMatchingAncestor } from '../../utils/traversal';
 
 export const outlineProperties: Set<keyof PropertiesHyphen> = new Set([
   'outline',
@@ -19,55 +21,13 @@ export function checkForRemovalValue(value: string): boolean {
   return negativeValues.has(value) || /^0(%|[a-z]+)?$/.test(value);
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export function isOutsideForcedColorsMode(node: any): boolean {
-  let parent = node.parent;
-
-  while (parent) {
-    if (parent.type === 'atrule' && parent.name === 'media') {
-      const params = parent.params;
-
-      // Check for forced-colors: none
-      if (/forced-color\s*:\s*none/.test(params)) {
-        return true;
-      }
-
-      // Check for not (forced-colors: active)
-      if (/not\s*\(\s*forced-colors\s*:\s*active\s*\)/.test(params)) {
-        return true;
-      }
-    }
-    parent = parent.parent;
-  }
-
-  return false;
-}
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export function isInsideForcedColorsMode(node: any): boolean {
-  let parent = node.parent;
-
-  while (parent) {
-    if (parent.type === 'atrule' && parent.name === 'media') {
-      const params = parent.params;
-
-      // Check for forced-colors: active (without "not")
-      // Make sure it's not "not (forced-colors: active)"
-      if (
-        /forced-colors\s*:\s*active/.test(params) &&
-        !/not\s*\(\s*forced-colors\s*:\s*active\s*\)/.test(params)
-      ) {
-        return true;
-      }
-
-      // Check for "not (forced-colors: none)""
-      // This is equivalent to (forced-colors: none)
-      if (/not\s*\(\s*forced-colors\s*:\s*none\s*\)/.test(params)) {
-        return true;
-      }
-    }
-    parent = parent.parent;
-  }
-
-  return false;
+export function isOutsideForcedColorsMode(node: ChildNode): boolean {
+  return hasMatchingAncestor(
+    node,
+    (ancestor) =>
+      ancestor.type === 'atrule' &&
+      ancestor.name === 'media' &&
+      (/forced-color\s*:\s*none/.test(ancestor.params) ||
+        /not\s*\(\s*forced-colors\s*:\s*active\s*\)/.test(ancestor.params)),
+  );
 }
