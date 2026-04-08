@@ -27,7 +27,7 @@ export function isOutsideForcedColorsMode(node: ChildNode): boolean {
     (ancestor) =>
       ancestor.type === 'atrule' &&
       ancestor.name === 'media' &&
-      (/forced-color\s*:\s*none/.test(ancestor.params) ||
+      (/forced-colors\s*:\s*none/.test(ancestor.params) ||
         /not\s*\(\s*forced-colors\s*:\s*active\s*\)/.test(ancestor.params)),
   );
 }

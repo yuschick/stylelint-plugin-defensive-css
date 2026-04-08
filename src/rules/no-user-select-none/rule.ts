@@ -47,7 +47,7 @@ export const noUserSelectNone: Rule = (
     const { ignore = [], severity } = secondaryOptions;
 
     root.walkDecls(/^(-(webkit|moz)-)?user-select$/, (decl) => {
-      if (decl.value !== 'none') {
+      if (decl.value.trim().toLowerCase() !== 'none') {
         return;
       }
 

@@ -7,7 +7,7 @@ export default {
       true,
       { reportUnresolvable: false, severity: 'error' },
     ],
-    'defensive-css/no-user-select-none': [true, { fix: true, severity: 'error' }],
+    'defensive-css/no-user-select-none': [true, { severity: 'error' }],
     'defensive-css/require-focus-visible': [true, { severity: 'error' }],
     'defensive-css/require-forced-colors-focus': [true, { severity: 'error' }],
     'defensive-css/require-prefers-reduced-motion': [true, { severity: 'error' }],

@@ -41,8 +41,8 @@ testRule({
     },
 
     {
-      code: '@media (forced-color: none) { .btn:focus-visible { outline: none; box-shadow: 0 0 0 2px blue; } }',
-      description: 'inside forced-color: none media query — outside FCM',
+      code: '@media (forced-colors: none) { .btn:focus-visible { outline: none; box-shadow: 0 0 0 2px blue; } }',
+      description: 'inside forced-colors: none media query — outside FCM',
     },
     {
       code: '@media not (forced-colors: active) { .btn:focus-visible { outline: none; box-shadow: 0 0 0 2px blue; } }',
