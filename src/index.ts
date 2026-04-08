@@ -3,7 +3,7 @@ import noFixedSizes from './rules/no-fixed-sizes';
 import noListStyleNone from './rules/no-list-style-none';
 import noMixedVendorPrefixes from './rules/no-mixed-vendor-prefixes';
 import noUnsafeClampFontSize from './rules/no-unsafe-clamp-font-size';
-import NoUnsafeWillChange from './rules/no-unsafe-will-change';
+import noUnsafeWillChange from './rules/no-unsafe-will-change';
 import noUserSelectNone from './rules/no-user-select-none';
 import requireAtLayer from './rules/require-at-layer';
 import requireBackgroundRepeat from './rules/require-background-repeat';
@@ -25,7 +25,7 @@ export default [
   noListStyleNone,
   noMixedVendorPrefixes,
   noUnsafeClampFontSize,
-  NoUnsafeWillChange,
+  noUnsafeWillChange,
   noUserSelectNone,
   requireAtLayer,
   requireBackgroundRepeat,

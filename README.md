@@ -89,7 +89,7 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
     "defensive-css/require-forced-colors-focus": [true, { "severity": "error" }],
     "defensive-css/require-named-grid-lines": [
       true,
-      { "columns": [true, { "severity": 'error' }], "rows": [true, { "severity": 'warning' }] },
+      { "columns": [true, { "severity": "error" }], "rows": [true, { "severity": "warning" }] },
     ],
     "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }],
     "defensive-css/require-pure-selectors": [
