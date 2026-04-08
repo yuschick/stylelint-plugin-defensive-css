@@ -98,6 +98,10 @@ testRule({
       description: 'calc-style preferred with px + vw — ratio exactly 2.5',
     },
     {
+      code: '.title { font-size: clamp(10px, min(5vw, 2rem), 25px); }',
+      description: 'preferred min() with inner comma parses correctly (safe ratio)',
+    },
+    {
       code: '.box { width: clamp(100px, 50vw, 500px); }',
       description: 'clamp on width — not font-size',
     },
@@ -175,6 +179,16 @@ testRule({
       code: '.title { font-size: clamp(1rem, 0.5rem + 2vw, 3rem); }',
       description: 'calc-style preferred — unsafe ratio of 3.0',
       message: messages.exceedsRatio('1rem', '3rem', 2.5),
+    },
+    {
+      code: '.title { font-size: clamp(10px, min(5vw, 2rem), 50px); }',
+      description: 'preferred min() with inner comma parses correctly (unsafe ratio)',
+      message: messages.exceedsRatio('10px', '50px', 2.5),
+    },
+    {
+      code: '.title { font-size: clamp(10px, var(--fluid, 5vw), 50px); }',
+      description: 'preferred var() fallback with inner comma parses correctly',
+      message: messages.exceedsRatio('10px', '50px', 2.5),
     },
     {
       code: '.title { font-size: clamp(1rem, 5vw, 40px); }',

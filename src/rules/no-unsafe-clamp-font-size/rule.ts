@@ -7,6 +7,7 @@
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { severityOption, SeverityProps } from '../../utils/types';
+import { parseClampArguments } from './utils';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -47,7 +48,6 @@ export const noUnsafeClampFontSize: Rule = (
     } = secondaryOptions;
 
     const dimensionPattern = /^\s*(\d*\.?\d+)\s*([a-z%]+)\s*$/i;
-    const clampPattern = /clamp\(\s*([^,]+),\s*([^,]+),\s*([^)]+)\)/i;
     const viewportUnitPattern = /(^|[^a-z-])[dsl]?v(?:w|h|min|max|i|b)\b/i;
 
     root.walkDecls(/^font(-size)?$/, (decl) => {
@@ -55,9 +55,9 @@ export const noUnsafeClampFontSize: Rule = (
        * 1. Check if the font size is defined using the clamp() function.
        * If not, return early.
        */
-      const match = decl.value.match(clampPattern);
+      const clampArgs = parseClampArguments(decl.value);
 
-      if (!match) {
+      if (!clampArgs) {
         return;
       }
 
@@ -65,7 +65,7 @@ export const noUnsafeClampFontSize: Rule = (
        * 2. Extract min, preferred and max values from the clamp() function.
        * If the preferred value isn't sized with a viewport unit, return early.
        */
-      const [, min, preferred, max] = match;
+      const [min, preferred, max] = clampArgs;
       const preferredHasViewportUnit = viewportUnitPattern.test(preferred);
 
       if (!preferredHasViewportUnit) {
