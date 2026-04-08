@@ -13,7 +13,7 @@ A Stylelint plugin to help you write more defensive, accessible, and maintainabl
 
 ## Table of Contents
 
-[Getting Started](#getting-started) | [Quickstart](#quickstart) | [Plugin Configs](#defensive-css-configs) |  [Plugin Rules](#defensive-css-rules) | [Troubleshooting](#troubleshooting)
+[Getting Started](#getting-started) | [Quickstart](#quickstart) | [Plugin Configs](#defensive-css-configs) | [Plugin Rules](#defensive-css-rules) | [Troubleshooting](#troubleshooting)
 
 ## Getting Started
 
@@ -34,7 +34,7 @@ With the plugin installed, it must be added to the `plugins` array of your Style
 
 ```json
 {
-  "plugins": ["stylelint-plugin-defensive-css"],
+  "plugins": ["stylelint-plugin-defensive-css"]
 }
 ```
 
@@ -76,6 +76,10 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
     "defensive-css/no-accidental-hover": [true, { "severity": "error" }],
     "defensive-css/no-list-style-none": [true, { "fix": true, "severity": "error" }],
     "defensive-css/no-mixed-vendor-prefixes": [true, { "severity": "error" }],
+    "defensive-css/no-unsafe-clamp-font-size": [
+      true,
+      { "reportUnresolvable": false, "severity": "error" }
+    ],
     "defensive-css/no-unsafe-will-change": [true, { "severity": "error" }],
     "defensive-css/no-user-select-none": [true, { "severity": "error" }],
     "defensive-css/require-background-repeat": [true, { "severity": "error" }],
@@ -86,14 +90,14 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
     "defensive-css/require-named-grid-lines": [
       true,
       { "columns": [true, { "severity": "error" }] },
-      { "rows": [true, { "severity": "warning" }] },
+      { "rows": [true, { "severity": "warning" }] }
     ],
     "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }],
     "defensive-css/require-pure-selectors": [
       true,
-      { "ignoreElements": ["*"], "severity": "error" },
+      { "ignoreElements": ["*"], "severity": "error" }
     ],
-    "defensive-css/require-system-font-fallback": [true, { "severity": "error" }],
+    "defensive-css/require-system-font-fallback": [true, { "severity": "error" }]
   }
 }
 ```
@@ -118,11 +122,15 @@ The `accessibility` preset enables accessibility-focused rules to catch common i
   "rules": {
     "defensive-css/no-accidental-hover": [true, { "severity": "error" }],
     "defensive-css/no-list-style-none": [true, { "fix": true, "severity": "error" }],
+    "defensive-css/no-unsafe-clamp-font-size": [
+      true,
+      { "reportUnresolvable": false, "severity": "error" }
+    ],
     "defensive-css/no-user-select-none": [true, { "severity": "error" }],
     "defensive-css/require-focus-visible": [true, { "severity": "error" }],
     "defensive-css/require-forced-colors-focus": [true, { "severity": "error" }],
-    "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }],
-  },
+    "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }]
+  }
 }
 ```
 
@@ -146,21 +154,22 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 2. [No Fixed Sizes](#no-fixed-sizes)
 3. [No List Style None](#no-list-style-none)
 4. [No Mixed Vendor Prefixes](#no-mixed-vendor-prefixes)
-5. [No Unsafe Will-Change](#no-unsafe-will-change)
-6. [No User Select None](#no-user-select-none)
-7. [Require At Layer](#require-at-layer)
-8. [Require Background Repeat](#require-background-repeat)
-9. [Require Custom Property Fallback](#require-custom-property-fallback)
-10. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
-11. [Require Flex Wrap](#require-flex-wrap)
-12. [Require Focus Visible](#require-focus-visible)
-13. [Require Forced Colors Focus](#require-forced-colors-focus)
-14. [Require Named Grid Lines](#require-named-grid-lines)
-15. [Require Overscroll Behavior](#require-overscroll-behavior)
-16. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
-17. [Require Pure Selectors](#require-pure-selectors)
-18. [Require Scrollbar Gutter](#require-scrollbar-gutter)
-19. [Require System Font Fallback](#require-system-font-fallback)
+5. [No Unsafe Clamp Font Size](#no-unsafe-clamp-font-size)
+6. [No Unsafe Will-Change](#no-unsafe-will-change)
+7. [No User Select None](#no-user-select-none)
+8. [Require At Layer](#require-at-layer)
+9. [Require Background Repeat](#require-background-repeat)
+10. [Require Custom Property Fallback](#require-custom-property-fallback)
+11. [Require Dynamic Viewport Height](#require-dynamic-viewport-height)
+12. [Require Flex Wrap](#require-flex-wrap)
+13. [Require Focus Visible](#require-focus-visible)
+14. [Require Forced Colors Focus](#require-forced-colors-focus)
+15. [Require Named Grid Lines](#require-named-grid-lines)
+16. [Require Overscroll Behavior](#require-overscroll-behavior)
+17. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+18. [Require Pure Selectors](#require-pure-selectors)
+19. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+20. [Require System Font Fallback](#require-system-font-fallback)
 
 ---
 
@@ -176,7 +185,7 @@ Hover effects indicate interactivity on devices with mouse or trackpad input. Ho
 ```json
 {
   "rules": {
-    "defensive-css/no-accidental-hover": true,
+    "defensive-css/no-accidental-hover": true
   }
 }
 ```
@@ -257,31 +266,32 @@ Fixed pixel (px) values prevent layouts from adapting to different screen sizes,
 **Configuration:** By default, this rule validates critical sizing properties (width, height, font-size), spacing properties (margin, padding, gap), typography properties (line-height, letter-spacing), and responsive at-rules (@media, @container). Use the `at-rules` and `properties` options to customize which are checked or adjust their severity levels.
 
 ```ts
-type Severity = 'error' | 'warning';
+type Severity = 'error' | 'warning';
 
 interface SecondaryOptions {
   'at-rules'?: Partial<
-    Record<
-      CSSType.AtRules, boolean | [boolean, { severity?: Severity }]
-    >
+    Record<CSSType.AtRules, boolean | [boolean, { severity?: Severity }]>
   >;
-  'properties'?: Partial<
-    Record<
-      keyof CSSType.PropertiesHyphen, boolean | [boolean, { severity?: Severity }]
-    >
-  >
-  "severity"?: Severity 
+  properties?: Partial<
+    Record<keyof CSSType.PropertiesHyphen, boolean | [boolean, { severity?: Severity }]>
+  >;
+  severity?: Severity;
 }
 ```
 
 ```json
 {
   "rules": {
-    "defensive-css/no-fixed-sizes": [true, {
+    "defensive-css/no-fixed-sizes": [
+      true,
+      {
         "at-rules": [{ "@container": false }],
-        "properties": [{ "transform": true, "scroll-margin": [true, { "severity": "warning" }] }],
+        "properties": [
+          { "transform": true, "scroll-margin": [true, { "severity": "warning" }] }
+        ],
         "severity": "error"
-    }],
+      }
+    ]
   }
 }
 ```
@@ -416,7 +426,7 @@ In Safari, using `list-style: none` on `<ul>`, `<ol>`, or `<li>` elements remove
 ```css
 /* Recommended: Preserves semantics */
 ul {
-  list-style-type: "";
+  list-style-type: '';
 }
 
 /* Exception: Lists inside nav elements retain semantics */
@@ -469,7 +479,7 @@ Grouping vendor-prefixed selectors in a single rule can cause the entire rule to
 ```json
 {
   "rules": {
-    "defensive-css/no-mixed-vendor-prefixes": true,
+    "defensive-css/no-mixed-vendor-prefixes": true
   }
 }
 ```
@@ -514,7 +524,7 @@ CSS cascade layers (`@layer`) provide explicit control over specificity ordering
 ```json
 {
   "rules": {
-    "defensive-css/require-at-layer": true,
+    "defensive-css/require-at-layer": true
   }
 }
 ```
@@ -533,10 +543,13 @@ interface SecondaryOptions {
 ```json
 {
   "rules": {
-    "defensive-css/require-at-layer": [true, {
+    "defensive-css/require-at-layer": [
+      true,
+      {
         "supportedLayerNames": ["ds.components", "ds.utilities"],
         "severity": "error"
-    }],
+      }
+    ]
   }
 }
 ```
@@ -597,7 +610,7 @@ Background and mask images repeat by default when the container is larger than t
 ```json
 {
   "rules": {
-    "defensive-css/require-background-repeat": true,
+    "defensive-css/require-background-repeat": true
   }
 }
 ```
@@ -616,10 +629,13 @@ interface SecondaryOptions {
 ```json
 {
   "rules": {
-    "defensive-css/require-background-repeat": [true, {
+    "defensive-css/require-background-repeat": [
+      true,
+      {
         "background-repeat": [true, { "severity": "error" }],
         "mask-repeat": false
-    }],
+      }
+    ]
   }
 }
 ```
@@ -676,6 +692,120 @@ div {
 
 ---
 
+### No Unsafe Clamp Font Size
+
+> [!NOTE]
+> [Read the research behind this rule](https://www.smashingmagazine.com/2023/11/addressing-accessibility-concerns-fluid-type/)
+
+Using `clamp()` with viewport units for fluid font sizing can prevent text from scaling to 200% of its original size when users zoom to 500%, violating [WCAG Success Criterion 1.4.4 (Resize Text)](https://www.w3.org/WAI/WCAG21/Understanding/resize-text.html). The issue occurs because viewport units don't scale with browser zoom, the viewport stays the same size while everything else grows.
+
+This rule enforces that the ratio between the min and max values in a `clamp()` font-size does not exceed 2.5. This threshold is mathematically derived: at 500% zoom, the browser scales the min by 5×, and WCAG requires at least 2× the original size. For the zoomed floor (5 × min) to always meet the target (2 × max), the ratio must satisfy max/min ≤ 2.5.
+
+**Enable this rule to:** Guard against the most common WCAG 1.4.4 failure when using viewport-based fluid type.
+
+```json
+{
+  "rules": {
+    "defensive-css/no-unsafe-clamp-font-size": true
+  }
+}
+```
+
+#### No Unsafe Clamp Font Size Options
+
+| Option               | Type      | Default | Description                                                                     |
+| -------------------- | --------- | ------- | ------------------------------------------------------------------------------- |
+| `maxRatio`           | `number`  | `2.5`   | The maximum allowed ratio between clamp max and min values.                     |
+| `reportUnresolvable` | `boolean` | `true`  | Report when the min/max ratio cannot be determined (e.g. mixed units, `var()`). |
+
+```json
+{
+  "rules": {
+    "defensive-css/no-unsafe-clamp-font-size": [
+      true,
+      { "maxRatio": 2.5, "reportUnresolvable": true, "severity": "error" }
+    ]
+  }
+}
+```
+
+#### No Unsafe Clamp Font Size Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+/* Safe ratio of 2.5 */
+.title {
+  font-size: clamp(10px, 5vw, 25px);
+}
+
+/* Safe ratio using rem */
+.title {
+  font-size: clamp(1rem, 2vw, 2.5rem);
+}
+
+/* calc-style preferred with viewport unit — safe ratio */
+.title {
+  font-size: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+}
+
+/* No viewport unit in preferred — no risk */
+.title {
+  font-size: clamp(1rem, 50%, 3rem);
+}
+
+/* font shorthand with safe ratio */
+.title {
+  font:
+    clamp(10px, 5vw, 25px) / 1.5 'Helvetica',
+    sans-serif;
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+/* Ratio of 5.0 — exceeds safe limit */
+.title {
+  font-size: clamp(10px, 5vw, 50px);
+}
+
+/* Ratio of 3.0 — the article's original failing example */
+.title {
+  font-size: clamp(16px, 4vw, 48px);
+}
+
+/* Ratio of 3.0 using rem */
+.title {
+  font-size: clamp(1rem, 2vw, 3rem);
+}
+
+/* Mixed units — cannot verify ratio */
+.title {
+  font-size: clamp(1rem, 5vw, 40px);
+}
+
+/* var() in min — cannot verify ratio */
+.title {
+  font-size: clamp(var(--min), 5vw, 25px);
+}
+
+/* font shorthand with unsafe ratio */
+.title {
+  font:
+    clamp(10px, 5vw, 50px) / 1.5 'Helvetica',
+    sans-serif;
+}
+```
+
+</details>
+
+---
+
 ### No Unsafe Will-Change
 
 > [!WARNING]
@@ -698,7 +828,7 @@ The `will-change` CSS property hints to browsers about expected changes to an el
 **Configuration:** By default, this rule allows up to 2 properties and errors on violations. Use the options below to customize validation.
 
 ```ts
-type Severity = 'error' | 'warning';
+type Severity = 'error' | 'warning';
 
 interface SecondaryOptions {
   ignore?: (keyof PropertiesHyphen)[];
@@ -710,11 +840,14 @@ interface SecondaryOptions {
 ```json
 {
   "rules": {
-    "defensive-css/no-unsafe-will-change": [true, {
+    "defensive-css/no-unsafe-will-change": [
+      true,
+      {
         "maxProperties": 3,
         "ignore": ["width"],
         "severity": "error"
-    }],
+      }
+    ]
   }
 }
 ```
@@ -725,7 +858,6 @@ interface SecondaryOptions {
 <summary>✅ Passing Examples</summary>
 
 ```css
-
 /* Single composite property */
 .card:hover {
   will-change: transform;
@@ -746,7 +878,6 @@ interface SecondaryOptions {
   will-change: transform, opacity, filter;
   /* Passes if maxProperties: 3 and ignore: ['filter'] */
 }
-
 ```
 
 </details>
@@ -755,7 +886,6 @@ interface SecondaryOptions {
 <summary>❌ Failing Examples</summary>
 
 ```css
-
 /* Universal selector - forces GPU layers on all elements */
 * {
   will-change: transform;
@@ -803,7 +933,7 @@ Disabling text selection with `user-select: none` prevents users from copying co
 ```json
 {
   "rules": {
-    "defensive-css/no-user-select-none": true,
+    "defensive-css/no-user-select-none": true
   }
 }
 ```
@@ -815,9 +945,12 @@ Disabling text selection with `user-select: none` prevents users from copying co
 ```json
 {
   "rules": {
-    "defensive-css/no-user-select-none": [true, {
-      "ignore": [".drag-handle", "/^\\.icon-/"]
-    }],
+    "defensive-css/no-user-select-none": [
+      true,
+      {
+        "ignore": [".drag-handle", "/^\\.icon-/"]
+      }
+    ]
   }
 }
 ```
@@ -897,7 +1030,7 @@ CSS custom properties (variables) can fail silently if undefined, potentially br
 ```json
 {
   "rules": {
-    "defensive-css/require-custom-property-fallback": true,
+    "defensive-css/require-custom-property-fallback": true
   }
 }
 ```
@@ -960,7 +1093,7 @@ Dynamic viewport units (`100dvh`, `100dvb`) automatically adjust to the current 
 ```json
 {
   "rules": {
-    "defensive-css/require-dynamic-viewport-height": true,
+    "defensive-css/require-dynamic-viewport-height": true
   }
 }
 ```
@@ -976,12 +1109,12 @@ Dynamic viewport units (`100dvh`, `100dvb`) automatically adjust to the current 
 interface SecondaryOptions {
   fix?: boolean;
   properties?: {
-  'block-size'?: boolean | [boolean, SeverityProps];
-  height?: boolean | [boolean, SeverityProps];
-  'max-block-size'?: boolean | [boolean, SeverityProps];
-  'max-height'?: boolean | [boolean, SeverityProps];
-  'min-block-size'?: boolean | [boolean, SeverityProps];
-  'min-height'?: boolean | [boolean, SeverityProps];
+    'block-size'?: boolean | [boolean, SeverityProps];
+    height?: boolean | [boolean, SeverityProps];
+    'max-block-size'?: boolean | [boolean, SeverityProps];
+    'max-height'?: boolean | [boolean, SeverityProps];
+    'min-block-size'?: boolean | [boolean, SeverityProps];
+    'min-height'?: boolean | [boolean, SeverityProps];
   };
 }
 ```
@@ -989,14 +1122,17 @@ interface SecondaryOptions {
 ```json
 {
   "rules": {
-    "defensive-css/require-dynamic-viewport-height": [true, {
-      "fix": true,
-      "properties": {
-        "height": [true, { "severity": "error" }],
-        "min-block-size": false,
-      },
-      "severity": "warning"
-    }],
+    "defensive-css/require-dynamic-viewport-height": [
+      true,
+      {
+        "fix": true,
+        "properties": {
+          "height": [true, { "severity": "error" }],
+          "min-block-size": false
+        },
+        "severity": "warning"
+      }
+    ]
   }
 }
 ```
@@ -1090,7 +1226,7 @@ Flex containers do not wrap their children by default. When there isn't enough h
 ```json
 {
   "rules": {
-    "defensive-css/require-flex-wrap": true,
+    "defensive-css/require-flex-wrap": true
   }
 }
 ```
@@ -1162,7 +1298,7 @@ The `:focus` pseudo-class shows focus indicators for both mouse clicks and keybo
 ```json
 {
   "rules": {
-    "defensive-css/require-focus-visible": true,
+    "defensive-css/require-focus-visible": true
   }
 }
 ```
@@ -1219,7 +1355,7 @@ In [Forced Colors Mode](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/
 ```json
 {
   "rules": {
-    "defensive-css/require-forced-colors-focus": true,
+    "defensive-css/require-forced-colors-focus": true
   }
 }
 ```
@@ -1339,7 +1475,7 @@ Unnamed grid lines make layouts harder to understand and maintain. Numeric posit
 ```json
 {
   "rules": {
-    "defensive-css/require-named-grid-lines": true,
+    "defensive-css/require-named-grid-lines": true
   }
 }
 ```
@@ -1358,10 +1494,13 @@ interface SecondaryOptions {
 ```json
 {
   "rules": {
-    "defensive-css/require-named-grid-lines": [true, {
+    "defensive-css/require-named-grid-lines": [
+      true,
+      {
         "columns": [true, { "severity": "error" }],
         "rows": [true, { "severity": "warning" }]
-    }],
+      }
+    ]
   }
 }
 ```
@@ -1461,7 +1600,7 @@ Scroll chaining occurs when a scrollable element reaches its scroll boundary and
 ```json
 {
   "rules": {
-    "defensive-css/require-overscroll-behavior": true,
+    "defensive-css/require-overscroll-behavior": true
   }
 }
 ```
@@ -1480,10 +1619,13 @@ interface SecondaryOptions {
 ```json
 {
   "rules": {
-    "defensive-css/require-overscroll-behavior": [true, {
-        "x": [true, { "severity": "warning" }],
-        "y": [true, { "severity": "error" }]
-    }],
+    "defensive-css/require-overscroll-behavior": [
+      true,
+      {
+        "x": [true, { "severity": "warning" }],
+        "y": [true, { "severity": "error" }]
+      }
+    ]
   }
 }
 ```
@@ -1596,7 +1738,6 @@ Some users experience motion sickness or vestibular disorders that make animatio
     }
   }
 }
-
 ```
 
 </details>
@@ -1638,7 +1779,7 @@ Element selectors (e.g., `div`, `input`, `section`) couple styles directly to HT
 ```json
 {
   "rules": {
-    "defensive-css/require-pure-selectors": true,
+    "defensive-css/require-pure-selectors": true
   }
 }
 ```
@@ -1660,12 +1801,15 @@ interface SecondaryOptions {
 ```json
 {
   "rules": {
-    "defensive-css/require-pure-selectors": [true, {
+    "defensive-css/require-pure-selectors": [
+      true,
+      {
         "ignoreElements": ["html", "*"],
         "ignoreAttributeModifiers": true,
         "severity": "error",
-        "strict": true,
-    }],
+        "strict": true
+      }
+    ]
   }
 }
 ```
@@ -1677,42 +1821,72 @@ interface SecondaryOptions {
 
 ```css
 /* Standard class selector */
-.card { color: red; }
+.card {
+  color: red;
+}
 
 /* Class-to-class relationship (flat specificity) */
-.nav-item .link { color: red; }
+.nav-item .link {
+  color: red;
+}
 
 /* Default mode (strict: false): mixed class + tag selector is allowed */
-.card button { color: red; }
+.card button {
+  color: red;
+}
 
 /* ID selector */
-#header { color: red; }
+#header {
+  color: red;
+}
 
 /* Attribute on a class (no tag dependency) */
-.button[disabled] { opacity: 0.5; }
+.button[disabled] {
+  opacity: 0.5;
+}
 
 /* Class with pseudo-class */
-.btn:hover { color: blue; }
+.btn:hover {
+  color: blue;
+}
 
 /* Class with pseudo-element */
-.card::before { content: ""; }
+.card::before {
+  content: '';
+}
 
 /* Pseudo-class only */
-:root { --color: red; }
+:root {
+  --color: red;
+}
 
 /* Child combinator with pure selectors */
-.input-group > .input-field { width: 100%; }
+.input-group > .input-field {
+  width: 100%;
+}
 
 /* Nested class selectors */
-.card { .btn { background: yellow; } }
+.card {
+  .btn {
+    background: yellow;
+  }
+}
 
 /* With ignoreElements: ['html', 'body'] */
-html { font-size: 16px; }
-body { margin: 0; }
+html {
+  font-size: 16px;
+}
+body {
+  margin: 0;
+}
 
 /* With ignoreAttributeModifiers: true */
-input[type="text"] { border: 1px solid; }
-button[disabled] { opacity: 0.5; }
+input[type='text'] {
+  border: 1px solid;
+}
+button[disabled] {
+  opacity: 0.5;
+}
 ```
 
 </details>
@@ -1722,31 +1896,52 @@ button[disabled] { opacity: 0.5; }
 
 ```css
 /* Standalone element selector (global pollution) */
-div { color: red; }
+div {
+  color: red;
+}
 
 /* Direct child element selector (markup fragility) */
-ul > li { margin: 0; }
+ul > li {
+  margin: 0;
+}
 
 /* Base element */
-input { border: 1px solid; }
+input {
+  border: 1px solid;
+}
 
 /* Universal selector */
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 /* Element with pseudo-class */
-button:active { color: red; }
+button:active {
+  color: red;
+}
 
 /* Mixed pure and impure in selector list */
-.btn, button { color: red; }
+.btn,
+button {
+  color: red;
+}
 
 /* Deeply nested tag selectors */
-header nav ul li a { text-decoration: none; }
+header nav ul li a {
+  text-decoration: none;
+}
 
 /* Nested tag inside class */
-.card { span { color: red; } }
+.card {
+  span {
+    color: red;
+  }
+}
 
 /* With strict: true, mixed class + tag selectors are also rejected */
-.table td { display: none; }
+.table td {
+  display: none;
+}
 ```
 
 </details>
@@ -1765,7 +1960,7 @@ When content grows and triggers a scrollbar, the sudden appearance of the scroll
 ```json
 {
   "rules": {
-    "defensive-css/require-scrollbar-gutter": true,
+    "defensive-css/require-scrollbar-gutter": true
   }
 }
 ```
@@ -1784,10 +1979,13 @@ interface SecondaryOptions {
 ```json
 {
   "rules": {
-    "defensive-css/require-scrollbar-gutter": [true, {
-        "x": [true, { "severity": "warning" }],
-        "y": [true, { "severity": "error" }]
-    }],
+    "defensive-css/require-scrollbar-gutter": [
+      true,
+      {
+        "x": [true, { "severity": "warning" }],
+        "y": [true, { "severity": "error" }]
+      }
+    ]
   }
 }
 ```
@@ -1850,7 +2048,7 @@ Custom or non-standard fonts can fail to load due to network issues, font licens
 ```json
 {
   "rules": {
-    "defensive-css/require-system-font-fallback": true,
+    "defensive-css/require-system-font-fallback": true
   }
 }
 ```
@@ -1878,9 +2076,12 @@ interface SecondaryOptions {
 ```json
 {
   "rules": {
-    "defensive-css/require-system-font-fallback": [true, {
+    "defensive-css/require-system-font-fallback": [
+      true,
+      {
         "severity": "warning"
-    }],
+      }
+    ]
   }
 }
 ```
@@ -1890,10 +2091,13 @@ interface SecondaryOptions {
 ```json
 {
   "rules": {
-    "defensive-css/require-system-font-fallback": [true, {
+    "defensive-css/require-system-font-fallback": [
+      true,
+      {
         "strict": true,
         "severity": "error"
-    }],
+      }
+    ]
   }
 }
 ```
@@ -1903,9 +2107,12 @@ interface SecondaryOptions {
 ```json
 {
   "rules": {
-    "defensive-css/require-system-font-fallback": [true, {
+    "defensive-css/require-system-font-fallback": [
+      true,
+      {
         "ignore": ["var\\(--ds-font-family.*\\)", "Exact Font"]
-    }],
+      }
+    ]
   }
 }
 ```
@@ -1917,19 +2124,29 @@ interface SecondaryOptions {
 
 ```css
 /* Web-safe font alone — accepted in loose mode */
-.heading { font-family: Arial; }
+.heading {
+  font-family: Arial;
+}
 
 /* CSS system font generic as fallback */
-.heading { font-family: "Fira Sans", sans-serif; }
+.heading {
+  font-family: 'Fira Sans', sans-serif;
+}
 
 /* System font keyword in font shorthand */
-.heading { font: caption; }
+.heading {
+  font: caption;
+}
 
 /* Newer generic families */
-.heading { font-family: "Custom Font", ui-sans-serif; }
+.heading {
+  font-family: 'Custom Font', ui-sans-serif;
+}
 
 /* CSS global keywords are always accepted */
-.heading { font-family: inherit; }
+.heading {
+  font-family: inherit;
+}
 ```
 
 </details>
@@ -1939,13 +2156,19 @@ interface SecondaryOptions {
 
 ```css
 /* No fallback at all */
-.heading { font-family: "Fira Sans"; }
+.heading {
+  font-family: 'Fira Sans';
+}
 
 /* Quoted generic names are treated as custom families */
-.heading { font-family: "sans-serif"; }
+.heading {
+  font-family: 'sans-serif';
+}
 
 /* Multiple custom fonts with no fallback */
-.heading { font-family: "Custom Font", "Another Font"; }
+.heading {
+  font-family: 'Custom Font', 'Another Font';
+}
 ```
 
 </details>
@@ -1955,16 +2178,24 @@ interface SecondaryOptions {
 
 ```css
 /* CSS system font generic as fallback */
-.heading { font-family: "Fira Sans", sans-serif; }
+.heading {
+  font-family: 'Fira Sans', sans-serif;
+}
 
 /* Web-safe font with a system font generic */
-.heading { font-family: Arial, sans-serif; }
+.heading {
+  font-family: Arial, sans-serif;
+}
 
 /* Standalone system font generic */
-.heading { font-family: system-ui; }
+.heading {
+  font-family: system-ui;
+}
 
 /* Newer CSS system font generics */
-.heading { font-family: "Custom Font", ui-serif; }
+.heading {
+  font-family: 'Custom Font', ui-serif;
+}
 ```
 
 </details>
@@ -1974,13 +2205,19 @@ interface SecondaryOptions {
 
 ```css
 /* Web-safe font alone — not enough in strict mode */
-.heading { font-family: Arial; }
+.heading {
+  font-family: Arial;
+}
 
 /* Web-safe fallback without a system font generic */
-.heading { font-family: "Custom Font", Helvetica; }
+.heading {
+  font-family: 'Custom Font', Helvetica;
+}
 
 /* Two web-safe fonts, no system font generic */
-.heading { font-family: Verdana, Georgia; }
+.heading {
+  font-family: Verdana, Georgia;
+}
 ```
 
 </details>
