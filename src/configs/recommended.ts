@@ -4,6 +4,10 @@ export default {
     'defensive-css/no-accidental-hover': [true, { severity: 'error' }],
     'defensive-css/no-list-style-none': [true, { fix: true, severity: 'error' }],
     'defensive-css/no-mixed-vendor-prefixes': [true, { severity: 'error' }],
+    'defensive-css/no-unsafe-clamp-font-size': [
+      true,
+      { reportUnresolvable: false, severity: 'error' },
+    ],
     'defensive-css/no-unsafe-will-change': [true, { severity: 'error' }],
     'defensive-css/no-user-select-none': [true, { severity: 'error' }],
     'defensive-css/require-background-repeat': [true, { severity: 'error' }],
