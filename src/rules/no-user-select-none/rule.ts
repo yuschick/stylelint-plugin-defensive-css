@@ -1,14 +1,14 @@
 /**
  * @author Daniel Yuschick
- * @fileoverview Rule to require a fallback value for custom properties.
+ * @fileoverview Rule to prevent user-select: none which can negatively impact usability and accessibility.
  * @license MIT
  */
 
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
-import { findCustomPropertiesWithoutFallback } from './utils';
 import { severityOption, SeverityProps } from '../../utils/types';
 import { matchesIgnorePattern } from '../../utils/ignore';
+import { hasMatchingAncestor } from '../../utils/traversal';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -16,7 +16,7 @@ interface SecondaryOptions extends SeverityProps {
   ignore?: (string | RegExp)[];
 }
 
-export const requireCustomPropertyFallback: Rule = (
+export const noUserSelectNone: Rule = (
   primaryOption,
   secondaryOptions: SecondaryOptions = {},
 ) => {
@@ -44,33 +44,34 @@ export const requireCustomPropertyFallback: Rule = (
 
     if (!validOptions) return;
 
-    const { severity } = secondaryOptions;
+    const { ignore = [], severity } = secondaryOptions;
 
-    const ignorePatterns = secondaryOptions.ignore || [];
+    root.walkDecls(/^(-(webkit|moz)-)?user-select$/, (decl) => {
+      if (decl.value.trim().toLowerCase() !== 'none') {
+        return;
+      }
 
-    root.walkDecls((decl) => {
-      const propertiesWithoutFallback = findCustomPropertiesWithoutFallback(decl.value);
+      if (
+        hasMatchingAncestor(decl, (ancestor) => {
+          return (
+            ancestor.type === 'rule' && matchesIgnorePattern(ancestor.selector, ignore)
+          );
+        })
+      ) {
+        return;
+      }
 
-      if (propertiesWithoutFallback.length === 0) return;
-
-      const violatingProperties = propertiesWithoutFallback.filter((property) => {
-        return !matchesIgnorePattern(property, ignorePatterns);
-      });
-
-      violatingProperties.forEach((property) => {
-        report({
-          message: messages.rejected(property),
-          node: decl,
-          result,
-          ruleName: name,
-          severity,
-          word: property,
-        });
+      report({
+        message: messages.rejected(),
+        node: decl,
+        result,
+        ruleName: name,
+        severity,
       });
     });
   };
 };
 
-requireCustomPropertyFallback.ruleName = name;
-requireCustomPropertyFallback.messages = messages;
-requireCustomPropertyFallback.meta = meta;
+noUserSelectNone.ruleName = name;
+noUserSelectNone.messages = messages;
+noUserSelectNone.meta = meta;

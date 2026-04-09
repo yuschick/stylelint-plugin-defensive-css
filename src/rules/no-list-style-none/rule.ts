@@ -8,6 +8,7 @@ import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { isNavSelector, isListStyleNone, listStyleProperties } from './utils';
 import { fixOption, FixProps, severityOption, SeverityProps } from '../../utils/types';
+import { hasMatchingAncestor } from '../../utils/traversal';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -36,17 +37,13 @@ export const noListStyleNone: Rule = (
 
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
-      let { parent } = ruleNode;
 
-      let isWrappedInNavSelector = isNavSelector(selector);
-
-      while (!isWrappedInNavSelector && parent && parent.type === 'rule') {
-        if (isNavSelector(parent.selector)) {
-          isWrappedInNavSelector = true;
-          break;
-        }
-        parent = parent.parent;
-      }
+      const isWrappedInNavSelector =
+        isNavSelector(selector) ||
+        hasMatchingAncestor(
+          ruleNode,
+          (ancestor) => ancestor.type === 'rule' && isNavSelector(ancestor.selector),
+        );
 
       ruleNode.walkDecls(/^list-style(?:-type)?$/, (decl) => {
         if (isWrappedInNavSelector) {

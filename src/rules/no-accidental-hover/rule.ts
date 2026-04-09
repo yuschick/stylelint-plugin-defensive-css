@@ -7,6 +7,7 @@
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { severityOption, SeverityProps } from '../../utils/types';
+import { hasMatchingAncestor } from '../../utils/traversal';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -47,18 +48,13 @@ export const noAccidentalHover: Rule = (
       }
 
       // Check if wrapped in @media (hover: hover) or @media (hover)
-      let { parent } = ruleNode;
-      let isWrappedInHoverMedia = false;
-
-      while (parent && parent.type !== 'root') {
-        if (parent.type === 'atrule' && parent.name === 'media') {
-          if (/hover(:\s*hover)?/.test(parent.params)) {
-            isWrappedInHoverMedia = true;
-            break;
-          }
-        }
-        parent = parent.parent;
-      }
+      const isWrappedInHoverMedia = hasMatchingAncestor(
+        ruleNode,
+        (ancestor) =>
+          ancestor.type === 'atrule' &&
+          ancestor.name === 'media' &&
+          /hover(:\s*hover)?/.test(ancestor.params),
+      );
 
       // Report if :hover is not wrapped in appropriate media query
       if (!isWrappedInHoverMedia) {
