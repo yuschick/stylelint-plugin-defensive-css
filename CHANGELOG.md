@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.8.1...v2.9.0) (2026-04-09)
+
+### Features
+
+* add font-family fallback rule ([c54c8ba](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/c54c8ba217c87c10a428d77adf2eca24793bdd1d))
+* add no-user-select-none rule to all three preset configs ([1587ef5](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/1587ef5ee6bba94ee64eefbb010570e313e3312d))
+* add require-forced-colors-focus to recommended, accessibility and strict presets ([c88ecb9](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/c88ecb9cb530593ddf73d850cf0f40c1bcab8097))
+* add require-system-font-fallback rule to recommended and strict configs ([24dbf1f](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/24dbf1f517de95a5b5247e6aecadbdabd4dbaae2))
+* added no-unsafe-clamp-font-size to accessibility, recommended and strict presets ([63cd218](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/63cd21834bbee9aa3193ccc776218bcd5f06f827))
+* create no-unsafe-clamp-font-size rule ([9e352a5](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/9e352a53cf723d1de3077630b4281c08d720f9a2))
+* create no-user-select-none rule ([c826f15](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/c826f159673e2a9c5e9689dc63570385f4ba6968))
+* create require-forced-colors-focus rule ([9979322](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/997932239b0237479be89649c64cdaca6c8014ae))
+
+### Bug Fixes
+
+* minor issues with configs and rules ([0ebcb62](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/0ebcb62c0cc1bf20f1eefe9a358d284bcd932d85))
+* typo in noUnsafeWillChange rule ([6d53c9b](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/6d53c9be61666bce50214200db58ee0417ecbe84))
+
+### Documentation
+
+* add docs for no-user-select-none rule ([4845326](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/4845326e575cef120b755924fb5c64edc276916c))
+* add documentation for the no-unsafe-clamp-font-size rule ([f659468](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/f65946846a703199d5ffd9d2421e6ceee0877a8d))
+* add require-system-font-fallback documentation ([4a9fff2](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/4a9fff263fefc12e20b65af743af7adc178ac375))
+* document the require-forced-colors-focus rule ([7f14043](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/7f1404322cdc2cad03d744aa21fd3881eb405ffc))
+* update require-system-font-fallback description ([bdcc0c4](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/bdcc0c422cf57488c9691c47809ef2b43fc1c6b2))
+
 ## [2.8.1](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.8.0...v2.8.1) (2026-03-31)
 
 ### Bug Fixes
