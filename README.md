@@ -78,7 +78,7 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
     "defensive-css/no-mixed-vendor-prefixes": [true, { "severity": "error" }],
     "defensive-css/no-unsafe-clamp-font-size": [
       true,
-      { "reportUnresolvable": false, "severity": "error" }
+      { "reportUnresolvable": [true, { "severity": "warning" }], "severity": "error" }
     ],
     "defensive-css/no-unsafe-will-change": [true, { "severity": "error" }],
     "defensive-css/no-user-select-none": [true, { "severity": "error" }],
@@ -89,7 +89,10 @@ The `recommended` preset enables core defensive CSS rules with sensible defaults
     "defensive-css/require-forced-colors-focus": [true, { "severity": "error" }],
     "defensive-css/require-named-grid-lines": [
       true,
-      { "columns": [true, { "severity": "error" }], "rows": [true, { "severity": "warning" }] },
+      {
+        "columns": [true, { "severity": "error" }],
+        "rows": [true, { "severity": "warning" }]
+      }
     ],
     "defensive-css/require-prefers-reduced-motion": [true, { "severity": "error" }],
     "defensive-css/require-pure-selectors": [
@@ -123,7 +126,7 @@ The `accessibility` preset enables accessibility-focused rules to catch common i
     "defensive-css/no-list-style-none": [true, { "fix": true, "severity": "error" }],
     "defensive-css/no-unsafe-clamp-font-size": [
       true,
-      { "reportUnresolvable": false, "severity": "error" }
+      { "reportUnresolvable": [true, { "severity": "warning" }], "severity": "error" }
     ],
     "defensive-css/no-user-select-none": [true, { "severity": "error" }],
     "defensive-css/require-focus-visible": [true, { "severity": "error" }],
@@ -712,10 +715,10 @@ This rule enforces that the ratio between the min and max values in a `clamp()` 
 
 #### No Unsafe Clamp Font Size Options
 
-| Option               | Type      | Default | Description                                                                     |
-| -------------------- | --------- | ------- | ------------------------------------------------------------------------------- |
-| `maxRatio`           | `number`  | `2.5`   | The maximum allowed ratio between clamp max and min values.                     |
-| `reportUnresolvable` | `boolean` | `true`  | Report when the min/max ratio cannot be determined (e.g. mixed units, `var()`). |
+| Option               | Type                                  | Default | Description                                                                                                  |
+| -------------------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
+| `maxRatio`           | `number`                              | `2.5`   | The maximum allowed ratio between clamp max and min values.                                                  |
+| `reportUnresolvable` | `boolean \| [boolean, SeverityProps]` | `true`  | Report when the min/max ratio cannot be determined due to mixed units. `var()` functions are given the benefit of the doubt. Can specify custom severity. |
 
 ```json
 {
@@ -723,6 +726,19 @@ This rule enforces that the ratio between the min and max values in a `clamp()` 
     "defensive-css/no-unsafe-clamp-font-size": [
       true,
       { "maxRatio": 2.5, "reportUnresolvable": true, "severity": "error" }
+    ]
+  }
+}
+```
+
+**Report unresolvable cases as warnings:**
+
+```json
+{
+  "rules": {
+    "defensive-css/no-unsafe-clamp-font-size": [
+      true,
+      { "reportUnresolvable": [true, { "severity": "warning" }] }
     ]
   }
 }
@@ -747,6 +763,11 @@ This rule enforces that the ratio between the min and max values in a `clamp()` 
 /* calc-style preferred with viewport unit — safe ratio */
 .title {
   font-size: clamp(1rem, 0.5rem + 2vw, 2.5rem);
+}
+
+/* var() functions — cannot verify ratio, benefit of the doubt */
+.title {
+  font-size: clamp(var(--min), 5vw, 25px);
 }
 
 /* No viewport unit in preferred — no risk */
@@ -786,11 +807,6 @@ This rule enforces that the ratio between the min and max values in a `clamp()` 
 /* Mixed units — cannot verify ratio */
 .title {
   font-size: clamp(1rem, 5vw, 40px);
-}
-
-/* var() in min — cannot verify ratio */
-.title {
-  font-size: clamp(var(--min), 5vw, 25px);
 }
 
 /* font shorthand with unsafe ratio */

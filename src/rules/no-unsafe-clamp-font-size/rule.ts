@@ -8,12 +8,13 @@ import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { severityOption, SeverityProps } from '../../utils/types';
 import { parseClampArguments } from './utils';
+import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
 interface SecondaryOptions extends SeverityProps {
   maxRatio?: number;
-  reportUnresolvable?: boolean;
+  reportUnresolvable?: boolean | [boolean, SeverityProps];
 }
 
 export const noUnsafeClampFontSize: Rule = (
@@ -34,18 +35,22 @@ export const noUnsafeClampFontSize: Rule = (
         possible: {
           ...severityOption,
           maxRatio: [(value: unknown) => typeof value === 'number' && value > 0],
-          reportUnresolvable: [(value: unknown) => typeof value === 'boolean'],
+          reportUnresolvable: [(value: unknown) => validateBasicOption(value)],
         },
       },
     );
 
     if (!validOptions) return;
 
-    const {
-      severity = 'error',
-      maxRatio = 2.5,
-      reportUnresolvable = true,
-    } = secondaryOptions;
+    const { severity = 'error', maxRatio = 2.5 } = secondaryOptions;
+
+    const reportUnresolvableOption = secondaryOptions.reportUnresolvable ?? true;
+    const shouldReportUnresolvable = Array.isArray(reportUnresolvableOption)
+      ? reportUnresolvableOption[0]
+      : reportUnresolvableOption;
+    const unresolvableSeverity = Array.isArray(reportUnresolvableOption)
+      ? reportUnresolvableOption[1]?.severity || severity
+      : severity;
 
     const dimensionPattern = /^\s*(\d*\.?\d+)\s*([a-z%]+)\s*$/i;
     const viewportUnitPattern = /(^|[^a-z-])[dsl]?v(?:w|h|min|max|i|b)\b/i;
@@ -73,20 +78,27 @@ export const noUnsafeClampFontSize: Rule = (
       }
 
       /**
-       * 3. Parse numeric value and unit from min and max.
+       * 3. Check if min or max contains var() — if so, skip entirely.
+       */
+      if (min.includes('var(') || max.includes('var(')) {
+        return;
+      }
+
+      /**
+       * 4. Parse numeric value and unit from min and max.
        * If they cannot be parsed, report as unresolvable.
        */
       const minMatch = min.match(dimensionPattern);
       const maxMatch = max.match(dimensionPattern);
 
       if (!minMatch || !maxMatch) {
-        if (reportUnresolvable) {
+        if (shouldReportUnresolvable) {
           report({
             message: messages.unresolvable(decl.value),
             node: decl,
             result,
             ruleName: name,
-            severity,
+            severity: unresolvableSeverity,
           });
         }
 
@@ -99,17 +111,17 @@ export const noUnsafeClampFontSize: Rule = (
       const maxUnit = maxMatch[2].trim().toLowerCase();
 
       /**
-       * 4. Check if the min and max values have the same units.
-       * If they don't, the ratio can't be determined — always bail out.
+       * 5. Check if the min and max values have the same units.
+       * If they don't, the ratio can't be determined — report as unresolvable.
        */
       if (minUnit !== maxUnit) {
-        if (reportUnresolvable) {
+        if (shouldReportUnresolvable) {
           report({
             message: messages.unresolvable(decl.value),
             node: decl,
             result,
             ruleName: name,
-            severity,
+            severity: unresolvableSeverity,
           });
         }
 
@@ -117,7 +129,7 @@ export const noUnsafeClampFontSize: Rule = (
       }
 
       /**
-       * 5. Since min and max share the same unit, compare their ratio to maxRatio.
+       * 6. Since min and max share the same unit, compare their ratio to maxRatio.
        * If it exceeds maxRatio, report.
        */
       const ratio = minValue > 0 ? maxValue / minValue : Infinity;

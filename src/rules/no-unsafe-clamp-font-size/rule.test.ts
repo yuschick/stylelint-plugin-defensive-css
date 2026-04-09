@@ -117,6 +117,14 @@ testRule({
       code: '.title { font-size: clamp(10px,5vw,25px); }',
       description: 'no whitespace inside clamp()',
     },
+    {
+      code: '.title { font-size: clamp(var(--min), 5vw, 25px); }',
+      description: 'var() in min — cannot verify ratio, benefit of the doubt',
+    },
+    {
+      code: '.title { font-size: clamp(10px, 5vw, var(--max)); }',
+      description: 'var() in max — cannot verify ratio, benefit of the doubt',
+    },
   ],
 
   reject: [
@@ -201,16 +209,6 @@ testRule({
       message: messages.unresolvable('clamp(16px, 3vw, 2.5rem)'),
     },
     {
-      code: '.title { font-size: clamp(var(--min), 5vw, 25px); }',
-      description: 'var() in min',
-      message: messages.unresolvable('clamp(var(--min), 5vw, 25px)'),
-    },
-    {
-      code: '.title { font-size: clamp(10px, 5vw, var(--max)); }',
-      description: 'var() in max',
-      message: messages.unresolvable('clamp(10px, 5vw, var(--max))'),
-    },
-    {
       code: '.title { font-size: clamp(0, 5vw, 25px); }',
       description: 'unitless 0 as min — treated as unresolvable',
       message: messages.unresolvable('clamp(0, 5vw, 25px)'),
@@ -229,6 +227,16 @@ testRule({
       code: '.title { font-size: clamp(16, 5vw, 48); }',
       description: 'unitless numbers in min and max — treated as unresolvable',
       message: messages.unresolvable('clamp(16, 5vw, 48)'),
+    },
+    {
+      code: '.title { font-size: clamp(max(16px, 2vw), 5vw, 48px); }',
+      description: 'using max() function in min — treated as unresolvable',
+      message: messages.unresolvable('clamp(max(16px, 2vw), 5vw, 48px)'),
+    },
+    {
+      code: '.title { font-size: clamp(16px, 5vw, min(2vb,48px)); }',
+      description: 'using min() function in max — treated as unresolvable',
+      message: messages.unresolvable('clamp(16px, 5vw, min(2vb,48px))'),
     },
   ],
   /* eslint-enable sort-keys */
@@ -327,11 +335,11 @@ testRule({
     },
     {
       code: '.title { font-size: clamp(var(--min), 5vw, 25px); }',
-      description: 'var() in min silently ignored when reportUnresolvable: false',
+      description: 'var() in min — cannot verify ratio, benefit of the doubt',
     },
     {
       code: '.title { font-size: clamp(10px, 5vw, var(--max)); }',
-      description: 'var() in max silently ignored when reportUnresolvable: false',
+      description: 'var() in max — cannot verify ratio, benefit of the doubt',
     },
     {
       code: '.title { font-size: clamp(16px, 3vw, 2.5rem); }',
@@ -352,22 +360,21 @@ testRule({
   config: [true, { reportUnresolvable: true }],
   ruleName: name,
   /* eslint-disable sort-keys */
-  accept: [],
+  accept: [
+    {
+      code: '.title { font-size: clamp(var(--min), 5vw, 25px); }',
+      description: 'var() in min — cannot verify ratio, benefit of the doubt',
+    },
+    {
+      code: '.title { font-size: clamp(10px, 5vw, var(--max)); }',
+      description: 'var() in max — cannot verify ratio, benefit of the doubt',
+    },
+  ],
   reject: [
     {
       code: '.title { font-size: clamp(1rem, 5vw, 40px); }',
       description: 'mixed units reported when reportUnresolvable: true',
       message: messages.unresolvable('clamp(1rem, 5vw, 40px)'),
-    },
-    {
-      code: '.title { font-size: clamp(var(--min), 5vw, 25px); }',
-      description: 'var() in min reported when reportUnresolvable: true',
-      message: messages.unresolvable('clamp(var(--min), 5vw, 25px)'),
-    },
-    {
-      code: '.title { font-size: clamp(10px, 5vw, var(--max)); }',
-      description: 'var() in max reported when reportUnresolvable: true',
-      message: messages.unresolvable('clamp(10px, 5vw, var(--max))'),
     },
   ],
   /* eslint-enable sort-keys */

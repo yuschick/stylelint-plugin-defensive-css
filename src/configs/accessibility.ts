@@ -5,7 +5,7 @@ export default {
     'defensive-css/no-list-style-none': [true, { fix: true, severity: 'error' }],
     'defensive-css/no-unsafe-clamp-font-size': [
       true,
-      { reportUnresolvable: false, severity: 'error' },
+      { reportUnresolvable: [true, { severity: 'warning' }], severity: 'error' },
     ],
     'defensive-css/no-user-select-none': [true, { severity: 'error' }],
     'defensive-css/require-focus-visible': [true, { severity: 'error' }],

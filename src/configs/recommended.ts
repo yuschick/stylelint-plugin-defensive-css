@@ -6,7 +6,7 @@ export default {
     'defensive-css/no-mixed-vendor-prefixes': [true, { severity: 'error' }],
     'defensive-css/no-unsafe-clamp-font-size': [
       true,
-      { reportUnresolvable: false, severity: 'error' },
+      { reportUnresolvable: [true, { severity: 'warning' }], severity: 'error' },
     ],
     'defensive-css/no-unsafe-will-change': [true, { severity: 'error' }],
     'defensive-css/no-user-select-none': [true, { severity: 'error' }],
