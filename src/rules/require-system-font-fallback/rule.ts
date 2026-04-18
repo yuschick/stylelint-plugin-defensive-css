@@ -10,6 +10,7 @@ import { cssSystemFonts, webSafeFonts } from './utils';
 import { severityOption, SeverityProps } from '../../utils/types';
 import { matchesIgnorePattern } from '../../utils/ignore';
 import { globalKeywords } from '../../utils/css';
+import { hasMatchingAncestor } from '../../utils/traversal';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -50,6 +51,15 @@ export const requireSystemFontFallback: Rule = (
     const { ignore = [], strict, severity } = secondaryOptions;
 
     root.walkDecls(/^font(?:-family)?$/, (decl) => {
+      const isFontFaceDeclaration = hasMatchingAncestor(
+        decl,
+        (ancestor) => ancestor.type === 'atrule' && ancestor.name === 'font-face',
+      );
+
+      if (isFontFaceDeclaration) {
+        return;
+      }
+
       if (globalKeywords.includes(decl.value.trim())) {
         return;
       }

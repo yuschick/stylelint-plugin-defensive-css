@@ -15,6 +15,10 @@ testRule({
         'font shorthand with size, font family, and system fallback with no space after comma',
     },
     {
+      code: "@font-face { font-family: 'My Family'; }",
+      description: 'font-face declaration should be ignored by the rule',
+    },
+    {
       code: '.heading { font: 1.2em "Fira Sans" , sans-serif; }',
       description: 'font shorthand with extra spaces around comma',
     },
