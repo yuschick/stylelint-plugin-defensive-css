@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.1](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.0...v2.9.1) (2026-04-18)
+
+### Bug Fixes
+
+* reset dependencies ([c0bf970](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/c0bf970c4cda1688013a020e26af80095de33096))
+* system font fallback to ignore font-face delcarations ([8dd275b](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/8dd275b1d6df46473dba8501cd204b2091c673c8))
+
 ## [2.9.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.8.1...v2.9.0) (2026-04-09)
 
 ### Features
