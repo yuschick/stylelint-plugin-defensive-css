@@ -26,7 +26,7 @@ testRule({
     },
     {
       code: `input::-ms-input-placeholder { color: #222; } input::-o-placeholder { color: #222; }`,
-      description: 'Split webkit and moz placeholder selectors to separate rules.',
+      description: 'Split ms and opera placeholder selectors to separate rules.',
     },
     {
       code: `div::before,div::after { color: #222; }`,
@@ -65,7 +65,7 @@ testRule({
     },
     {
       code: `input::-ms-input-placeholder, input::-o-placeholder { color: #222; }`,
-      description: 'Using webkit and moz placeholder selectors.',
+      description: 'Using ms and opera placeholder selectors.',
       message: messages.rejected('input::-ms-input-placeholder, input::-o-placeholder'),
     },
   ],
