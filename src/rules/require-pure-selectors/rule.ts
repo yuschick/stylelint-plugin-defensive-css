@@ -8,6 +8,7 @@ import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
 import { severityOption, SeverityProps } from '../../utils/types';
 import { findImpureElement } from './utils';
+import { hasMatchingAncestor } from '../../utils/traversal';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -56,6 +57,25 @@ export const requirePureSelectors: Rule = (
       const impureNode = findImpureElement(selector, secondaryOptions);
 
       if (impureNode) {
+        const usesNestingSelector = /&/.test(selector);
+
+        if (usesNestingSelector) {
+          const isNestedInPureSelector = hasMatchingAncestor(
+            ruleNode,
+            (ancestor) =>
+              ancestor.type === 'rule' &&
+              !findImpureElement(ancestor.selector, secondaryOptions),
+          );
+
+          if (isNestedInPureSelector) return;
+        }
+
+        const hasNestedAttributeModifier =
+          secondaryOptions.ignoreAttributeModifiers &&
+          ruleNode.some((child) => child.type === 'rule' && /^&\[/.test(child.selector));
+
+        if (hasNestedAttributeModifier) return;
+
         report({
           message: messages.rejected(selector),
           node: ruleNode,

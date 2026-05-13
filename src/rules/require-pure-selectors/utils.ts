@@ -61,8 +61,10 @@ export function findImpureElement(
             : allowAttributeModifiers
               ? // If attribute modifiers are allowed, check if the previous node exists to prevent global attribute selectors
                 !!prevNode?.type
-              : // if attribute modifiers are not allowed, only allow class and id selectors
-                prevNode?.type === 'class' || prevNode?.type === 'id';
+              : // if attribute modifiers are not allowed, only allow class, id, and nesting selectors
+                prevNode?.type === 'class' ||
+                prevNode?.type === 'id' ||
+                prevNode?.type === 'nesting';
 
           if (allowAttributeModifier) {
             return;
