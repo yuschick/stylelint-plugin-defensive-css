@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.2](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.1...v2.9.2) (2026-05-13)
+
+### Bug Fixes
+
+* support css nesting within require pure selector rule ([9a7d51e](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/9a7d51e52d5bac5013bc4ae06839cbc6bc090a32))
+
 ## [2.9.1](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.0...v2.9.1) (2026-04-18)
 
 ### Bug Fixes
