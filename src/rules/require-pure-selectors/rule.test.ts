@@ -14,12 +14,16 @@ testRule({
       description: 'chained class selectors',
     },
     {
+      code: `.button { color: red; &[aria-disabled="true"] { color: blue; } }`,
+      description: 'attribute selector nested within class selector',
+    },
+    {
       code: '#header { color: red; }',
       description: 'ID selector',
     },
     {
       code: '.button[disabled] { color: red; }',
-      description: 'classname with attribute selector ',
+      description: 'classname with attribute selector',
     },
     {
       code: '.card .button { color: red; }',
@@ -76,6 +80,26 @@ testRule({
     {
       code: '.item:not(.disabled) { color: red; }',
       description: 'not() with pure selector branch',
+    },
+    {
+      code: '.button { &.active { color: red; } }',
+      description: 'nesting modifier with class within pure parent',
+    },
+    {
+      code: '.card { &:hover { color: red; } }',
+      description: 'nesting pseudo-class within pure parent',
+    },
+    {
+      code: '.card { & button { color: red; } }',
+      description: 'nesting with element descendant within pure parent',
+    },
+    {
+      code: '#header { &.highlighted { color: red; } }',
+      description: 'nesting modifier with class within pure ID parent',
+    },
+    {
+      code: '.nav { & > .link { color: red; } }',
+      description: 'nesting with child combinator within pure parent',
     },
   ],
 
@@ -145,6 +169,21 @@ testRule({
       description: 'nested tag selector',
       message: messages.rejected('span'),
     },
+    {
+      code: 'button { &.active { color: red; } }',
+      description: 'impure element parent with nesting class modifier',
+      message: messages.rejected('button'),
+    },
+    {
+      code: 'div { &:hover { color: red; } }',
+      description: 'impure element parent with nesting pseudo-class',
+      message: messages.rejected('div'),
+    },
+    {
+      code: '.card { [hidden] { display: none; } }',
+      description: 'attribute selector nested without nesting reference',
+      message: messages.rejected('[hidden]'),
+    },
   ],
   /* eslint-enable sort-keys */
 });
@@ -157,6 +196,10 @@ testRule({
     {
       code: 'button[disabled] { color: red; }',
       description: 'button with attribute selector ',
+    },
+    {
+      code: `button { color: red; &[aria-disabled="true"] { color: blue; } }`,
+      description: 'attribute selector nested within an element selector',
     },
   ],
   reject: [
