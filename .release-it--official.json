@@ -12,8 +12,7 @@
     "releaseName": "v${version}"
   },
   "npm": {
-    "publish": true,
-    "skipChecks": true
+    "publish": true
   },
   "hooks": {
     "after:bump": "npm run build"
