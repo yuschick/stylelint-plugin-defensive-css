@@ -8,10 +8,6 @@ on:
         required: true
         type: string
 
-permissions:
-  id-token: write
-  contents: write
-
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -34,8 +30,8 @@ jobs:
           node-version: 'lts/*'
           registry-url: 'https://registry.npmjs.org'
 
-      - run: npm install -g npm@latest
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
       - name: Configure git
         run: |
@@ -45,6 +41,7 @@ jobs:
       - name: Run official release
         run: npm run release:official
         env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
       - name: Get version
