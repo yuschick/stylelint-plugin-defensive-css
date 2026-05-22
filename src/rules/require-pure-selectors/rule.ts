@@ -59,22 +59,29 @@ export const requirePureSelectors: Rule = (
       if (impureNode) {
         const usesNestingSelector = /&/.test(selector);
 
-        if (usesNestingSelector) {
-          const isNestedInPureSelector = hasMatchingAncestor(
-            ruleNode,
-            (ancestor) =>
-              ancestor.type === 'rule' &&
-              !findImpureElement(ancestor.selector, secondaryOptions),
-          );
+        const shouldSkip = hasMatchingAncestor(ruleNode, (ancestor) => {
+          if (ancestor.type === 'atrule' && ancestor.name === 'keyframes') {
+            return true;
+          }
 
-          if (isNestedInPureSelector) return;
+          return (
+            usesNestingSelector &&
+            ancestor.type === 'rule' &&
+            !findImpureElement(ancestor.selector, secondaryOptions)
+          );
+        });
+
+        if (shouldSkip) {
+          return;
         }
 
         const hasNestedAttributeModifier =
           secondaryOptions.ignoreAttributeModifiers &&
           ruleNode.some((child) => child.type === 'rule' && /^&\[/.test(child.selector));
 
-        if (hasNestedAttributeModifier) return;
+        if (hasNestedAttributeModifier) {
+          return;
+        }
 
         report({
           message: messages.rejected(selector),

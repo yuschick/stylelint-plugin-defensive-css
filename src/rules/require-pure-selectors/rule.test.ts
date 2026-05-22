@@ -86,6 +86,10 @@ testRule({
       description: 'nesting modifier with class within pure parent',
     },
     {
+      code: ".button { &:not([aria-disabled='true'], [aria-busy='true']):hover { --button-color-surface: var(--button-color-surface-hover); } }",
+      description: 'nested :not() with attribute selectors inside pure parent',
+    },
+    {
       code: '.card { &:hover { color: red; } }',
       description: 'nesting pseudo-class within pure parent',
     },
@@ -100,6 +104,14 @@ testRule({
     {
       code: '.nav { & > .link { color: red; } }',
       description: 'nesting with child combinator within pure parent',
+    },
+    {
+      code: '@keyframes { to { color: red; } }',
+      description: 'keyframes rule with to',
+    },
+    {
+      code: '@keyframes { 100% { color: red; } }',
+      description: 'keyframes rule with percentage',
     },
   ],
 

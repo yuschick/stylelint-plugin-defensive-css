@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.3](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.2...v2.9.3) (2026-05-22)
+
+### Bug Fixes
+
+* convert npm publish to attempt oicd publish ([#200](https://github.com/yuschick/stylelint-plugin-defensive-css/issues/200)) ([acd316b](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/acd316b3dfc4983b0cc9aa5dfc632510bf2241ef))
+* require pure selectors and keyframes false positives ([f63b3a9](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/f63b3a92f9a82ddf94f3df091e6f0f4b74dfe1ce))
+
 ## [2.9.2](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.1...v2.9.2) (2026-05-13)
 
 ### Bug Fixes
