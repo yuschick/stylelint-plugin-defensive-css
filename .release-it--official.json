@@ -13,7 +13,7 @@
   },
   "npm": {
     "publish": true,
-    "provenance": true
+    "skipChecks": true
   },
   "hooks": {
     "after:bump": "npm run build"
