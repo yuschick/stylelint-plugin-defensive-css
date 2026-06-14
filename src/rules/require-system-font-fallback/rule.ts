@@ -6,7 +6,7 @@
 
 import stylelint, { Rule } from 'stylelint';
 import { messages, meta, name } from './meta';
-import { cssSystemFonts, webSafeFonts } from './utils';
+import { cssSystemFonts, isOnlyVarReferences, webSafeFonts } from './utils';
 import { severityOption, SeverityProps } from '../../utils/types';
 import { matchesIgnorePattern } from '../../utils/ignore';
 import { globalKeywords } from '../../utils/css';
@@ -61,6 +61,10 @@ export const requireSystemFontFallback: Rule = (
       }
 
       if (globalKeywords.includes(decl.value.trim())) {
+        return;
+      }
+
+      if (isOnlyVarReferences(decl.value)) {
         return;
       }
 

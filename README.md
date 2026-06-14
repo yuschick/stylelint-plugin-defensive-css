@@ -715,9 +715,9 @@ This rule enforces that the ratio between the min and max values in a `clamp()` 
 
 #### No Unsafe Clamp Font Size Options
 
-| Option               | Type                                  | Default | Description                                                                                                  |
-| -------------------- | ------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------ |
-| `maxRatio`           | `number`                              | `2.5`   | The maximum allowed ratio between clamp max and min values.                                                  |
+| Option               | Type                                  | Default | Description                                                                                                                                               |
+| -------------------- | ------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `maxRatio`           | `number`                              | `2.5`   | The maximum allowed ratio between clamp max and min values.                                                                                               |
 | `reportUnresolvable` | `boolean \| [boolean, SeverityProps]` | `true`  | Report when the min/max ratio cannot be determined due to mixed units. `var()` functions are given the benefit of the doubt. Can specify custom severity. |
 
 ```json
@@ -2078,6 +2078,8 @@ Custom or non-standard fonts can fail to load due to network issues, font licens
 > **CSS system font generics** (e.g., `sans-serif`, `serif`, `monospace`, `system-ui`) are resolved by the browser itself and are accepted in **both loose and strict modes**.
 >
 > CSS global keywords (`inherit`, `initial`, `unset`, `revert`, `revert-layer`) are always accepted since they delegate font resolution to the cascade.
+>
+> Values composed entirely of `var()` references (e.g. `font: var(--font-m)` or `font-family: var(--a), var(--b)`) are skipped, since the plugin does not resolve custom properties and the fallback may be defined within the variable. Use the `ignore` option for partial values such as `font: 1.2em var(--font-family)`.
 
 ```ts
 interface SecondaryOptions {
@@ -2161,6 +2163,11 @@ interface SecondaryOptions {
 /* CSS global keywords are always accepted */
 .heading {
   font-family: inherit;
+}
+
+/* Values made up entirely of var() references are skipped */
+.title {
+  font: var(--font-m);
 }
 ```
 
