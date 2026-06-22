@@ -9,6 +9,7 @@ import { messages, meta, name } from './meta';
 import { severityOption, SeverityProps } from '../../utils/types';
 import { parseClampArguments } from './utils';
 import { validateBasicOption } from '../../utils/validation';
+import { checkForCustomProperty } from '../../utils/css';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -80,7 +81,7 @@ export const noUnsafeClampFontSize: Rule = (
       /**
        * 3. Check if min or max contains var() — if so, skip entirely.
        */
-      if (min.includes('var(') || max.includes('var(')) {
+      if (checkForCustomProperty(min)[0] || checkForCustomProperty(max)[0]) {
         return;
       }
 

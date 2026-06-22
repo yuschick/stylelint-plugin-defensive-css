@@ -1,3 +1,5 @@
+import { checkForCustomProperty } from '../../utils/css';
+
 const PX_VALUE = /\d+(\.\d+)?px\b/i;
 
 const VALIDATED_FUNCTIONS = [
@@ -59,8 +61,7 @@ export const isValidValue = (value: string): boolean => {
   const functionPattern = new RegExp(`\\b(${VALIDATED_FUNCTIONS.join('|')})\\s*\\(`, 'i');
 
   if (functionPattern.test(normalized)) {
-    // If the function contains var(), it's 'flexible-ish' (we don't know the value)
-    if (/var\(/.test(normalized)) {
+    if (checkForCustomProperty(normalized)[0]) {
       return true;
     }
 
