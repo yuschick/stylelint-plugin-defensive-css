@@ -9,7 +9,7 @@ import { messages, meta, name } from './meta';
 import { cssSystemFonts, webSafeFonts } from './utils';
 import { severityOption, SeverityProps } from '../../utils/types';
 import { matchesIgnorePattern } from '../../utils/ignore';
-import { globalKeywords } from '../../utils/css';
+import { checkForCustomProperty, globalKeywords } from '../../utils/css';
 import { hasMatchingAncestor } from '../../utils/traversal';
 
 const { report, validateOptions } = stylelint.utils;
@@ -71,6 +71,10 @@ export const requireSystemFontFallback: Rule = (
       let hasWebSafeFallback = false;
 
       for (const value of values) {
+        if (checkForCustomProperty(value)[0]) {
+          return;
+        }
+
         for (const val of value.split(',')) {
           if (matchesIgnorePattern(val, ignore)) {
             return;

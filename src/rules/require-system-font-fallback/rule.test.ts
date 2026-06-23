@@ -150,6 +150,31 @@ testRule({
       code: '.heading { font: inherit; }',
       description: 'font shorthand with CSS global keyword inherit',
     },
+    {
+      code: '.heading { font-family: var(--font-family); }',
+      description: 'font-family composed entirely of a single var() reference',
+    },
+    {
+      code: '.title { font: var(--font-m); }',
+      description: 'font shorthand composed entirely of a single var() reference',
+    },
+    {
+      code: '.heading { font-family: var(--font-primary), var(--font-secondary); }',
+      description: 'font-family composed entirely of multiple var() references',
+    },
+    {
+      code: '.heading { font-family: var(--font-family, sans-serif); }',
+      description: 'font-family var() reference with a nested fallback value',
+    },
+    {
+      code: '.heading { font-family: "Custom Font", var(--fallback); }',
+      description:
+        'font-family with a custom font and a var() not composed entirely of var()',
+    },
+    {
+      code: '.heading { font: 1.2em var(--font-family); }',
+      description: 'font shorthand with size and a var() not composed entirely of var()',
+    },
   ],
 
   reject: [
@@ -192,11 +217,6 @@ testRule({
       code: '.heading { font-family: "Custom Font", Sans-Serif; }',
       description: 'font-family with incorrect casing on generic family',
       message: messages.looseReject('"Custom Font", Sans-Serif'),
-    },
-    {
-      code: '.heading { font-family: var(--font-family); }',
-      description: 'font-family with CSS variable and no ignore pattern',
-      message: messages.looseReject('var(--font-family)'),
     },
     {
       code: '.heading { font: bold "Custom Font"; }',
