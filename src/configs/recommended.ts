@@ -15,6 +15,7 @@ export default {
     'defensive-css/require-flex-wrap': [true, { severity: 'error' }],
     'defensive-css/require-focus-visible': [true, { severity: 'error' }],
     'defensive-css/require-forced-colors-focus': [true, { severity: 'error' }],
+    'defensive-css/require-grid-minmax': [true, { fix: true, severity: 'error' }],
     'defensive-css/require-named-grid-lines': [
       true,
       { columns: [true, { severity: 'error' }], rows: [true, { severity: 'warning' }] },
