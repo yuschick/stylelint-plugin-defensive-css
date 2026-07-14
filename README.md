@@ -2,9 +2,9 @@
 ![Stylelint Plugin - Defensive CSS Logo](./assets/logo--light.webp#gh-light-mode-only)
 
 ![Stylelint Plugin Defensive CSS License](https://img.shields.io/github/license/yuschick/stylelint-plugin-defensive-css?style=for-the-badge)
-![Stylelint PLugin Defensive CSS Latest NPM Version](https://img.shields.io/npm/v/stylelint-plugin-defensive-css?style=for-the-badge)
-![Stylelint PLugin Defensive CSS Main Workflow Status](https://img.shields.io/github/actions/workflow/status/yuschick/stylelint-plugin-defensive-css/pull-request--checks.yaml?style=for-the-badge)
-![Stylelint PLugin Defensive CSS NPM Downloads](https://img.shields.io/npm/dw/stylelint-plugin-defensive-css?style=for-the-badge)
+![Stylelint Plugin Defensive CSS Latest NPM Version](https://img.shields.io/npm/v/stylelint-plugin-defensive-css?style=for-the-badge)
+![Stylelint Plugin Defensive CSS Main Workflow Status](https://img.shields.io/github/actions/workflow/status/yuschick/stylelint-plugin-defensive-css/pull-request--checks.yaml?style=for-the-badge)
+![Stylelint Plugin Defensive CSS NPM Downloads](https://img.shields.io/npm/dw/stylelint-plugin-defensive-css?style=for-the-badge)
 
 A Stylelint plugin to help you write more defensive, accessible, and maintainable CSS. Catch layout and accessibility bugs before they ship, enforce team-wide best practices, and guard against the subtle CSS pitfalls that break real-world experiences.
 
@@ -166,12 +166,13 @@ The plugin provides multiple rules that can be toggled on and off as needed.
 12. [Require Flex Wrap](#require-flex-wrap)
 13. [Require Focus Visible](#require-focus-visible)
 14. [Require Forced Colors Focus](#require-forced-colors-focus)
-15. [Require Named Grid Lines](#require-named-grid-lines)
-16. [Require Overscroll Behavior](#require-overscroll-behavior)
-17. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
-18. [Require Pure Selectors](#require-pure-selectors)
-19. [Require Scrollbar Gutter](#require-scrollbar-gutter)
-20. [Require System Font Fallback](#require-system-font-fallback)
+15. [Require Grid Minmax](#require-grid-minmax)
+16. [Require Named Grid Lines](#require-named-grid-lines)
+17. [Require Overscroll Behavior](#require-overscroll-behavior)
+18. [Require Prefers Reduced Motion](#require-prefers-reduced-motion)
+19. [Require Pure Selectors](#require-pure-selectors)
+20. [Require Scrollbar Gutter](#require-scrollbar-gutter)
+21. [Require System Font Fallback](#require-system-font-fallback)
 
 ---
 
@@ -1481,9 +1482,108 @@ The rule gives the benefit of the doubt to `var()`, `inherit`, `revert`, and oth
 
 ---
 
-### Require Named Grid Lines
+### Require Grid Minmax
 
-Unnamed grid lines make layouts harder to understand and maintain. Numeric positions like `grid-column: 1 / 3` are ambiguous and prone to errors when the grid structure changes. Named lines like `[sidebar-start]` provide clarity and self-documenting code.
+A grid column defined with a raw `1fr` will size to its content's intrinsic minimum, meaning a long word, a wide image, or an unbreakable string can force the track — and the entire grid — to overflow its container. Wrapping the value in `minmax(0, 1fr)` overrides that automatic minimum, allowing the track to shrink and preventing content blowouts.
+
+**Enable this rule to:** Flag raw `1fr` values on `grid-template-columns` and `grid-auto-columns` and automatically fix them to `minmax(0, 1fr)`.
+
+> [!NOTE]
+> This rule only checks the `grid-template-columns` and `grid-auto-columns` properties. It does not lint the `grid`, `grid-template`, or other grid shorthand properties, where reliably isolating the column tracks from row tracks, area strings, and `auto-flow` keywords is ambiguous.
+
+```json
+{
+  "rules": {
+    "defensive-css/require-grid-minmax": true
+  }
+}
+```
+
+#### Require Grid Minmax Options
+
+> [!TIP]
+> This rule is fixable by passing the `{ fix: true }` option.
+
+A `1fr` value already wrapped in `minmax()` or `fit-content()` is considered safe and is left untouched, even when it appears alongside a raw `1fr` in the same declaration.
+
+**Configuration:** By default, this rule checks all selectors. Use the `ignore` option to exclude specific selectors by exact string or regular expression. Nested declarations are skipped when any ancestor selector matches an ignore pattern.
+
+```ts
+interface SecondaryOptions {
+  ignore?: (string | RegExp)[];
+}
+```
+
+```json
+{
+  "rules": {
+    "defensive-css/require-grid-minmax": [true, {
+        "fix": true,
+        "ignore": [".legacy-layout", /^\.grid-/],
+        "severity": "warning"
+    }]
+  }
+}
+```
+
+#### Require Grid Minmax Examples
+
+<details>
+<summary>✅ Passing Examples</summary>
+
+```css
+div {
+  grid-template-columns: minmax(0, 1fr) 250px;
+}
+
+div {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+div {
+  grid-auto-columns: minmax(0, 1fr);
+}
+
+/* fr units on non-column properties are not checked */
+div {
+  grid-template-rows: 1fr 250px;
+}
+
+/* the grid shorthand is not checked */
+div {
+  grid: 1fr / 1fr;
+}
+```
+
+</details>
+
+<details>
+<summary>❌ Failing Examples</summary>
+
+```css
+div {
+  grid-template-columns: 1fr 250px;
+}
+
+div {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+div {
+  grid-auto-columns: 1fr;
+}
+
+/* the raw 1fr is flagged even alongside a protected minmax() */
+div {
+  grid-template-columns: minmax(0, 1fr) 1fr;
+}
+```
+
+</details>
+
+---
+
+### Require Named Grid Lines
 
 **Enable this rule to:** Require all grid tracks to be associated with named lines using the `[name]` syntax in `grid-template-columns`, `grid-template-rows`, and the `grid` shorthand.
 
