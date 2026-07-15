@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.4](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.3...v2.9.4) (2026-07-15)
+
+### Bug Fixes
+
+* Ignore Custom Properties in Font Fallback Rule ([#208](https://github.com/yuschick/stylelint-plugin-defensive-css/issues/208)) ([b26bc29](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/b26bc29b380a43e0f827726e3ff606a68fc8cc32))
+* release it config for oicd auth ([#202](https://github.com/yuschick/stylelint-plugin-defensive-css/issues/202)) ([57e5bc2](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/57e5bc2cfa2d79b135bf9065f5b50f0f78c32b9b))
+
+### Documentation
+
+* update minmax docs ([1c5e66c](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/1c5e66c95555d1a4fc63e1f781432d1dd89e01b7))
+
 ## [2.9.3](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.2...v2.9.3) (2026-05-22)
 
 ### Bug Fixes
