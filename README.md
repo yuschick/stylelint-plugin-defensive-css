@@ -1486,7 +1486,7 @@ The rule gives the benefit of the doubt to `var()`, `inherit`, `revert`, and oth
 
 A grid column defined with a raw `1fr` will size to its content's intrinsic minimum, meaning a long word, a wide image, or an unbreakable string can force the track — and the entire grid — to overflow its container. Wrapping the value in `minmax(0, 1fr)` overrides that automatic minimum, allowing the track to shrink and preventing content blowouts.
 
-**Enable this rule to:** Flag raw `1fr` values on `grid-template-columns` and `grid-auto-columns` and automatically fix them to `minmax(0, 1fr)`.
+**Enable this rule to:** Flag loose `1fr` values on `grid-template-columns` and `grid-auto-columns` and automatically fix them to `minmax(0, 1fr)`.
 
 > [!NOTE]
 > This rule only checks the `grid-template-columns` and `grid-auto-columns` properties. It does not lint the `grid`, `grid-template`, or other grid shorthand properties, where reliably isolating the column tracks from row tracks, area strings, and `auto-flow` keywords is ambiguous.
