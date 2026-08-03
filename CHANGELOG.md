@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.5](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.4...v2.9.5) (2026-08-03)
+
+### Bug Fixes
+
+* move postcss selector parser to dependencies ([a2bd54e](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/a2bd54e7c229d0c64ef81af43dfda2705014c018))
+
 ## [2.9.4](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.3...v2.9.4) (2026-07-15)
 
 ### Bug Fixes
