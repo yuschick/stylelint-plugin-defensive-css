@@ -42,7 +42,7 @@
     "test:watch": "vitest --watch"
   },
   "dependencies": {
-    "postcss-selector-parser": "^7.1.1"
+    "postcss-selector-parser": "^7.1.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
@@ -52,14 +52,14 @@
     "eslint": "^9.39.2",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
-    "globals": "^17.2.0",
-    "jiti": "^2.6.1",
+    "globals": "^17.7.0",
+    "jiti": "^2.7.0",
     "prettier": "^3.8.1",
     "release-it": "^19.2.4",
     "stylelint": "^16.1.0",
     "tsdown": "^0.21.3",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.54.0",
+    "typescript-eslint": "^8.62.1",
     "vitest": "^3.2.4",
     "vitest-stylelint-utils": "^2.0.0"
   },
