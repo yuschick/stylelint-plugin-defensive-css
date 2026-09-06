@@ -59,6 +59,11 @@ export const requireGridMinmax: Rule = (
         return;
       }
 
+      /* Skip is the value is 'subgrid' */
+      if (decl.value === 'subgrid') {
+        return;
+      }
+
       /* Strip out any minmax() or fit-content() functions so their '1fr' values are ignored */
       const protectedFunctionPattern = /\b(minmax|fit-content)\((?:[^()]|\([^()]*\))*\)/g;
       const unprotectedValue = decl.value.replace(protectedFunctionPattern, '');

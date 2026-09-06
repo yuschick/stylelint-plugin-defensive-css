@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.6](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.5...v2.9.6) (2026-08-03)
+
+### Bug Fixes
+
+* grid minmax to ignore subgrid ([c5554a5](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/c5554a5a685dd438451bdde490e13b40da3f4174))
+
 ## [2.9.5](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.4...v2.9.5) (2026-08-03)
 
 ### Bug Fixes

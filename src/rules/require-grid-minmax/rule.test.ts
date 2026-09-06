@@ -7,6 +7,10 @@ testRule({
   /* eslint-disable sort-keys */
   accept: [
     {
+      code: '.class { display: grid; grid-template-columns: subgrid; }',
+      description: 'grid-template-columns with subgrid is acceptable',
+    },
+    {
       code: '.class { display: grid; grid-template-columns: minmax(0, 1fr) 250px; }',
       description: 'grid-template-columns with minmax(0, 1fr) is acceptable',
     },
