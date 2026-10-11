@@ -65,7 +65,8 @@ export const requireGridMinmax: Rule = (
       }
 
       /* Strip out any minmax() or fit-content() functions so their '1fr' values are ignored */
-      const unprotectedValue = decl.value.replace(/\b(minmax|fit-content)\([^)]*\)/g, '');
+      const protectedFunctionPattern = /\b(minmax|fit-content)\((?:[^()]|\([^()]*\))*\)/g;
+      const unprotectedValue = decl.value.replace(protectedFunctionPattern, '');
 
       /* If no raw '1fr' values remain outside of those functions, return early */
       if (!unprotectedValue.includes('1fr')) {
@@ -75,7 +76,7 @@ export const requireGridMinmax: Rule = (
       /* A raw '1fr' value has been found, report and fix only the unprotected values */
       const fix = () => {
         decl.value = decl.value.replace(
-          /\b(minmax|fit-content)\([^)]*\)|1fr/g,
+          /\b(minmax|fit-content)\((?:[^()]|\([^()]*\))*\)|1fr/g,
           (match) => (match === '1fr' ? 'minmax(0, 1fr)' : match),
         );
       };

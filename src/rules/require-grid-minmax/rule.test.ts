@@ -93,6 +93,10 @@ testRule({
       code: '.class { flex: 1 1 0; }',
       description: 'unrelated declarations are ignored',
     },
+    {
+      code: `.class { grid-template-columns: repeat(auto-fit, minmax(var(--min-width, 250px), 1fr)); }`,
+      description: 'should allow 1fr as minmax() value',
+    },
   ],
   reject: [
     {

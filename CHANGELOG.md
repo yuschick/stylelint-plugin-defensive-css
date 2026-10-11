@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.7](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.6...v2.9.7) (2026-09-06)
+
+### Bug Fixes
+
+* releaseit config ([24daca3](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/24daca3c0af52be234f4c63bd33e137fd6c565d5))
+* require-grid-minmax to escape values within minmax functions ([0bcdc17](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/0bcdc17c571fc0df08c4e07f7d1c4cb608cf12f0))
+
 ## [2.9.6](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.5...v2.9.6) (2026-08-03)
 
 ### Bug Fixes
