@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.10.0](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.7...v2.10.0) (2026-11-09)
+
+### Features
+
+* support stylelint v18 ([dd86b0d](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/dd86b0d2b8ae33ffba0cddc738ee19079d6246ae)), closes [#240](https://github.com/yuschick/stylelint-plugin-defensive-css/issues/240)
+
 ## [2.9.7](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.6...v2.9.7) (2026-09-06)
 
 ### Bug Fixes
