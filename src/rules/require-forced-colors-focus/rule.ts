@@ -4,20 +4,25 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
-import { messages, meta, name } from './meta';
+import type { PropertiesHyphen } from 'csstype';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
 import { severityOption } from '../../utils/types';
+import { messages, meta, name } from './meta';
 import {
   isOutsideForcedColorsMode,
   outlineProperties,
   checkForRemovalValue,
   borderPatterns,
 } from './utils';
-import { PropertiesHyphen } from 'csstype';
 
 const { report, validateOptions } = stylelint.utils;
 
-export const requireForcedColorsFocus: Rule = (primaryOption, secondaryOptions = {}) => {
+export const requireForcedColorsFocus: Rule = (
+  primaryOption,
+  secondaryOptions = {},
+) => {
   return (root, result) => {
     const validOptions = validateOptions(
       result,
@@ -35,7 +40,9 @@ export const requireForcedColorsFocus: Rule = (primaryOption, secondaryOptions =
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
 
@@ -70,7 +77,9 @@ export const requireForcedColorsFocus: Rule = (primaryOption, secondaryOptions =
        * Matches :focus and :focus-visible but NOT when
        * followed by descendant/child/sibling combinators (e.g. .btn:focus > .icon)
        */
-      const isFocusSelector = /:focus(-visible)?(?=[,:]|$)/.test(ruleNode.selector);
+      const isFocusSelector = /:focus(-visible)?(?=[,:]|$)/.test(
+        ruleNode.selector,
+      );
 
       ruleNode.walkDecls((decl) => {
         if (outlineProperties.has(decl.prop as keyof PropertiesHyphen)) {

@@ -1,4 +1,4 @@
-import { PropertiesHyphen } from 'csstype';
+import type { PropertiesHyphen } from 'csstype';
 
 export const motionAtRules = ['@view-transition'] as const;
 export type MotionAtRule = (typeof motionAtRules)[number];
@@ -36,15 +36,21 @@ export const safeTransitionProperties: (keyof PropertiesHyphen)[] = [
 export type SafeTransitionProperty = (typeof safeTransitionProperties)[number];
 
 export function isInstantValue(value: string): boolean {
-  if (value.trim() === 'none') return true;
+  if (value.trim() === 'none') {
+    return true;
+  }
 
   // For explicit 0 duration
-  if (/^0(\.0+)?\s*(s|ms)?$/.test(value.trim())) return true;
+  if (/^0(\.0+)?\s*(s|ms)?$/.test(value.trim())) {
+    return true;
+  }
 
   // Extract all durations (handles spaces, decimal points, etc.)
   const durations = value.match(/(\d*\.?\d+)\s*(s|ms)/g);
 
-  if (!durations) return true; // No durations found
+  if (!durations) {
+    return true;
+  } // No durations found
 
   // Check if all durations are 0
   return durations.every((duration) => {
@@ -108,7 +114,11 @@ export function isInsidePrefersReducedMotionReduce(node: any): boolean {
 
       // Check for not (prefers-reduced-motion: no-preference)
       // This is equivalent to (prefers-reduced-motion: reduce)
-      if (/not\s*\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/.test(params)) {
+      if (
+        /not\s*\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/.test(
+          params,
+        )
+      ) {
         return true;
       }
     }
@@ -123,23 +133,36 @@ export function getInvalidTransitionProperties(value: string): string[] {
   const invalidProperties: string[] = [];
 
   for (const transition of transitions) {
-    if (isInstantValue(transition)) continue;
+    if (isInstantValue(transition)) {
+      continue;
+    }
 
     const parts = transition.split(/\s+/);
 
     let property: string | undefined;
 
     for (const part of parts) {
-      if (/^\d*\.?\d+\s*(s|ms)/.test(part)) continue;
-      if (/^(ease|linear|ease-in|ease-out|ease-in-out|step-start|step-end)$/.test(part))
+      if (/^\d*\.?\d+\s*(s|ms)/.test(part)) {
         continue;
-      if (part.startsWith('cubic-bezier(') || part.startsWith('steps(')) continue;
+      }
+      if (
+        /^(ease|linear|ease-in|ease-out|ease-in-out|step-start|step-end)$/.test(
+          part,
+        )
+      ) {
+        continue;
+      }
+      if (part.startsWith('cubic-bezier(') || part.startsWith('steps(')) {
+        continue;
+      }
 
       property = part;
       break;
     }
 
-    if (!safeTransitionProperties.includes(property as keyof PropertiesHyphen)) {
+    if (
+      !safeTransitionProperties.includes(property as keyof PropertiesHyphen)
+    ) {
       // if no property is found, the duration and easing will apply to 'all' properties
       invalidProperties.push(property ?? 'all');
     }

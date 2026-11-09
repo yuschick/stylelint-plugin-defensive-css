@@ -3,7 +3,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { display: flex; flex-wrap: wrap; }',
@@ -31,11 +31,13 @@ testRule({
     },
     {
       code: '.class { display: flex; flex-direction: column; }',
-      description: 'display flex with column direction (exempt from wrap requirement)',
+      description:
+        'display flex with column direction (exempt from wrap requirement)',
     },
     {
       code: '.class { display: flex; flex-flow: column; }',
-      description: 'display flex with flex-flow column (exempt from wrap requirement)',
+      description:
+        'display flex with flex-flow column (exempt from wrap requirement)',
     },
     {
       code: '.class { display: block; }',
@@ -146,5 +148,4 @@ testRule({
       message: messages.rejected('.class'),
     },
   ],
-  /* eslint-enable sort-keys */
 });

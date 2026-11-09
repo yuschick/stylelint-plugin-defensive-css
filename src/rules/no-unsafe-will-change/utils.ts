@@ -1,4 +1,8 @@
-import { Globals, PropertiesHyphen, VendorLonghandPropertiesHyphen } from 'csstype';
+import type {
+  Globals,
+  PropertiesHyphen,
+  VendorLonghandPropertiesHyphen,
+} from 'csstype';
 
 export const globals: Globals[] = [
   '-moz-initial',
@@ -54,9 +58,7 @@ const additionalVendorPrefixes = [
 
 // Combined list of all valid composite properties
 export const compositeProperties: (
-  | keyof VendorLonghandPropertiesHyphen
-  | keyof PropertiesHyphen
-  | string
+  keyof VendorLonghandPropertiesHyphen | keyof PropertiesHyphen | string
 )[] = [
   ...standardCompositeProperties,
   ...vendorPrefixedProperties,

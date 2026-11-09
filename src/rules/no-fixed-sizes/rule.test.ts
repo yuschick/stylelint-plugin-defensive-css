@@ -4,7 +4,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '@media (min-width: 125rem) { .class { width: 10rem; } }',
@@ -122,14 +122,13 @@ testRule({
       ],
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test recommended property values behavior (default) */
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { width: 10rem; }',
@@ -245,14 +244,13 @@ testRule({
       message: messages.error('grid'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test recommended property function values behavior (default) */
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { width: clamp(100px, 50vi, 500px); }',
@@ -366,14 +364,16 @@ testRule({
       message: messages.warning('padding'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test custom property function values behavior */
 testRule({
-  config: [true, { properties: { transform: true, translate: true }, severity: 'error' }],
+  config: [
+    true,
+    { properties: { transform: true, translate: true }, severity: 'error' },
+  ],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { translate: 1rem -1rem; }',
@@ -397,14 +397,13 @@ testRule({
       message: messages.error('transform'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test additional critical properties */
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { font-size: 1.5rem; }',
@@ -473,14 +472,13 @@ testRule({
       message: messages.error('grid-template-rows'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test spacing properties (individual sides) */
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { padding-top: 1rem; }',
@@ -540,14 +538,13 @@ testRule({
       message: messages.warning('column-gap'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test typography properties */
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { line-height: 1.5; }',
@@ -584,14 +581,13 @@ testRule({
       message: messages.warning('word-spacing'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test edge cases and special values */
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { width: auto; }',
@@ -638,14 +634,13 @@ testRule({
       message: messages.error('width'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test disabling properties via config */
 testRule({
   config: [true, { properties: { margin: false, width: false } }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { width: 100px; }',
@@ -669,7 +664,6 @@ testRule({
       message: messages.warning('padding'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test changing severity levels */
@@ -684,7 +678,7 @@ testRule({
     },
   ],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { width: 50%; }',
@@ -708,14 +702,13 @@ testRule({
       message: messages.error('padding'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test at-rule configuration */
 testRule({
   config: [true, { 'at-rules': { '@media': false } }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '@media (min-width: 768px) { .class { width: 10rem; } }',
@@ -730,5 +723,4 @@ testRule({
       message: messages.error('@container'),
     },
   ],
-  /* eslint-enable sort-keys */
 });

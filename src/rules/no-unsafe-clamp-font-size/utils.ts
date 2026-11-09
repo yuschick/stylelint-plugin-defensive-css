@@ -3,15 +3,20 @@
  * @param value - The declaration value to parse
  * @returns Tuple of [min, preferred, max] or null if not valid clamp()
  */
-export const parseClampArguments = (value: string): [string, string, string] | null => {
+export const parseClampArguments = (
+  value: string,
+): [string, string, string] | null => {
   const clampFunctionPrefix = 'clamp(';
-  const clampFunctionStartIndex = value.toLowerCase().indexOf(clampFunctionPrefix);
+  const clampFunctionStartIndex = value
+    .toLowerCase()
+    .indexOf(clampFunctionPrefix);
 
   if (clampFunctionStartIndex < 0) {
     return null;
   }
 
-  const clampArgumentsStartIndex = clampFunctionStartIndex + clampFunctionPrefix.length;
+  const clampArgumentsStartIndex =
+    clampFunctionStartIndex + clampFunctionPrefix.length;
   let nestedFunctionDepth = 0;
   let clampArgumentsEndIndex = clampArgumentsStartIndex;
 

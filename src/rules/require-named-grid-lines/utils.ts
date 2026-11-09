@@ -45,7 +45,9 @@ export function tokenizeGridValue(value: string): string[] {
 function hasNamedLinesInRepeat(repeatValue: string): boolean {
   // Extract content inside repeat()
   const match = repeatValue.match(/repeat\s*\(\s*[^,]+,\s*(.+)\s*\)/i);
-  if (!match) return false;
+  if (!match) {
+    return false;
+  }
 
   const content = match[1];
   // Check if the content has at least one named line
@@ -57,12 +59,16 @@ function hasNamedLinesInRepeat(repeatValue: string): boolean {
  * A value is invalid if it contains track sizes without corresponding line names
  */
 export function isValueInvalidForLineNames(value: string): boolean {
-  if (!value || value.trim() === '') return false;
+  if (!value || value.trim() === '') {
+    return false;
+  }
 
   const tokens = tokenizeGridValue(value);
 
   // If there are no tokens, nothing to validate
-  if (tokens.length === 0) return false;
+  if (tokens.length === 0) {
+    return false;
+  }
 
   // Check each token
   for (let i = 0; i < tokens.length; i++) {
@@ -102,7 +108,9 @@ export function parseGridShorthand(value: string): {
 } | null {
   const slashIndex = value.indexOf('/');
 
-  if (slashIndex === -1) return null;
+  if (slashIndex === -1) {
+    return null;
+  }
 
   return {
     columns: value.slice(slashIndex + 1).trim(),

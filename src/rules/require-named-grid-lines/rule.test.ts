@@ -4,7 +4,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { grid-template-columns: [start] 1fr [end]; }',
@@ -44,7 +44,8 @@ testRule({
     },
     {
       code: '.class { grid-template-columns: [a] repeat(auto-fill, [b] 100px [c]) [d]; }',
-      description: 'grid-template-columns with auto-fill repeat and named lines',
+      description:
+        'grid-template-columns with auto-fill repeat and named lines',
     },
   ],
 
@@ -77,7 +78,9 @@ testRule({
     {
       code: '.class { grid-template-columns: minmax(100px, 1fr) 2fr; }',
       description: 'grid-template-columns with minmax but no names',
-      message: messages.rejected('grid-template-columns: minmax(100px, 1fr) 2fr'),
+      message: messages.rejected(
+        'grid-template-columns: minmax(100px, 1fr) 2fr',
+      ),
     },
     {
       code: '.class { grid-template-columns: repeat(3, 1fr); }',
@@ -85,18 +88,18 @@ testRule({
       message: messages.rejected('grid-template-columns: repeat(3, 1fr)'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when columns are disabled and rows are enabled */
 testRule({
   config: [true, { columns: false, rows: [true, { severity: 'warning' }] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { grid-template-columns: 1fr 2fr; }',
-      description: 'grid-template-columns without names (columns check disabled)',
+      description:
+        'grid-template-columns without names (columns check disabled)',
     },
     {
       code: '.class { grid-template-rows: [row-start] 100px [row-end]; }',
@@ -104,7 +107,8 @@ testRule({
     },
     {
       code: '.class { grid: [row-start] 1fr [row-end] / 1fr 2fr; }',
-      description: 'grid shorthand - rows named, columns unnamed (columns disabled)',
+      description:
+        'grid shorthand - rows named, columns unnamed (columns disabled)',
     },
     {
       code: '.class { grid: repeat(2, [row-start] 1fr [row-end]) / 1fr 2fr; }',
@@ -125,14 +129,13 @@ testRule({
       message: messages.rejected('grid-template-rows: repeat(3, 100px)'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when columns are enabled and rows are disabled */
 testRule({
   config: [true, { rows: false }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { grid-template-rows: 100px auto 1fr; }',
@@ -140,29 +143,31 @@ testRule({
     },
     {
       code: '.class { grid-template-columns: [col-start] 1fr [col-end]; }',
-      description: 'grid-template-columns with named lines (columns still checked)',
+      description:
+        'grid-template-columns with named lines (columns still checked)',
     },
     {
       code: '.class { grid: 1fr auto / [col-start] 1fr [col-end]; }',
-      description: 'grid shorthand - columns named, rows unnamed (rows disabled)',
+      description:
+        'grid shorthand - columns named, rows unnamed (rows disabled)',
     },
   ],
 
   reject: [
     {
       code: '.class { grid-template-columns: 1fr 2fr; }',
-      description: 'grid-template-columns without names (columns still checked)',
+      description:
+        'grid-template-columns without names (columns still checked)',
       message: messages.rejected('grid-template-columns: 1fr 2fr'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when both columns and rows are disabled */
 testRule({
   config: [true, { columns: false, rows: false }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { grid-template-columns: 1fr 2fr; }',
@@ -179,5 +184,4 @@ testRule({
   ],
 
   reject: [],
-  /* eslint-enable sort-keys */
 });

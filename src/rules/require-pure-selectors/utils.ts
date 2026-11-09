@@ -1,5 +1,7 @@
-import parser, { Node } from 'postcss-selector-parser';
-import { SecondaryOptions } from './rule';
+import type { Node } from 'postcss-selector-parser';
+import parser from 'postcss-selector-parser';
+
+import type { SecondaryOptions } from './rule';
 
 type Mode = 'loose' | 'strict';
 
@@ -7,9 +9,14 @@ export function findImpureElement(
   selector: string,
   options: SecondaryOptions = {},
 ): Node | null {
-  const { ignoreAttributeModifiers, ignoreAttributeSelectors, ignoreElements, strict } =
-    options;
-  const allowAttributeModifiers = ignoreAttributeModifiers ?? ignoreAttributeSelectors;
+  const {
+    ignoreAttributeModifiers,
+    ignoreAttributeSelectors,
+    ignoreElements,
+    strict,
+  } = options;
+  const allowAttributeModifiers =
+    ignoreAttributeModifiers ?? ignoreAttributeSelectors;
   const mode: Mode = strict ? 'strict' : 'loose';
 
   let nodeToReport: Node | null = null;
@@ -76,7 +83,9 @@ export function findImpureElement(
         }
 
         if (node.type === 'universal') {
-          const isIgnored = ignoreElements?.includes('*' as keyof HTMLElementTagNameMap);
+          const isIgnored = ignoreElements?.includes(
+            '*' as keyof HTMLElementTagNameMap,
+          );
 
           if (isIgnored) {
             return;

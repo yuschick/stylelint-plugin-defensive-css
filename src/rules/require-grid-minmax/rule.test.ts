@@ -4,7 +4,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { display: grid; grid-template-columns: subgrid; }',
@@ -21,11 +21,13 @@ testRule({
     },
     {
       code: '.class { grid-template-columns: minmax(100px, 1fr); }',
-      description: 'grid-template-columns with a non-zero minmax() minimum is acceptable',
+      description:
+        'grid-template-columns with a non-zero minmax() minimum is acceptable',
     },
     {
       code: '.class { grid-template-columns: fit-content(1fr); }',
-      description: 'grid-template-columns with 1fr inside fit-content() is acceptable',
+      description:
+        'grid-template-columns with 1fr inside fit-content() is acceptable',
     },
     {
       code: '.class { grid-template-columns: 250px 500px auto; }',
@@ -33,7 +35,8 @@ testRule({
     },
     {
       code: '.class { grid-template-columns: repeat(3, 100px); }',
-      description: 'grid-template-columns with fixed repeat() sizes is acceptable',
+      description:
+        'grid-template-columns with fixed repeat() sizes is acceptable',
     },
     {
       code: '.class { grid-template-columns: repeat(3, minmax(0, 1fr)); }',
@@ -62,7 +65,8 @@ testRule({
     },
     {
       code: '.class { grid-template-columns: 2fr 3fr; }',
-      description: 'grid-template-columns with only non-1fr fr units is not flagged',
+      description:
+        'grid-template-columns with only non-1fr fr units is not flagged',
     },
     {
       code: '.class { grid-auto-columns: minmax(0, 1fr); }',
@@ -94,7 +98,7 @@ testRule({
       description: 'unrelated declarations are ignored',
     },
     {
-      code: `.class { grid-template-columns: repeat(auto-fit, minmax(var(--min-width, 250px), 1fr)); }`,
+      code: '.class { grid-template-columns: repeat(auto-fit, minmax(var(--min-width, 250px), 1fr)); }',
       description: 'should allow 1fr as minmax() value',
     },
   ],
@@ -111,7 +115,8 @@ testRule({
     },
     {
       code: '.class { grid-template-columns: 1fr 1fr 1fr; }',
-      description: 'grid-template-columns with multiple raw 1fr values is rejected once',
+      description:
+        'grid-template-columns with multiple raw 1fr values is rejected once',
       message: messages.rejected(),
     },
     {
@@ -122,7 +127,8 @@ testRule({
     },
     {
       code: '.class { grid-template-columns: repeat(3, 1fr); }',
-      description: 'grid-template-columns with a raw 1fr inside repeat() is rejected',
+      description:
+        'grid-template-columns with a raw 1fr inside repeat() is rejected',
       message: messages.rejected(),
     },
     {
@@ -174,7 +180,8 @@ testRule({
     },
     {
       code: '.class { grid-auto-columns: 1fr 1fr; }',
-      description: 'grid-auto-columns with multiple raw 1fr values is rejected once',
+      description:
+        'grid-auto-columns with multiple raw 1fr values is rejected once',
       message: messages.rejected(),
     },
     {
@@ -187,10 +194,12 @@ testRule({
       code: '.class { grid-template-columns: 1fr; grid-auto-columns: 1fr; }',
       description:
         'both grid-template-columns and grid-auto-columns are reported independently',
-      warnings: [{ message: messages.rejected() }, { message: messages.rejected() }],
+      warnings: [
+        { message: messages.rejected() },
+        { message: messages.rejected() },
+      ],
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test the default configuration with autofix enabled */
@@ -198,7 +207,7 @@ testRule({
   config: [true],
   fix: true,
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { grid-template-columns: minmax(0, 1fr) 250px; }',
@@ -228,18 +237,21 @@ testRule({
     {
       code: '.class { grid-template-columns: minmax(0, 1fr) 1fr; }',
       fixed: '.class { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }',
-      description: 'fix only the raw 1fr and leave the protected minmax() untouched',
+      description:
+        'fix only the raw 1fr and leave the protected minmax() untouched',
       message: messages.rejected(),
     },
     {
       code: '.class { grid-template-columns: repeat(auto-fit, 1fr); }',
-      fixed: '.class { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }',
+      fixed:
+        '.class { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); }',
       description: 'fix a raw 1fr inside an auto-fit repeat()',
       message: messages.rejected(),
     },
     {
       code: '.class { grid-template-columns: repeat(auto-fill, 1fr); }',
-      fixed: '.class { grid-template-columns: repeat(auto-fill, minmax(0, 1fr)); }',
+      fixed:
+        '.class { grid-template-columns: repeat(auto-fill, minmax(0, 1fr)); }',
       description: 'fix a raw 1fr inside an auto-fill repeat()',
       message: messages.rejected(),
     },
@@ -254,7 +266,8 @@ testRule({
       code: '.class { grid-template-columns: minmax(0, 1fr) minmax(100px, 1fr) 1fr; }',
       fixed:
         '.class { grid-template-columns: minmax(0, 1fr) minmax(100px, 1fr) minmax(0, 1fr); }',
-      description: 'fix only the raw 1fr among multiple protected minmax() values',
+      description:
+        'fix only the raw 1fr among multiple protected minmax() values',
       message: messages.rejected(),
     },
     {
@@ -264,14 +277,13 @@ testRule({
       message: messages.rejected(),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test the ignore configuration */
 testRule({
   config: [true, { ignore: [/^\.grid-/, '.legacy-layout'] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.legacy-layout { grid-template-columns: 1fr 250px; }',
@@ -304,7 +316,8 @@ testRule({
     },
     {
       code: '.layout-grid { grid-template-columns: 1fr; }',
-      description: 'selector not matching the anchored regex pattern is still flagged',
+      description:
+        'selector not matching the anchored regex pattern is still flagged',
       message: messages.rejected(),
     },
     {
@@ -314,5 +327,4 @@ testRule({
       message: messages.rejected(),
     },
   ],
-  /* eslint-enable sort-keys */
 });

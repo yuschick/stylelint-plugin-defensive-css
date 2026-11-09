@@ -5,8 +5,14 @@ export function isScrollableOverflow(value: string): boolean {
 }
 
 export function getOverflowAxis(prop: string): 'x' | 'y' | 'both' | null {
-  if (overflowPropertiesByAxis.x.includes(prop)) return 'x';
-  if (overflowPropertiesByAxis.y.includes(prop)) return 'y';
-  if (overflowPropertiesByAxis.both.includes(prop)) return 'both';
+  if (overflowPropertiesByAxis.x.includes(prop)) {
+    return 'x';
+  }
+  if (overflowPropertiesByAxis.y.includes(prop)) {
+    return 'y';
+  }
+  if (overflowPropertiesByAxis.both.includes(prop)) {
+    return 'both';
+  }
   return null;
 }

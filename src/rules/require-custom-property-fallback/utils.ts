@@ -1,7 +1,9 @@
 const VAR_EXPRESSION = /var\(.+?\)/g;
 
 export function findCustomPropertiesWithoutFallback(value: string): string[] {
-  if (!value) return [];
+  if (!value) {
+    return [];
+  }
 
   const propertiesFound = [...value.trim().matchAll(VAR_EXPRESSION)];
 

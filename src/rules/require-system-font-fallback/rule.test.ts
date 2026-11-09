@@ -3,7 +3,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.heading { font: 1.2em "Fira Sans", sans-serif; }',
@@ -68,7 +68,8 @@ testRule({
     },
     {
       code: '.heading { font-family: Verdana, Geneva, sans-serif; }',
-      description: 'font-family with multiple web-safe fonts and system fallback',
+      description:
+        'font-family with multiple web-safe fonts and system fallback',
     },
     {
       code: '.heading { font: 1.2em/1.5 "Custom Font", cursive; }',
@@ -92,7 +93,8 @@ testRule({
     },
     {
       code: '.heading { font: 1em/1rem "Segoe UI", sans-serif; }',
-      description: 'font shorthand with relative line height and system fallback',
+      description:
+        'font shorthand with relative line height and system fallback',
     },
     {
       code: '.heading { font-family: Arial; }',
@@ -104,7 +106,8 @@ testRule({
     },
     {
       code: '.heading { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }',
-      description: 'font-family with real-world Apple font stack and system fallback',
+      description:
+        'font-family with real-world Apple font stack and system fallback',
     },
     {
       code: '.heading { font-family: "Custom Font", ui-sans-serif; }',
@@ -112,7 +115,8 @@ testRule({
     },
     {
       code: '.heading { font-family: "A", "B", "C", "D", serif; }',
-      description: 'font-family with long chain of custom fonts and system fallback',
+      description:
+        'font-family with long chain of custom fonts and system fallback',
     },
     {
       code: '.heading { font: menu; }',
@@ -156,7 +160,8 @@ testRule({
     },
     {
       code: '.title { font: var(--font-m); }',
-      description: 'font shorthand composed entirely of a single var() reference',
+      description:
+        'font shorthand composed entirely of a single var() reference',
     },
     {
       code: '.heading { font-family: var(--font-primary), var(--font-secondary); }',
@@ -173,7 +178,8 @@ testRule({
     },
     {
       code: '.heading { font: 1.2em var(--font-family); }',
-      description: 'font shorthand with size and a var() not composed entirely of var()',
+      description:
+        'font shorthand with size and a var() not composed entirely of var()',
     },
   ],
 
@@ -205,7 +211,8 @@ testRule({
     },
     {
       code: '.heading { font-family: "sans-serif"; }',
-      description: 'font-family with quoted system font name treated as custom family',
+      description:
+        'font-family with quoted system font name treated as custom family',
       message: messages.looseReject('"sans-serif"'),
     },
     {
@@ -226,16 +233,17 @@ testRule({
     {
       code: '.heading { font-family: "Custom Font", "Another Font", "Third Font"; }',
       description: 'font-family with three custom fonts and no fallback',
-      message: messages.looseReject('"Custom Font", "Another Font", "Third Font"'),
+      message: messages.looseReject(
+        '"Custom Font", "Another Font", "Third Font"',
+      ),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { strict: true }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.heading { font: 1.2em "Fira Sans", sans-serif; }',
@@ -314,7 +322,8 @@ testRule({
     },
     {
       code: '.heading { font-family: "Font One", "Font Two"; }',
-      description: 'font-family with multiple quoted fonts and no system fallback',
+      description:
+        'font-family with multiple quoted fonts and no system fallback',
       message: messages.strictReject('"Font One", "Font Two"'),
     },
     {
@@ -343,13 +352,12 @@ testRule({
       message: messages.strictReject('Verdana, Georgia'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { ignore: ['var\\(--ds-font-family.*\\)', 'Exact Font'] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.heading { font-family: var(--ds-font-family-primary); }',
@@ -372,14 +380,15 @@ testRule({
   reject: [
     {
       code: '.heading { font-family: "Custom Font"; }',
-      description: 'font-family without system font fallback and not in ignore list',
+      description:
+        'font-family without system font fallback and not in ignore list',
       message: messages.looseReject('"Custom Font"'),
     },
     {
       code: '.heading { font: 1.2em "Fira Sans"; }',
-      description: 'font shorthand without system font fallback and not in ignore list',
+      description:
+        'font shorthand without system font fallback and not in ignore list',
       message: messages.looseReject('1.2em "Fira Sans"'),
     },
   ],
-  /* eslint-enable sort-keys */
 });

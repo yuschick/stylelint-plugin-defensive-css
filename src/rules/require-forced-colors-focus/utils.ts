@@ -1,5 +1,6 @@
-import { PropertiesHyphen } from 'csstype';
+import type { PropertiesHyphen } from 'csstype';
 import type { ChildNode } from 'postcss';
+
 import { hasMatchingAncestor } from '../../utils/traversal';
 
 export const outlineProperties: Set<keyof PropertiesHyphen> = new Set([

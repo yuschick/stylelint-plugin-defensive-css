@@ -4,11 +4,15 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import type { PropertiesHyphen } from 'csstype';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '../../utils/types';
+import { severityOption } from '../../utils/types';
 import { messages, meta, name } from './meta';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { PropertiesHyphen } from 'csstype';
-import { compositeProperties, CompositeProperty, defaultValues, globals } from './utils';
+import type { CompositeProperty } from './utils';
+import { compositeProperties, defaultValues, globals } from './utils';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -35,14 +39,22 @@ export const noUnsafeWillChange: Rule = (
         possible: {
           ...severityOption,
           ignore: [(value: unknown) => typeof value === 'string'],
-          maxProperties: [(value: unknown) => typeof value === 'number' && value > 0],
+          maxProperties: [
+            (value: unknown) => typeof value === 'number' && value > 0,
+          ],
         },
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
-    const { ignore = [], maxProperties = 2, severity = 'error' } = secondaryOptions;
+    const {
+      ignore = [],
+      maxProperties = 2,
+      severity = 'error',
+    } = secondaryOptions;
 
     root.walkDecls('will-change', (decl) => {
       const { parent, value } = decl;
@@ -88,7 +100,7 @@ export const noUnsafeWillChange: Rule = (
       const safeValues = [...compositeProperties, ...defaultValues, ...globals];
 
       const nonCompositeProperties = filteredProperties.filter(
-        (prop) => !safeValues.includes(prop as CompositeProperty),
+        (prop) => !safeValues.includes(prop),
       );
 
       if (nonCompositeProperties.length > 0) {

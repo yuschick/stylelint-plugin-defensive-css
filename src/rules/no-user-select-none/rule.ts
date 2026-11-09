@@ -4,11 +4,14 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
-import { messages, meta, name } from './meta';
-import { severityOption, SeverityProps } from '../../utils/types';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
 import { matchesIgnorePattern } from '../../utils/ignore';
 import { hasMatchingAncestor } from '../../utils/traversal';
+import type { SeverityProps } from '../../utils/types';
+import { severityOption } from '../../utils/types';
+import { messages, meta, name } from './meta';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -42,7 +45,9 @@ export const noUserSelectNone: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { ignore = [], severity } = secondaryOptions;
 
@@ -54,7 +59,8 @@ export const noUserSelectNone: Rule = (
       if (
         hasMatchingAncestor(decl, (ancestor) => {
           return (
-            ancestor.type === 'rule' && matchesIgnorePattern(ancestor.selector, ignore)
+            ancestor.type === 'rule' &&
+            matchesIgnorePattern(ancestor.selector, ignore)
           );
         })
       ) {

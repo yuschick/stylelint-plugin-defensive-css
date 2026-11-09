@@ -58,7 +58,10 @@ export const isValidAtRule = (params: string): boolean => {
 export const isValidValue = (value: string): boolean => {
   const normalized = value.toLowerCase();
 
-  const functionPattern = new RegExp(`\\b(${VALIDATED_FUNCTIONS.join('|')})\\s*\\(`, 'i');
+  const functionPattern = new RegExp(
+    `\\b(${VALIDATED_FUNCTIONS.join('|')})\\s*\\(`,
+    'i',
+  );
 
   if (functionPattern.test(normalized)) {
     if (checkForCustomProperty(normalized)[0]) {

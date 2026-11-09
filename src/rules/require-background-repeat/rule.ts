@@ -4,11 +4,14 @@
  * @license MIT
  */
 
-import stylelint, { Rule, Severity } from 'stylelint';
+import type { Rule, Severity } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '../../utils/types';
+import { severityOption } from '../../utils/types';
+import { validateBasicOption } from '../../utils/validation';
 import { messages, meta, name } from './meta';
 import { findShorthandRepeat, hasUrlValue } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -40,10 +43,13 @@ export const requireBackgroundRepeat: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     // Default both to true
-    const checkBackgroundRepeat = secondaryOptions['background-repeat'] !== false;
+    const checkBackgroundRepeat =
+      secondaryOptions['background-repeat'] !== false;
     const checkMaskRepeat = secondaryOptions['mask-repeat'] !== false;
 
     if (!checkBackgroundRepeat && !checkMaskRepeat) {
@@ -102,7 +108,10 @@ export const requireBackgroundRepeat: Rule = (
 
         if (checkMaskRepeat) {
           // Check for mask-image or mask shorthand
-          if (prop === 'mask-image' || (prop === 'mask' && hasUrlValue(value))) {
+          if (
+            prop === 'mask-image' ||
+            (prop === 'mask' && hasUrlValue(value))
+          ) {
             declMap.hasMaskImage = true;
 
             // Check if shorthand includes repeat

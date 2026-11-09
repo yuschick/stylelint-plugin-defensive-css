@@ -4,11 +4,14 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
-import { messages, meta, name } from './meta';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { findImpureElement } from './utils';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
 import { hasMatchingAncestor } from '../../utils/traversal';
+import type { SeverityProps } from '../../utils/types';
+import { severityOption } from '../../utils/types';
+import { messages, meta, name } from './meta';
+import { findImpureElement } from './utils';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -47,7 +50,9 @@ export const requirePureSelectors: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
 
@@ -77,7 +82,9 @@ export const requirePureSelectors: Rule = (
 
         const hasNestedAttributeModifier =
           secondaryOptions.ignoreAttributeModifiers &&
-          ruleNode.some((child) => child.type === 'rule' && /^&\[/.test(child.selector));
+          ruleNode.some(
+            (child) => child.type === 'rule' && /^&\[/.test(child.selector),
+          );
 
         if (hasNestedAttributeModifier) {
           return;

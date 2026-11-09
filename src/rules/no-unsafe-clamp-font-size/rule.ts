@@ -4,12 +4,15 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
-import { messages, meta, name } from './meta';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { parseClampArguments } from './utils';
-import { validateBasicOption } from '../../utils/validation';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
 import { checkForCustomProperty } from '../../utils/css';
+import type { SeverityProps } from '../../utils/types';
+import { severityOption } from '../../utils/types';
+import { validateBasicOption } from '../../utils/validation';
+import { messages, meta, name } from './meta';
+import { parseClampArguments } from './utils';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -35,17 +38,22 @@ export const noUnsafeClampFontSize: Rule = (
         optional: true,
         possible: {
           ...severityOption,
-          maxRatio: [(value: unknown) => typeof value === 'number' && value > 0],
+          maxRatio: [
+            (value: unknown) => typeof value === 'number' && value > 0,
+          ],
           reportUnresolvable: [(value: unknown) => validateBasicOption(value)],
         },
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity = 'error', maxRatio = 2.5 } = secondaryOptions;
 
-    const reportUnresolvableOption = secondaryOptions.reportUnresolvable ?? true;
+    const reportUnresolvableOption =
+      secondaryOptions.reportUnresolvable ?? true;
     const shouldReportUnresolvable = Array.isArray(reportUnresolvableOption)
       ? reportUnresolvableOption[0]
       : reportUnresolvableOption;

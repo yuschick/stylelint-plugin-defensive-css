@@ -46,14 +46,20 @@ interface HasMatchingAncestorOptions {
   predicate: (ancestor: AtRule | Root | Rule) => boolean;
 }
 
-export function hasMatchingAncestor({ node, predicate }: HasMatchingAncestorOptions) {}
+export function hasMatchingAncestor({
+  node,
+  predicate,
+}: HasMatchingAncestorOptions) {}
 
 /* ✅ Correct: our function mirrors a Stylelint shape, with a described suppression */
 // eslint-disable-next-line no-restricted-syntax -- TS-03: mirrors Stylelint's (primary, secondary) rule signature
 function createRule(primary: unknown, secondary: SecondaryOptions) {}
 
 /* ❌ Incorrect: positional parameters on our own helper */
-export function hasMatchingAncestor(node: ChildNode, predicate: AncestorPredicate) {}
+export function hasMatchingAncestor(
+  node: ChildNode,
+  predicate: AncestorPredicate,
+) {}
 ```
 
 ### TS-04 · Optional Property Syntax

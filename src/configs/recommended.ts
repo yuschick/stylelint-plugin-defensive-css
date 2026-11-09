@@ -2,25 +2,43 @@ export default {
   plugins: ['stylelint-plugin-defensive-css'],
   rules: {
     'defensive-css/no-accidental-hover': [true, { severity: 'error' }],
-    'defensive-css/no-list-style-none': [true, { fix: true, severity: 'error' }],
+    'defensive-css/no-list-style-none': [
+      true,
+      { fix: true, severity: 'error' },
+    ],
     'defensive-css/no-mixed-vendor-prefixes': [true, { severity: 'error' }],
     'defensive-css/no-unsafe-clamp-font-size': [
       true,
-      { reportUnresolvable: [true, { severity: 'warning' }], severity: 'error' },
+      {
+        reportUnresolvable: [true, { severity: 'warning' }],
+        severity: 'error',
+      },
     ],
     'defensive-css/no-unsafe-will-change': [true, { severity: 'error' }],
     'defensive-css/no-user-select-none': [true, { severity: 'error' }],
     'defensive-css/require-background-repeat': [true, { severity: 'error' }],
-    'defensive-css/require-dynamic-viewport-height': [true, { severity: 'warning' }],
+    'defensive-css/require-dynamic-viewport-height': [
+      true,
+      { severity: 'warning' },
+    ],
     'defensive-css/require-flex-wrap': [true, { severity: 'error' }],
     'defensive-css/require-focus-visible': [true, { severity: 'error' }],
     'defensive-css/require-forced-colors-focus': [true, { severity: 'error' }],
-    'defensive-css/require-grid-minmax': [true, { fix: true, severity: 'error' }],
+    'defensive-css/require-grid-minmax': [
+      true,
+      { fix: true, severity: 'error' },
+    ],
     'defensive-css/require-named-grid-lines': [
       true,
-      { columns: [true, { severity: 'error' }], rows: [true, { severity: 'warning' }] },
+      {
+        columns: [true, { severity: 'error' }],
+        rows: [true, { severity: 'warning' }],
+      },
     ],
-    'defensive-css/require-prefers-reduced-motion': [true, { severity: 'error' }],
+    'defensive-css/require-prefers-reduced-motion': [
+      true,
+      { severity: 'error' },
+    ],
     'defensive-css/require-pure-selectors': [
       true,
       { ignoreElements: ['*'], severity: 'error' },

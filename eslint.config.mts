@@ -1,8 +1,8 @@
-import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
 import js from '@eslint/js';
+import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
+import { defineConfig, globalIgnores } from 'eslint/config';
 import prettier from 'eslint-config-prettier/flat';
 import { createNodeResolver, importX } from 'eslint-plugin-import-x';
-import { defineConfig, globalIgnores } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
@@ -168,10 +168,7 @@ export default defineConfig(
       ],
 
       'no-console': 'error',
-      'no-extra-boolean-cast': [
-        'error',
-        { enforceForInnerExpressions: true },
-      ],
+      'no-extra-boolean-cast': ['error', { enforceForInnerExpressions: true }],
       'no-prototype-builtins': 'off',
       'no-restricted-imports': [
         'error',

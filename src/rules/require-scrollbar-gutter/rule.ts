@@ -4,11 +4,14 @@
  * @license MIT
  */
 
-import stylelint, { Rule, Severity } from 'stylelint';
+import type { Rule, Severity } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '../../utils/types';
+import { severityOption } from '../../utils/types';
+import { validateBasicOption } from '../../utils/validation';
 import { messages, meta, name } from './meta';
 import { getOverflowAxis, isScrollableOverflow } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -40,14 +43,18 @@ export const requireScrollbarGutter: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     // Default both to true
     const checkX = secondaryOptions.x !== false;
     const checkY = secondaryOptions.y !== false;
 
     // If both are disabled, nothing to check
-    if (!checkX && !checkY) return;
+    if (!checkX && !checkY) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
     const xSeverity: Severity | undefined = Array.isArray(secondaryOptions.x)
@@ -90,7 +97,12 @@ export const requireScrollbarGutter: Rule = (
         }
       });
 
-      if (checkX && hasScrollableOverflowX && !hasScrollbarGutter && overflowNode) {
+      if (
+        checkX &&
+        hasScrollableOverflowX &&
+        !hasScrollbarGutter &&
+        overflowNode
+      ) {
         report({
           message: messages.rejected(ruleNode.selector),
           node: overflowNode,
@@ -103,7 +115,12 @@ export const requireScrollbarGutter: Rule = (
         return;
       }
 
-      if (checkY && hasScrollableOverflowY && !hasScrollbarGutter && overflowNode) {
+      if (
+        checkY &&
+        hasScrollableOverflowY &&
+        !hasScrollbarGutter &&
+        overflowNode
+      ) {
         report({
           message: messages.rejected(ruleNode.selector),
           node: overflowNode,

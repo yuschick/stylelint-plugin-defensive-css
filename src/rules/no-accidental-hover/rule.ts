@@ -4,10 +4,13 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
-import { messages, meta, name } from './meta';
-import { severityOption, SeverityProps } from '../../utils/types';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
 import { hasMatchingAncestor } from '../../utils/traversal';
+import type { SeverityProps } from '../../utils/types';
+import { severityOption } from '../../utils/types';
+import { messages, meta, name } from './meta';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -30,7 +33,9 @@ export const noAccidentalHover: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
 

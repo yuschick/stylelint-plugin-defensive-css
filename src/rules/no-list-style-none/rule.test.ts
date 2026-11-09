@@ -4,7 +4,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { list-style-type: ""; }',
@@ -24,19 +24,23 @@ testRule({
     },
     {
       code: 'nav { list-style: none; }',
-      description: 'list-style inside of a nav element set to none is acceptable',
+      description:
+        'list-style inside of a nav element set to none is acceptable',
     },
     {
       code: 'nav { .class { list-style: none; } }',
-      description: 'list-style nested inside of a nav element set to none is acceptable',
+      description:
+        'list-style nested inside of a nav element set to none is acceptable',
     },
     {
       code: 'nav { list-style-type: none; }',
-      description: 'list-style inside of a nav element set to none is acceptable',
+      description:
+        'list-style inside of a nav element set to none is acceptable',
     },
     {
       code: 'nav { .class { list-style-type: none; } }',
-      description: 'list-style nested inside of a nav element set to none is acceptable',
+      description:
+        'list-style nested inside of a nav element set to none is acceptable',
     },
     {
       code: 'nav ul { list-style: none; }',
@@ -68,7 +72,8 @@ testRule({
     },
     {
       code: 'ul { list-style-type: ""; }',
-      description: 'ul with list-style-type empty string (recommended approach)',
+      description:
+        'ul with list-style-type empty string (recommended approach)',
     },
     {
       code: 'ol { list-style-type: ""; }',
@@ -181,7 +186,6 @@ testRule({
       ],
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* test the default rule with fix enabled */
@@ -189,7 +193,7 @@ testRule({
   config: [true],
   fix: true,
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   reject: [
     {
       code: 'ul { list-style: none; }',
@@ -200,7 +204,8 @@ testRule({
     {
       code: 'ul { list-style: NONE; }',
       fixed: 'ul { list-style: ""; }',
-      description: 'auto-fix list-style: NONE to list-style: "" (case insensitive)',
+      description:
+        'auto-fix list-style: NONE to list-style: "" (case insensitive)',
       message: messages.rejected('ul'),
     },
     {
@@ -240,20 +245,20 @@ testRule({
       message: messages.rejected(':not(nav) ol'),
     },
     {
-      code: `.parent { .child { list-style: none; } }`,
-      fixed: `.parent { .child { list-style: ""; } }`,
+      code: '.parent { .child { list-style: none; } }',
+      fixed: '.parent { .child { list-style: ""; } }',
       description: 'auto-fix list-style none in nested selector',
       message: messages.rejected('.child'),
     },
     {
-      code: `.parent { list-style: none; & .child { list-style: disc; } }`,
-      fixed: `.parent { list-style: ""; & .child { list-style: disc; } }`,
+      code: '.parent { list-style: none; & .child { list-style: disc; } }',
+      fixed: '.parent { list-style: ""; & .child { list-style: disc; } }',
       description: 'auto-fix list-style none in parent of child selector',
       message: messages.rejected('.parent'),
     },
     {
-      code: `:not(nav) { .child { list-style-type: none; } }`,
-      fixed: `:not(nav) { .child { list-style-type: ""; } }`,
+      code: ':not(nav) { .child { list-style-type: none; } }',
+      fixed: ':not(nav) { .child { list-style-type: ""; } }',
       description: 'auto-fix list-style-type none in parent :not(nav) selector',
       message: messages.rejected('.child'),
     },
@@ -267,5 +272,4 @@ testRule({
       ],
     },
   ],
-  /* eslint-enable sort-keys */
 });

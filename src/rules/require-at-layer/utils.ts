@@ -1,7 +1,7 @@
-import { AtRule, ChildNode, Container } from 'postcss';
+import type { AtRule, ChildNode, Container } from 'postcss';
 
 export function findRootLevelLayer(node: ChildNode): { name: string } | null {
-  let current = node.parent as Container | undefined;
+  let current = node.parent;
   let layerAncestor: { name: string } | null = null;
 
   while (current && current.type !== 'root') {

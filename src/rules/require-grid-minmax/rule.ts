@@ -4,11 +4,14 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
-import { messages, meta, name } from './meta';
-import { fixOption, FixProps, severityOption, SeverityProps } from '../../utils/types';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
 import { matchesIgnorePattern } from '../../utils/ignore';
 import { hasMatchingAncestor } from '../../utils/traversal';
+import type { FixProps, SeverityProps } from '../../utils/types';
+import { fixOption, severityOption } from '../../utils/types';
+import { messages, meta, name } from './meta';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -43,7 +46,9 @@ export const requireGridMinmax: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { ignore = [], severity } = secondaryOptions;
 
@@ -52,7 +57,8 @@ export const requireGridMinmax: Rule = (
       if (
         hasMatchingAncestor(decl, (ancestor) => {
           return (
-            ancestor.type === 'rule' && matchesIgnorePattern(ancestor.selector, ignore)
+            ancestor.type === 'rule' &&
+            matchesIgnorePattern(ancestor.selector, ignore)
           );
         })
       ) {
@@ -65,7 +71,8 @@ export const requireGridMinmax: Rule = (
       }
 
       /* Strip out any minmax() or fit-content() functions so their '1fr' values are ignored */
-      const protectedFunctionPattern = /\b(minmax|fit-content)\((?:[^()]|\([^()]*\))*\)/g;
+      const protectedFunctionPattern =
+        /\b(minmax|fit-content)\((?:[^()]|\([^()]*\))*\)/g;
       const unprotectedValue = decl.value.replace(protectedFunctionPattern, '');
 
       /* If no raw '1fr' values remain outside of those functions, return early */

@@ -4,15 +4,18 @@
  * @license MIT
  */
 
-import stylelint, { Rule, Severity } from 'stylelint';
+import type { Rule, Severity } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '../../utils/types';
+import { severityOption } from '../../utils/types';
+import { validateBasicOption } from '../../utils/validation';
 import { messages, meta, name } from './meta';
 import {
   getOverflowAxis,
   getOverscrollBehaviorAxis,
   isScrollableOverflow,
 } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -44,14 +47,18 @@ export const requireOverscrollBehavior: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     // Default both to true
     const checkX = secondaryOptions.x !== false;
     const checkY = secondaryOptions.y !== false;
 
     // If both are disabled, nothing to check
-    if (!checkX && !checkY) return;
+    if (!checkX && !checkY) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
     const xSeverity: Severity | undefined = Array.isArray(secondaryOptions.x)
@@ -103,7 +110,12 @@ export const requireOverscrollBehavior: Rule = (
         }
       });
 
-      if (checkX && hasScrollableOverflowX && !hasOverscrollBehaviorX && overflowNode) {
+      if (
+        checkX &&
+        hasScrollableOverflowX &&
+        !hasOverscrollBehaviorX &&
+        overflowNode
+      ) {
         report({
           message: messages.rejected(ruleNode.selector),
           node: overflowNode,
@@ -116,7 +128,12 @@ export const requireOverscrollBehavior: Rule = (
         return;
       }
 
-      if (checkY && hasScrollableOverflowY && !hasOverscrollBehaviorY && overflowNode) {
+      if (
+        checkY &&
+        hasScrollableOverflowY &&
+        !hasOverscrollBehaviorY &&
+        overflowNode
+      ) {
         report({
           message: messages.rejected(ruleNode.selector),
           node: overflowNode,

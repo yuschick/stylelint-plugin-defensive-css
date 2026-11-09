@@ -1,4 +1,5 @@
-import { Severity } from 'stylelint';
+import type { Severity } from 'stylelint';
+
 import { severityOption } from './types';
 
 export function validateBasicOption(value: unknown): boolean {
