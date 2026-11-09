@@ -43,8 +43,8 @@ Milestone 6 can continue in 3.x if time runs short, because new rules are not br
 
 ### Release branch
 
-- [ ] Create `release/v3.0.0` from `main` at v2.10.0, so changelog generation has a reachable starting tag.
-- [ ] Add a `release/**` ruleset that requires pull requests and squash merges, so each pull request is one changelog entry.
+- [x] Create `release/v3.0.0` from `main` at v2.10.0, so changelog generation has a reachable starting tag.
+- [x] Add a `release/**` ruleset that requires pull requests and squash merges, so each pull request is one changelog entry.
 - [ ] Open one bootstrap pull request to `main` containing the new `release.yaml` and Dependabot's `target-branch: release/v3.0.0`. GitHub reads manually triggered workflows and Dependabot config from the default branch.
 - [ ] If `main` ever gets a v2 fix, merge `main` into `release/v3.0.0`.
 
@@ -52,22 +52,22 @@ Milestone 6 can continue in 3.x if time runs short, because new rules are not br
 
 This work comes before the Milestone 3 refactors, so all later code follows it.
 
-- [ ] Import the TypeScript and coding conventions from the source repository.
-- [ ] Audit each one: keep, adapt for this codebase, or remove.
-- [ ] Move everything a linter can check into `eslint.config.mts` and `tsconfig.json`.
+- [x] Import the TypeScript and coding conventions from the source repository.
+- [x] Audit each one: keep, adapt for this codebase, or remove.
+- [x] Move everything a linter can check into `eslint.config.mts` and `tsconfig.json`.
 - [ ] Put the remaining guidance in `AGENTS.md` and focused files under `docs/conventions/`.
 - [ ] Add a `CLAUDE.md` that imports `AGENTS.md`, so every agent tool reads one source.
-- [ ] Bring existing code into line with the new lint settings.
+- [x] Bring existing code into line with the new lint settings.
 
 ### Pull request checks
 
-- [ ] Run lint, typecheck, build and tests. Today only tests run.
-- [ ] Add a compatibility matrix: lowest supported 16.x, latest 16.x, 17 and 18.
-- [ ] Set the 16.x floor from what the matrix proves, then update `peerDependencies`. The likely floor is 16.13, when ambiguous `report()` positions were deprecated.
-- [ ] Add `engines.node` and raise `.nvmrc` to at least 24.15. It is on 24.10, below Stylelint 18's minimum.
+- [x] Run lint, typecheck, build and tests. Today only tests run.
+- [x] Add a compatibility matrix: lowest supported 16.x, latest 16.x, 17 and 18.
+- [x] Set the 16.x floor from what the matrix proves, then update `peerDependencies`. The floor is 16.7.0: 27 autofix tests fail on 16.6.1 and every earlier version tested.
+- [x] Add `engines.node` and raise `.nvmrc` to at least 24.15. It is on 24.10, below Stylelint 18's minimum.
 - [ ] Validate the published package shape with `publint` and `@arethetypeswrong/cli`.
 - [ ] Mark the required checks in the `Main` and `release/**` rulesets.
-- [ ] Lint pull request titles as Conventional Commits, because squash merges turn the title into the changelog entry.
+- [x] Lint pull request titles as Conventional Commits, because squash merges turn the title into the changelog entry.
 
 ### Dependencies
 
@@ -438,7 +438,7 @@ RCs publish continuously to `next` from Milestone 2 onward. These checkpoints de
 
 | Change | Migration |
 | --- | --- |
-| Stylelint 14 and 15 are no longer supported | Upgrade to Stylelint 16 or newer |
+| Stylelint 14, 15 and 16.0–16.6 are no longer supported | Upgrade to Stylelint 16.7 or newer, on Node 20.19 or newer |
 | CommonJS build removed | Load the plugin as ESM. Stylelint handles this. |
 | `fix` option removed | Remove it, and use `disableFix: true` to opt out |
 | `ignore` strings follow Stylelint's `/regex/` convention | Review existing patterns |
