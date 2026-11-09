@@ -12,6 +12,7 @@ import requireDynamicViewportHeight from './rules/require-dynamic-viewport-heigh
 import requireFlexWrap from './rules/require-flex-wrap';
 import requireFocusVisible from './rules/require-focus-visible';
 import requireForcedColorsFocus from './rules/require-forced-colors-focus';
+import requireGridMinmax from './rules/require-grid-minmax';
 import requireNamedGridLines from './rules/require-named-grid-lines';
 import requirePrefersReducedMotion from './rules/require-prefers-reduced-motion';
 import requireOverscrollBehavior from './rules/require-overscroll-behavior';
@@ -34,6 +35,7 @@ export default [
   requireFlexWrap,
   requireFocusVisible,
   requireForcedColorsFocus,
+  requireGridMinmax,
   requireNamedGridLines,
   requirePrefersReducedMotion,
   requireOverscrollBehavior,

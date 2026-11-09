@@ -2,6 +2,43 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.9.7](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.6...v2.9.7) (2026-09-06)
+
+### Bug Fixes
+
+* releaseit config ([24daca3](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/24daca3c0af52be234f4c63bd33e137fd6c565d5))
+* require-grid-minmax to escape values within minmax functions ([0bcdc17](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/0bcdc17c571fc0df08c4e07f7d1c4cb608cf12f0))
+
+## [2.9.6](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.5...v2.9.6) (2026-08-03)
+
+### Bug Fixes
+
+* grid minmax to ignore subgrid ([c5554a5](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/c5554a5a685dd438451bdde490e13b40da3f4174))
+
+## [2.9.5](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.4...v2.9.5) (2026-08-03)
+
+### Bug Fixes
+
+* move postcss selector parser to dependencies ([a2bd54e](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/a2bd54e7c229d0c64ef81af43dfda2705014c018))
+
+## [2.9.4](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.3...v2.9.4) (2026-07-15)
+
+### Bug Fixes
+
+* Ignore Custom Properties in Font Fallback Rule ([#208](https://github.com/yuschick/stylelint-plugin-defensive-css/issues/208)) ([b26bc29](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/b26bc29b380a43e0f827726e3ff606a68fc8cc32))
+* release it config for oicd auth ([#202](https://github.com/yuschick/stylelint-plugin-defensive-css/issues/202)) ([57e5bc2](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/57e5bc2cfa2d79b135bf9065f5b50f0f78c32b9b))
+
+### Documentation
+
+* update minmax docs ([1c5e66c](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/1c5e66c95555d1a4fc63e1f781432d1dd89e01b7))
+
+## [2.9.3](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.2...v2.9.3) (2026-05-22)
+
+### Bug Fixes
+
+* convert npm publish to attempt oicd publish ([#200](https://github.com/yuschick/stylelint-plugin-defensive-css/issues/200)) ([acd316b](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/acd316b3dfc4983b0cc9aa5dfc632510bf2241ef))
+* require pure selectors and keyframes false positives ([f63b3a9](https://github.com/yuschick/stylelint-plugin-defensive-css/commit/f63b3a92f9a82ddf94f3df091e6f0f4b74dfe1ce))
+
 ## [2.9.2](https://github.com/yuschick/stylelint-plugin-defensive-css/compare/v2.9.1...v2.9.2) (2026-05-13)
 
 ### Bug Fixes
