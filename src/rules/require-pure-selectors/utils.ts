@@ -1,42 +1,62 @@
-import parser, { Node } from 'postcss-selector-parser';
-import { SecondaryOptions } from './rule';
+import type { Node } from 'postcss-selector-parser';
+import parser from 'postcss-selector-parser';
+
+import type { SecondaryOptions } from './rule';
 
 type Mode = 'loose' | 'strict';
 
-export function findImpureElement(
-  selector: string,
-  options: SecondaryOptions = {},
-): Node | null {
-  const { ignoreAttributeModifiers, ignoreAttributeSelectors, ignoreElements, strict } =
-    options;
-  const allowAttributeModifiers = ignoreAttributeModifiers ?? ignoreAttributeSelectors;
+interface FindImpureElementOptions {
+  options?: SecondaryOptions;
+  selector: string;
+}
+
+export function findImpureElement({
+  options = {},
+  selector,
+}: FindImpureElementOptions): Node | null {
+  const {
+    ignoreAttributeModifiers,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated -- GEN-01: reads the deprecated public option so existing configs keep working; remove with the option in v3 (ROADMAP Milestone 4)
+    ignoreAttributeSelectors,
+    ignoreElements,
+    strict,
+  } = options;
+  const allowAttributeModifiers =
+    ignoreAttributeModifiers ?? ignoreAttributeSelectors;
   const mode: Mode = strict ? 'strict' : 'loose';
 
   let nodeToReport: Node | null = null;
 
   const processor = parser((selectors) => {
     selectors.each((container) => {
-      let impureNode: Node | null = null;
-      let isStrictlyPure = true;
-      let isLooselyPure = false;
-      let hasIgnoredTag: boolean | undefined = false;
+      const state: {
+        hasIgnoredTag: boolean | undefined;
+        impureNode: Node | null;
+        isLooselyPure: boolean;
+        isStrictlyPure: boolean;
+      } = {
+        hasIgnoredTag: false,
+        impureNode: null,
+        isLooselyPure: false,
+        isStrictlyPure: true,
+      };
 
       container.walk((node) => {
         if (node.type === 'class' || node.type === 'id') {
-          isLooselyPure = true;
+          state.isLooselyPure = true;
           return;
         }
 
         if (node.type === 'tag') {
-          hasIgnoredTag = ignoreElements?.includes(
+          state.hasIgnoredTag = ignoreElements?.includes(
             node.value as keyof HTMLElementTagNameMap,
           );
 
-          if (hasIgnoredTag) {
+          if (state.hasIgnoredTag) {
             return;
           }
 
-          isStrictlyPure = false;
+          state.isStrictlyPure = false;
 
           const nextNode = node.next();
           const hasAttributeModifier = nextNode?.type === 'attribute';
@@ -45,8 +65,8 @@ export function findImpureElement(
             return;
           }
 
-          if (!impureNode) {
-            impureNode = node;
+          if (!state.impureNode) {
+            state.impureNode = node;
           }
 
           return;
@@ -55,7 +75,7 @@ export function findImpureElement(
         if (node.type === 'attribute') {
           const prevNode = node.prev();
 
-          const allowAttributeModifier = hasIgnoredTag
+          const allowAttributeModifier = state.hasIgnoredTag
             ? // If the root tag is ignored, ignore the attribute modifier
               true
             : allowAttributeModifiers
@@ -70,34 +90,36 @@ export function findImpureElement(
             return;
           }
 
-          impureNode = node;
-          isStrictlyPure = false;
+          state.impureNode = node;
+          state.isStrictlyPure = false;
           return;
         }
 
         if (node.type === 'universal') {
-          const isIgnored = ignoreElements?.includes('*' as keyof HTMLElementTagNameMap);
+          const isIgnored = ignoreElements?.includes(
+            '*' as keyof HTMLElementTagNameMap,
+          );
 
           if (isIgnored) {
             return;
           }
 
-          if (!impureNode) {
-            impureNode = node;
+          if (!state.impureNode) {
+            state.impureNode = node;
           }
 
-          isStrictlyPure = false;
+          state.isStrictlyPure = false;
           return;
         }
       });
 
-      if (mode === 'strict' && !isStrictlyPure) {
-        nodeToReport = impureNode;
+      if (mode === 'strict' && !state.isStrictlyPure) {
+        nodeToReport = state.impureNode;
         return false;
       }
 
-      if (mode === 'loose' && !isStrictlyPure && !isLooselyPure) {
-        nodeToReport = impureNode;
+      if (mode === 'loose' && !state.isStrictlyPure && !state.isLooselyPure) {
+        nodeToReport = state.impureNode;
         return false;
       }
     });

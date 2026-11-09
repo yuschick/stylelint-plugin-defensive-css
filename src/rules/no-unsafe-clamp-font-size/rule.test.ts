@@ -3,7 +3,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.title { font-size: 1.5rem; }',
@@ -99,7 +99,8 @@ testRule({
     },
     {
       code: '.title { font-size: clamp(10px, min(5vw, 2rem), 25px); }',
-      description: 'preferred min() with inner comma parses correctly (safe ratio)',
+      description:
+        'preferred min() with inner comma parses correctly (safe ratio)',
     },
     {
       code: '.box { width: clamp(100px, 50vw, 500px); }',
@@ -190,7 +191,8 @@ testRule({
     },
     {
       code: '.title { font-size: clamp(10px, min(5vw, 2rem), 50px); }',
-      description: 'preferred min() with inner comma parses correctly (unsafe ratio)',
+      description:
+        'preferred min() with inner comma parses correctly (unsafe ratio)',
       message: messages.exceedsRatio('10px', '50px', 2.5),
     },
     {
@@ -239,13 +241,12 @@ testRule({
       message: messages.unresolvable('clamp(16px, 5vw, min(2vb,48px))'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { maxRatio: 2 }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.title { font-size: clamp(10px, 5vw, 20px); }',
@@ -297,13 +298,12 @@ testRule({
       message: messages.unresolvable('clamp(16, 5vw, 48)'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { maxRatio: 3 }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.title { font-size: clamp(10px, 5vw, 25px); }',
@@ -321,17 +321,17 @@ testRule({
       message: messages.exceedsRatio('10px', '31px', 3),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { reportUnresolvable: false }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.title { font-size: clamp(1rem, 5vw, 40px); }',
-      description: 'mixed units silently ignored when reportUnresolvable: false',
+      description:
+        'mixed units silently ignored when reportUnresolvable: false',
     },
     {
       code: '.title { font-size: clamp(var(--min), 5vw, 25px); }',
@@ -343,7 +343,8 @@ testRule({
     },
     {
       code: '.title { font-size: clamp(16px, 3vw, 2.5rem); }',
-      description: 'mixed units (px/rem) silently ignored when reportUnresolvable: false',
+      description:
+        'mixed units (px/rem) silently ignored when reportUnresolvable: false',
     },
   ],
   reject: [
@@ -353,13 +354,12 @@ testRule({
       message: messages.exceedsRatio('10px', '50px', 2.5),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { reportUnresolvable: true }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.title { font-size: clamp(var(--min), 5vw, 25px); }',
@@ -377,5 +377,4 @@ testRule({
       message: messages.unresolvable('clamp(1rem, 5vw, 40px)'),
     },
   ],
-  /* eslint-enable sort-keys */
 });

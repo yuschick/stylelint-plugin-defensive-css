@@ -4,7 +4,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: 'div { will-change: auto; }',
@@ -165,13 +165,12 @@ testRule({
       message: messages.invalidProperty('-moz-box-sizing'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { maxProperties: 3 }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: 'div { will-change: transform; }',
@@ -288,13 +287,12 @@ testRule({
       ],
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { ignore: ['height', 'width'] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: 'div { will-change: width; }',
@@ -322,5 +320,4 @@ testRule({
       message: messages.invalidProperty('margin'),
     },
   ],
-  /* eslint-enable sort-keys */
 });

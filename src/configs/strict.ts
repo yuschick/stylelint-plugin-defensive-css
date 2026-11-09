@@ -1,7 +1,9 @@
+import type { Config } from 'stylelint';
+
 import { strictOptions as strictFixedSizesOptions } from '../rules/no-fixed-sizes/categories';
 import { strictOptions as strictDynamicViewportHeightOptions } from '../rules/require-dynamic-viewport-height/utils';
 
-export default {
+const config: Config = {
   plugins: ['stylelint-plugin-defensive-css'],
   rules: {
     'defensive-css/no-accidental-hover': [true, { severity: 'error' }],
@@ -9,14 +11,20 @@ export default {
       true,
       { properties: strictFixedSizesOptions, severity: 'error' },
     ],
-    'defensive-css/no-list-style-none': [true, { fix: true, severity: 'error' }],
+    'defensive-css/no-list-style-none': [
+      true,
+      { fix: true, severity: 'error' },
+    ],
     'defensive-css/no-mixed-vendor-prefixes': [true, { severity: 'error' }],
     'defensive-css/no-unsafe-clamp-font-size': [true, { severity: 'error' }],
     'defensive-css/no-unsafe-will-change': [true, { severity: 'error' }],
     'defensive-css/no-user-select-none': [true, { severity: 'error' }],
     'defensive-css/require-at-layer': [true, { severity: 'error' }],
     'defensive-css/require-background-repeat': [true, { severity: 'error' }],
-    'defensive-css/require-custom-property-fallback': [true, { severity: 'error' }],
+    'defensive-css/require-custom-property-fallback': [
+      true,
+      { severity: 'error' },
+    ],
     'defensive-css/require-dynamic-viewport-height': [
       true,
       { properties: strictDynamicViewportHeightOptions, severity: 'error' },
@@ -24,11 +32,20 @@ export default {
     'defensive-css/require-flex-wrap': [true, { severity: 'error' }],
     'defensive-css/require-focus-visible': [true, { severity: 'error' }],
     'defensive-css/require-forced-colors-focus': [true, { severity: 'error' }],
-    'defensive-css/require-grid-minmax': [true, { fix: true, severity: 'error' }],
+    'defensive-css/require-grid-minmax': [
+      true,
+      { fix: true, severity: 'error' },
+    ],
     'defensive-css/require-named-grid-lines': [true, { severity: 'error' }],
     'defensive-css/require-overscroll-behavior': [true, { severity: 'error' }],
-    'defensive-css/require-prefers-reduced-motion': [true, { severity: 'error' }],
-    'defensive-css/require-pure-selectors': [true, { severity: 'error', strict: true }],
+    'defensive-css/require-prefers-reduced-motion': [
+      true,
+      { severity: 'error' },
+    ],
+    'defensive-css/require-pure-selectors': [
+      true,
+      { severity: 'error', strict: true },
+    ],
     'defensive-css/require-scrollbar-gutter': [true, { severity: 'error' }],
     'defensive-css/require-system-font-fallback': [
       true,
@@ -36,3 +53,5 @@ export default {
     ],
   },
 };
+
+export default config;

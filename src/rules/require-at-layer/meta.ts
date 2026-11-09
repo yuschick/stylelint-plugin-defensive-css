@@ -1,4 +1,5 @@
-import stylelint, { RuleMeta } from 'stylelint';
+import type { RuleMeta } from 'stylelint';
+import stylelint from 'stylelint';
 
 const { ruleMessages } = stylelint.utils;
 
@@ -6,7 +7,7 @@ export const name = 'defensive-css/require-at-layer';
 
 export const messages = ruleMessages(name, {
   notWrapped: (layers: string[]) =>
-    `All styles must be wrapped in a top-level @layer rule.${layers?.length ? ` Supported layers: ${layers.join(', ')}` : ''}`,
+    `All styles must be wrapped in a top-level @layer rule.${layers.length ? ` Supported layers: ${layers.join(', ')}` : ''}`,
   unsupportedName: (found: string, supported: string[]) =>
     `Layer "${found}" is not a supported layer name. Supported layers: ${supported.join(', ')}`,
 });

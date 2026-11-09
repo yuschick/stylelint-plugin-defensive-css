@@ -4,9 +4,13 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
-import { severityOption, SeverityProps } from '../../utils/types';
 import { findRootLevelLayer } from './utils';
 
 const { report, validateOptions } = stylelint.utils;
@@ -37,7 +41,9 @@ export const requireAtLayer: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity, supportedLayerNames = [] } = secondaryOptions;
 
@@ -61,9 +67,15 @@ export const requireAtLayer: Rule = (
         return;
       }
 
-      if (supportedLayerNames?.length && !supportedLayerNames.includes(rootLayer.name)) {
+      if (
+        supportedLayerNames.length &&
+        !supportedLayerNames.includes(rootLayer.name)
+      ) {
         report({
-          message: messages.unsupportedName(rootLayer.name, supportedLayerNames),
+          message: messages.unsupportedName(
+            rootLayer.name,
+            supportedLayerNames,
+          ),
           node: ruleNode,
           result,
           ruleName: name,

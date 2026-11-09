@@ -4,7 +4,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { background-image: url("image.jpg"); background-repeat: no-repeat; }',
@@ -44,18 +44,18 @@ testRule({
       message: messages.rejectedMask('.class'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when background-repeat is disabled and mask-repeat is enabled */
 testRule({
   config: [true, { 'background-repeat': false }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { background-image: url("image.jpg"); }',
-      description: 'background-image without background-repeat (check disabled)',
+      description:
+        'background-image without background-repeat (check disabled)',
     },
     {
       code: '.class { mask-image: url("mask.svg"); mask-repeat: no-repeat; }',
@@ -70,7 +70,6 @@ testRule({
       message: messages.rejectedMask('.class'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when mask-repeat is disabled and background-repeat is enabled */
@@ -78,7 +77,6 @@ testRule({
   config: [true, { 'mask-repeat': false }],
   ruleName: name,
 
-  /* eslint-disable sort-keys */
   accept: [
     {
       code: '.class { mask-image: url("mask.svg"); }',
@@ -97,7 +95,6 @@ testRule({
       message: messages.rejectedBackground('.class'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when both background-repeat and mask-repeat are disabled */
@@ -105,16 +102,15 @@ testRule({
   config: [true, { 'background-repeat': false, 'mask-repeat': false }],
   ruleName: name,
 
-  /* eslint-disable sort-keys */
   accept: [
     {
       code: '.class { background-image: url("image.jpg"); }',
-      description: 'background-image without background-repeat (check disabled)',
+      description:
+        'background-image without background-repeat (check disabled)',
     },
     {
       code: '.class { mask-image: url("mask.svg"); }',
       description: 'mask-image without mask-repeat (check disabled)',
     },
   ],
-  /* eslint-enable sort-keys */
 });

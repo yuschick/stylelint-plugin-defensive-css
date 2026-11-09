@@ -3,7 +3,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.btn:focus-visible { outline: 2px solid transparent; box-shadow: 0 0 0 2px blue; }',
@@ -20,7 +20,8 @@ testRule({
 
     {
       code: '.btn:focus-visible { box-shadow: 0 0 0 2px blue; }',
-      description: 'box-shadow without outline removal — default outline remains',
+      description:
+        'box-shadow without outline removal — default outline remains',
     },
     {
       code: '.btn:focus-visible { color: red; }',
@@ -33,11 +34,13 @@ testRule({
 
     {
       code: '.btn:focus-visible { outline: none; }',
-      description: 'outline removed without box-shadow — no box-shadow indicator to flag',
+      description:
+        'outline removed without box-shadow — no box-shadow indicator to flag',
     },
     {
       code: '.btn:focus-visible { outline: none; border: 2px solid blue; }',
-      description: 'outline removed but border is visible — border survives FCM',
+      description:
+        'outline removed but border is visible — border survives FCM',
     },
 
     {
@@ -51,7 +54,8 @@ testRule({
 
     {
       code: '.btn { outline: 2px solid transparent; &:focus-visible { outline-color: blue; } }',
-      description: 'nested: parent has transparent outline, focus-visible sets color',
+      description:
+        'nested: parent has transparent outline, focus-visible sets color',
     },
     {
       code: '.btn { outline: 0 solid transparent; &:focus-visible { outline-color: blue; outline-width: 2px; } }',
@@ -60,7 +64,8 @@ testRule({
     },
     {
       code: '.btn { outline: 2px solid transparent; &:focus-visible { outline-color: blue; box-shadow: 0 0 0 2px blue; } }',
-      description: 'nested: transparent outline with focus-visible color + box-shadow',
+      description:
+        'nested: transparent outline with focus-visible color + box-shadow',
     },
     {
       code: '.btn { outline: none; &:focus-visible { outline: 2px solid transparent; box-shadow: 0 0 0 2px blue; } }',
@@ -70,11 +75,13 @@ testRule({
 
     {
       code: '.btn:focus-visible { outline: none; outline: 2px solid transparent; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline: none overridden by outline: transparent in same rule',
+      description:
+        'outline: none overridden by outline: transparent in same rule',
     },
     {
       code: '.btn:focus-visible { outline: none; outline-style: solid; outline-width: 2px; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline: none overridden by longhand style + width in same rule',
+      description:
+        'outline: none overridden by longhand style + width in same rule',
     },
 
     {
@@ -83,11 +90,13 @@ testRule({
     },
     {
       code: '.btn:hover { outline: none; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline: none with box-shadow in :hover — not a focus selector',
+      description:
+        'outline: none with box-shadow in :hover — not a focus selector',
     },
     {
       code: '.btn:active { outline: none; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline: none with box-shadow in :active — not a focus selector',
+      description:
+        'outline: none with box-shadow in :active — not a focus selector',
     },
     {
       code: '.btn:focus > .icon { outline: none; box-shadow: 0 0 0 2px blue; }',
@@ -111,7 +120,8 @@ testRule({
     },
     {
       code: '.btn:focus-visible { outline: none; border-bottom: 2px solid blue; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline removed but border-bottom present — border survives FCM',
+      description:
+        'outline removed but border-bottom present — border survives FCM',
     },
 
     {
@@ -121,7 +131,8 @@ testRule({
 
     {
       code: '.btn:focus-visible { outline-offset: 2px; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline-offset is not outline removal — default outline remains',
+      description:
+        'outline-offset is not outline removal — default outline remains',
     },
 
     {
@@ -132,15 +143,18 @@ testRule({
 
     {
       code: '.btn:focus-visible { outline: var(--focus-outline); box-shadow: 0 0 0 2px blue; }',
-      description: 'outline uses var() — cannot resolve statically, benefit of the doubt',
+      description:
+        'outline uses var() — cannot resolve statically, benefit of the doubt',
     },
     {
       code: '.btn:focus-visible { outline: inherit; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline: inherit — delegates to cascade, benefit of the doubt',
+      description:
+        'outline: inherit — delegates to cascade, benefit of the doubt',
     },
     {
       code: '.btn:focus-visible { outline: revert; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline: revert — delegates to cascade, benefit of the doubt',
+      description:
+        'outline: revert — delegates to cascade, benefit of the doubt',
     },
 
     {
@@ -151,7 +165,8 @@ testRule({
 
     {
       code: '.a { outline: none; } .b:focus-visible { box-shadow: 0 0 0 2px blue; }',
-      description: 'outline removed on unrelated .a should not leak into .b focus rule',
+      description:
+        'outline removed on unrelated .a should not leak into .b focus rule',
     },
 
     {
@@ -190,7 +205,8 @@ testRule({
 
     {
       code: '.btn:focus-visible { outline: 0 solid red; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline shorthand with 0 width — invisible even with style and color',
+      description:
+        'outline shorthand with 0 width — invisible even with style and color',
       message: messages.rejected('.btn:focus-visible'),
     },
     {
@@ -200,7 +216,8 @@ testRule({
     },
     {
       code: '.btn { outline: none; &:focus-visible { box-shadow: 0 0 0 2px blue; } }',
-      description: 'nested: parent removes outline, focus-visible uses only box-shadow',
+      description:
+        'nested: parent removes outline, focus-visible uses only box-shadow',
       message: messages.rejected('&:focus-visible'),
     },
     {
@@ -228,7 +245,8 @@ testRule({
 
     {
       code: '.a:focus-visible, .b:focus-visible { outline: none; box-shadow: 0 0 0 2px blue; }',
-      description: 'multiple focus-visible selectors with outline: none + box-shadow',
+      description:
+        'multiple focus-visible selectors with outline: none + box-shadow',
       message: messages.rejected('.a:focus-visible, .b:focus-visible'),
     },
 
@@ -240,7 +258,8 @@ testRule({
 
     {
       code: '@media (forced-colors: active) { .btn:focus-visible { outline: none; box-shadow: 0 0 0 2px blue; } }',
-      description: 'inside forced-colors: active — box-shadow is still invisible in FCM',
+      description:
+        'inside forced-colors: active — box-shadow is still invisible in FCM',
       message: messages.rejected('.btn:focus-visible'),
     },
     {
@@ -280,7 +299,8 @@ testRule({
 
     {
       code: '.btn { outline-width: 0; &:focus-visible { box-shadow: 0 0 0 2px blue; } }',
-      description: 'nested: parent removes outline-width: 0, focus uses box-shadow',
+      description:
+        'nested: parent removes outline-width: 0, focus uses box-shadow',
       message: messages.rejected('&:focus-visible'),
     },
 
@@ -293,7 +313,8 @@ testRule({
 
     {
       code: '.btn:focus-visible { outline: none; box-shadow: 0 0 0 2px blue, 0 4px 8px rgba(0,0,0,0.2); }',
-      description: 'outline: none with multi-value box-shadow — still unsafe in FCM',
+      description:
+        'outline: none with multi-value box-shadow — still unsafe in FCM',
       message: messages.rejected('.btn:focus-visible'),
     },
 
@@ -311,22 +332,26 @@ testRule({
     },
     {
       code: '.a:focus-visible { outline: none; box-shadow: 0 0 0 2px blue; } .b:focus-visible { outline: 2px solid transparent; box-shadow: 0 0 0 2px blue; }',
-      description: '.a is flagged — .b has safe outline and should not be flagged',
+      description:
+        '.a is flagged — .b has safe outline and should not be flagged',
       message: messages.rejected('.a:focus-visible'),
     },
     {
       code: '.btn:focus-visible { outline: none; border: 2px solid transparent; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline removed with transparent border — border not visible in FCM',
+      description:
+        'outline removed with transparent border — border not visible in FCM',
       message: messages.rejected('.btn:focus-visible'),
     },
     {
       code: '.btn:focus-visible { outline: none; border-color: transparent; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline removed with border-color: transparent — not visible in FCM',
+      description:
+        'outline removed with border-color: transparent — not visible in FCM',
       message: messages.rejected('.btn:focus-visible'),
     },
     {
       code: '.btn:focus-visible { outline: none; border-bottom: 2px solid transparent; box-shadow: 0 0 0 2px blue; }',
-      description: 'outline removed with transparent border-bottom — not visible in FCM',
+      description:
+        'outline removed with transparent border-bottom — not visible in FCM',
       message: messages.rejected('.btn:focus-visible'),
     },
 
@@ -348,14 +373,15 @@ testRule({
 
     {
       code: '.btn { outline: none; &:focus-visible { box-shadow: 0 0 0 2px blue; & > .icon { color: red; } } }',
-      description: 'only &:focus-visible should be flagged, not nested & > .icon',
+      description:
+        'only &:focus-visible should be flagged, not nested & > .icon',
       message: messages.rejected('&:focus-visible'),
     },
     {
       code: '.btn:focus-visible:not(.disabled) { outline: none; box-shadow: 0 0 0 2px blue; }',
-      description: ':focus-visible:not(.disabled) — chained pseudo should still flag',
+      description:
+        ':focus-visible:not(.disabled) — chained pseudo should still flag',
       message: messages.rejected('.btn:focus-visible:not(.disabled)'),
     },
   ],
-  /* eslint-enable sort-keys */
 });

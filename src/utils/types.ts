@@ -1,4 +1,4 @@
-import { Severity } from 'stylelint';
+import type { Severity } from 'stylelint';
 
 export interface SeverityProps {
   severity?: Severity;

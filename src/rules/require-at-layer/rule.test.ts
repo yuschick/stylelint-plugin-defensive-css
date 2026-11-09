@@ -4,7 +4,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true, { supportedLayerNames: ['ds.components'] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '@layer ds.components { div { color: red; } }',
@@ -42,14 +42,13 @@ testRule({
       message: messages.notWrapped(['ds.components']),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test without supportedLayerNames (any layer name accepted) */
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '@layer components { div { color: red; } }',
@@ -73,14 +72,13 @@ testRule({
       message: messages.notWrapped([]),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test with multiple supported layer names */
 testRule({
   config: [true, { supportedLayerNames: ['ds.components', 'ds.utilities'] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '@layer ds.components { div { color: red; } }',
@@ -96,8 +94,10 @@ testRule({
     {
       code: '@layer theme { div { color: red; } }',
       description: 'wrapped in unsupported layer name',
-      message: messages.unsupportedName('theme', ['ds.components', 'ds.utilities']),
+      message: messages.unsupportedName('theme', [
+        'ds.components',
+        'ds.utilities',
+      ]),
     },
   ],
-  /* eslint-enable sort-keys */
 });

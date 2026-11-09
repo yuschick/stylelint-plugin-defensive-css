@@ -3,7 +3,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { user-select: auto; }',
@@ -73,13 +73,12 @@ testRule({
       message: messages.rejected(),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { ignore: [/^\.icon-/, '.drag-handle'] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.drag-handle { user-select: none; }',
@@ -103,7 +102,8 @@ testRule({
     },
     {
       code: '.wrapper { .icon-btn { user-select: none; } }',
-      description: 'nested selector matching regex is ignored via ancestor traversal',
+      description:
+        'nested selector matching regex is ignored via ancestor traversal',
     },
   ],
   reject: [
@@ -118,5 +118,4 @@ testRule({
       message: messages.rejected(),
     },
   ],
-  /* eslint-enable sort-keys */
 });

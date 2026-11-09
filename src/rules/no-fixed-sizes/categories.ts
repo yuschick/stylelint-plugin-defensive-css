@@ -1,15 +1,24 @@
 import type * as CSS from 'csstype';
-import { Severity } from 'stylelint';
+import type { Severity } from 'stylelint';
 
 export type Properties = Partial<
-  Record<keyof CSS.PropertiesHyphen, boolean | [boolean, { severity?: Severity }]>
+  Record<
+    keyof CSS.PropertiesHyphen,
+    boolean | [boolean, { severity?: Severity }]
+  >
 >;
 
 export type AtRules = Partial<
   Record<CSS.AtRules, boolean | [boolean, { severity?: Severity }]>
 >;
 
-export const groups = ['critical', 'decorative', 'positioning', 'spacing', 'typography'];
+export const groups = [
+  'critical',
+  'decorative',
+  'positioning',
+  'spacing',
+  'typography',
+];
 export type Group = (typeof groups)[number];
 
 export type PropertyGroup = Record<

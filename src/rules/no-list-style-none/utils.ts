@@ -17,9 +17,9 @@ export function isNavSelector(selector: string): boolean {
 }
 
 export const isListStyleNone = (value: string): boolean => {
-  const parts = [...new Intl.Segmenter('en', { granularity: 'word' }).segment(value)].map(
-    (part) => part.segment,
-  );
+  const parts = [
+    ...new Intl.Segmenter('en', { granularity: 'word' }).segment(value),
+  ].map((part) => part.segment);
 
   return parts.some((part) => part.trim().toLowerCase() === 'none');
 };

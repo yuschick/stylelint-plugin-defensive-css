@@ -1,45 +1,49 @@
-import noAccidentalHover from './rules/no-accidental-hover';
-import noFixedSizes from './rules/no-fixed-sizes';
-import noListStyleNone from './rules/no-list-style-none';
-import noMixedVendorPrefixes from './rules/no-mixed-vendor-prefixes';
-import noUnsafeClampFontSize from './rules/no-unsafe-clamp-font-size';
-import noUnsafeWillChange from './rules/no-unsafe-will-change';
-import noUserSelectNone from './rules/no-user-select-none';
-import requireAtLayer from './rules/require-at-layer';
-import requireBackgroundRepeat from './rules/require-background-repeat';
-import requireCustomPropertyFallback from './rules/require-custom-property-fallback';
-import requireDynamicViewportHeight from './rules/require-dynamic-viewport-height';
-import requireFlexWrap from './rules/require-flex-wrap';
-import requireFocusVisible from './rules/require-focus-visible';
-import requireForcedColorsFocus from './rules/require-forced-colors-focus';
-import requireGridMinmax from './rules/require-grid-minmax';
-import requireNamedGridLines from './rules/require-named-grid-lines';
-import requirePrefersReducedMotion from './rules/require-prefers-reduced-motion';
-import requireOverscrollBehavior from './rules/require-overscroll-behavior';
-import requirePureSelectors from './rules/require-pure-selectors';
-import requireScrollbarGutter from './rules/require-scrollbar-gutter';
-import requireSystemFontFallback from './rules/require-system-font-fallback';
+import type { Plugin } from 'stylelint';
 
-export default [
-  noAccidentalHover,
-  noFixedSizes,
-  noListStyleNone,
-  noMixedVendorPrefixes,
-  noUnsafeClampFontSize,
-  noUnsafeWillChange,
-  noUserSelectNone,
-  requireAtLayer,
-  requireBackgroundRepeat,
-  requireCustomPropertyFallback,
-  requireDynamicViewportHeight,
-  requireFlexWrap,
-  requireFocusVisible,
-  requireForcedColorsFocus,
-  requireGridMinmax,
-  requireNamedGridLines,
-  requirePrefersReducedMotion,
-  requireOverscrollBehavior,
-  requirePureSelectors,
-  requireScrollbarGutter,
-  requireSystemFontFallback,
+import { noAccidentalHoverPlugin } from './rules/no-accidental-hover';
+import { noFixedSizesPlugin } from './rules/no-fixed-sizes';
+import { noListStyleNonePlugin } from './rules/no-list-style-none';
+import { noMixedVendorPrefixesPlugin } from './rules/no-mixed-vendor-prefixes';
+import { noUnsafeClampFontSizePlugin } from './rules/no-unsafe-clamp-font-size';
+import { noUnsafeWillChangePlugin } from './rules/no-unsafe-will-change';
+import { noUserSelectNonePlugin } from './rules/no-user-select-none';
+import { requireAtLayerPlugin } from './rules/require-at-layer';
+import { requireBackgroundRepeatPlugin } from './rules/require-background-repeat';
+import { requireCustomPropertyFallbackPlugin } from './rules/require-custom-property-fallback';
+import { requireDynamicViewportHeightPlugin } from './rules/require-dynamic-viewport-height';
+import { requireFlexWrapPlugin } from './rules/require-flex-wrap';
+import { requireFocusVisiblePlugin } from './rules/require-focus-visible';
+import { requireForcedColorsFocusPlugin } from './rules/require-forced-colors-focus';
+import { requireGridMinmaxPlugin } from './rules/require-grid-minmax';
+import { requireNamedGridLinesPlugin } from './rules/require-named-grid-lines';
+import { requireOverscrollBehaviorPlugin } from './rules/require-overscroll-behavior';
+import { requirePrefersReducedMotionPlugin } from './rules/require-prefers-reduced-motion';
+import { requirePureSelectorsPlugin } from './rules/require-pure-selectors';
+import { requireScrollbarGutterPlugin } from './rules/require-scrollbar-gutter';
+import { requireSystemFontFallbackPlugin } from './rules/require-system-font-fallback';
+
+const plugins: Plugin[] = [
+  noAccidentalHoverPlugin,
+  noFixedSizesPlugin,
+  noListStyleNonePlugin,
+  noMixedVendorPrefixesPlugin,
+  noUnsafeClampFontSizePlugin,
+  noUnsafeWillChangePlugin,
+  noUserSelectNonePlugin,
+  requireAtLayerPlugin,
+  requireBackgroundRepeatPlugin,
+  requireCustomPropertyFallbackPlugin,
+  requireDynamicViewportHeightPlugin,
+  requireFlexWrapPlugin,
+  requireFocusVisiblePlugin,
+  requireForcedColorsFocusPlugin,
+  requireGridMinmaxPlugin,
+  requireNamedGridLinesPlugin,
+  requirePrefersReducedMotionPlugin,
+  requireOverscrollBehaviorPlugin,
+  requirePureSelectorsPlugin,
+  requireScrollbarGutterPlugin,
+  requireSystemFontFallbackPlugin,
 ];
+
+export default plugins;

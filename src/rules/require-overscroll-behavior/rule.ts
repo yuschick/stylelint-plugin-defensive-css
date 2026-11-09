@@ -4,15 +4,20 @@
  * @license MIT
  */
 
-import stylelint, { Rule, Severity } from 'stylelint';
+import type { Declaration } from 'postcss';
+import type { Rule, Severity } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+import { validateBasicOption } from '@package-utils/validation';
+
 import { messages, meta, name } from './meta';
 import {
   getOverflowAxis,
   getOverscrollBehaviorAxis,
   isScrollableOverflow,
 } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -44,14 +49,18 @@ export const requireOverscrollBehavior: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     // Default both to true
     const checkX = secondaryOptions.x !== false;
     const checkY = secondaryOptions.y !== false;
 
     // If both are disabled, nothing to check
-    if (!checkX && !checkY) return;
+    if (!checkX && !checkY) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
     const xSeverity: Severity | undefined = Array.isArray(secondaryOptions.x)
@@ -62,11 +71,18 @@ export const requireOverscrollBehavior: Rule = (
       : severity;
 
     root.walkRules((ruleNode) => {
-      let hasScrollableOverflowX = false;
-      let hasScrollableOverflowY = false;
-      let hasOverscrollBehaviorX = false;
-      let hasOverscrollBehaviorY = false;
-      let overflowNode = null;
+      const state: {
+        hasOverscrollBehaviorX: boolean;
+        hasOverscrollBehaviorY: boolean;
+        hasScrollableOverflowX: boolean;
+        hasScrollableOverflowY: boolean;
+        overflowNode?: Declaration;
+      } = {
+        hasOverscrollBehaviorX: false,
+        hasOverscrollBehaviorY: false,
+        hasScrollableOverflowX: false,
+        hasScrollableOverflowY: false,
+      };
 
       // Collect all declarations in this rule
       ruleNode.walkDecls((decl) => {
@@ -76,15 +92,15 @@ export const requireOverscrollBehavior: Rule = (
 
         // Check for scrollable overflow properties
         if (overflowAxis && isScrollableOverflow(value)) {
-          overflowNode = decl;
+          state.overflowNode = decl;
 
           if (overflowAxis === 'x') {
-            hasScrollableOverflowX = true;
+            state.hasScrollableOverflowX = true;
           } else if (overflowAxis === 'y') {
-            hasScrollableOverflowY = true;
-          } else if (overflowAxis === 'both') {
-            hasScrollableOverflowX = true;
-            hasScrollableOverflowY = true;
+            state.hasScrollableOverflowY = true;
+          } else {
+            state.hasScrollableOverflowX = true;
+            state.hasScrollableOverflowY = true;
           }
         }
 
@@ -93,20 +109,25 @@ export const requireOverscrollBehavior: Rule = (
 
         if (overscrollAxis) {
           if (overscrollAxis === 'x') {
-            hasOverscrollBehaviorX = true;
+            state.hasOverscrollBehaviorX = true;
           } else if (overscrollAxis === 'y') {
-            hasOverscrollBehaviorY = true;
-          } else if (overscrollAxis === 'both') {
-            hasOverscrollBehaviorX = true;
-            hasOverscrollBehaviorY = true;
+            state.hasOverscrollBehaviorY = true;
+          } else {
+            state.hasOverscrollBehaviorX = true;
+            state.hasOverscrollBehaviorY = true;
           }
         }
       });
 
-      if (checkX && hasScrollableOverflowX && !hasOverscrollBehaviorX && overflowNode) {
+      if (
+        checkX &&
+        state.hasScrollableOverflowX &&
+        !state.hasOverscrollBehaviorX &&
+        state.overflowNode
+      ) {
         report({
           message: messages.rejected(ruleNode.selector),
-          node: overflowNode,
+          node: state.overflowNode,
           result,
           ruleName: name,
           severity: xSeverity,
@@ -116,10 +137,15 @@ export const requireOverscrollBehavior: Rule = (
         return;
       }
 
-      if (checkY && hasScrollableOverflowY && !hasOverscrollBehaviorY && overflowNode) {
+      if (
+        checkY &&
+        state.hasScrollableOverflowY &&
+        !state.hasOverscrollBehaviorY &&
+        state.overflowNode
+      ) {
         report({
           message: messages.rejected(ruleNode.selector),
-          node: overflowNode,
+          node: state.overflowNode,
           result,
           ruleName: name,
           severity: ySeverity,

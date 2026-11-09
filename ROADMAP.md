@@ -206,7 +206,8 @@ The changelog is generated, and the migration guide is written by hand. Commits 
 
 **Outcome:** rules contain only their CSS logic, and each kind of parsing has one tested implementation.
 
-- [ ] Add `createRule()` to replace the option validation, metadata attachment and `createPlugin` setup repeated in all 21 rules.
+- [ ] Add `createRule()` to replace the option validation, metadata attachment and `createPlugin` setup repeated in all 21 rules. If it mirrors Stylelint's signature, it needs a described TS-03 suppression.
+- [ ] Remove the remaining type assertions as rules move to the traversal module, then enable `@typescript-eslint/consistent-type-assertions` to enforce TS-09.
 - [ ] Choose the parsing stack. Evaluate `@csstools/css-tokenizer`, `@csstools/css-parser-algorithms` and `@csstools/media-query-list-parser`, all of which Stylelint 18 already depends on, and keep `postcss-selector-parser`.
 - [ ] Build one tree traversal module, so loops and tree logic live in one place:
   - a single `ancestors(node)` iterator containing the only upward loop

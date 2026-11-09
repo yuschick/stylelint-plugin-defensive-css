@@ -1,19 +1,26 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": ["DOM", "ESNext"],
     "module": "ESNext",
-    "moduleResolution": "node",
+    "moduleDetection": "force",
+    "moduleResolution": "Bundler",
     "noEmit": true,
+    "noUncheckedIndexedAccess": true,
+    "paths": {
+      "@package-configs/*": ["./src/configs/*"],
+      "@package-rules/*": ["./src/rules/*"],
+      "@package-utils/*": ["./src/utils/*"]
+    },
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "target": "ESNext"
+    "target": "ESNext",
+    "types": ["node"]
   },
-  "include": ["vitest.setup.ts", "tsdown.config.ts", "src/**/*", "**/*.{ts,tsx,mdx}"],
-  "exclude": ["eslint.config.mts"]
+  "include": ["src/**/*", "*.ts", "*.mts"],
+  "exclude": ["dist", "node_modules"]
 }

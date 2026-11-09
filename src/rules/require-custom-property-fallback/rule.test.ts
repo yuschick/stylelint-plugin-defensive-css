@@ -4,7 +4,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { color: var(--primary-color, blue); }',
@@ -59,14 +59,13 @@ testRule({
       ],
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when 'ignore' is an array of strings */
 testRule({
   config: [true, { ignore: ['var\\(--color-.*\\)', 'var\\(--theme-.*\\)'] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { color: var(--color-primary); }',
@@ -94,14 +93,13 @@ testRule({
       message: messages.rejected('var(--margin-top)'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when 'ignore' is an array of regular expressions */
 testRule({
   config: [true, { ignore: [/var\(--color-.*\)/, /var\(--size-.*\)/] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { color: var(--color-primary); }',
@@ -120,14 +118,13 @@ testRule({
       message: messages.rejected('var(--padding-top)'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when 'ignore' is an array of strings and regular expressions */
 testRule({
   config: [true, { ignore: ['var\\(--exact-match\\)', /var\(--pattern-.*\)/] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { color: var(--exact-match); }',
@@ -150,5 +147,4 @@ testRule({
       message: messages.rejected('var(--other)'),
     },
   ],
-  /* eslint-enable sort-keys */
 });

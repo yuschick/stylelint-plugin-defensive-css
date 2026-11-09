@@ -4,13 +4,17 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
+import { checkForCustomProperty, globalKeywords } from '@package-utils/css';
+import { matchesIgnorePattern } from '@package-utils/ignore';
+import { hasMatchingAncestor } from '@package-utils/traversal';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
 import { cssSystemFonts, webSafeFonts } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { matchesIgnorePattern } from '../../utils/ignore';
-import { checkForCustomProperty, globalKeywords } from '../../utils/css';
-import { hasMatchingAncestor } from '../../utils/traversal';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -46,15 +50,18 @@ export const requireSystemFontFallback: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { ignore = [], strict, severity } = secondaryOptions;
 
     root.walkDecls(/^font(?:-family)?$/, (decl) => {
-      const isFontFaceDeclaration = hasMatchingAncestor(
-        decl,
-        (ancestor) => ancestor.type === 'atrule' && ancestor.name === 'font-face',
-      );
+      const isFontFaceDeclaration = hasMatchingAncestor({
+        node: decl,
+        predicate: (ancestor) =>
+          ancestor.type === 'atrule' && ancestor.name === 'font-face',
+      });
 
       if (isFontFaceDeclaration) {
         return;
@@ -76,7 +83,7 @@ export const requireSystemFontFallback: Rule = (
         }
 
         for (const val of value.split(',')) {
-          if (matchesIgnorePattern(val, ignore)) {
+          if (matchesIgnorePattern({ patterns: ignore, value: val })) {
             return;
           }
 

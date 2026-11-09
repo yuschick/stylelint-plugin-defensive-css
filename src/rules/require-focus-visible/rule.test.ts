@@ -3,7 +3,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.btn:focus-visible { outline: 2px solid blue; }',
@@ -108,5 +108,4 @@ testRule({
       message: messages.rejected('.child:focus'),
     },
   ],
-  /* eslint-enable sort-keys */
 });

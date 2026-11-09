@@ -4,11 +4,15 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
+import { matchesIgnorePattern } from '@package-utils/ignore';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
 import { findCustomPropertiesWithoutFallback } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { matchesIgnorePattern } from '../../utils/ignore';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -42,20 +46,31 @@ export const requireCustomPropertyFallback: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
 
     const ignorePatterns = secondaryOptions.ignore || [];
 
     root.walkDecls((decl) => {
-      const propertiesWithoutFallback = findCustomPropertiesWithoutFallback(decl.value);
+      const propertiesWithoutFallback = findCustomPropertiesWithoutFallback(
+        decl.value,
+      );
 
-      if (propertiesWithoutFallback.length === 0) return;
+      if (propertiesWithoutFallback.length === 0) {
+        return;
+      }
 
-      const violatingProperties = propertiesWithoutFallback.filter((property) => {
-        return !matchesIgnorePattern(property, ignorePatterns);
-      });
+      const violatingProperties = propertiesWithoutFallback.filter(
+        (property) => {
+          return !matchesIgnorePattern({
+            patterns: ignorePatterns,
+            value: property,
+          });
+        },
+      );
 
       violatingProperties.forEach((property) => {
         report({

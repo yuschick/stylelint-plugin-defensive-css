@@ -1,4 +1,5 @@
-import stylelint, { RuleMeta } from 'stylelint';
+import type { RuleMeta } from 'stylelint';
+import stylelint from 'stylelint';
 
 const { ruleMessages } = stylelint.utils;
 
