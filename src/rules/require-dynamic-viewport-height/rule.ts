@@ -1,9 +1,10 @@
 import type { Rule } from 'stylelint';
 import stylelint from 'stylelint';
 
-import type { FixProps, SeverityProps } from '../../utils/types';
-import { fixOption, severityOption } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
+import type { FixProps, SeverityProps } from '@package-utils/types';
+import { fixOption, severityOption } from '@package-utils/types';
+import { validateBasicOption } from '@package-utils/validation';
+
 import { messages, meta, name } from './meta';
 import type { Properties } from './utils';
 import { hasStaticViewportHeight, recommendedOptions } from './utils';

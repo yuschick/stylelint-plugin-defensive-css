@@ -1,7 +1,7 @@
 import type { PropertiesHyphen } from 'csstype';
 import type { ChildNode } from 'postcss';
 
-import { hasMatchingAncestor } from '../../utils/traversal';
+import { hasMatchingAncestor } from '@package-utils/traversal';
 
 export const outlineProperties: Set<keyof PropertiesHyphen> = new Set([
   'outline',
@@ -23,12 +23,12 @@ export function checkForRemovalValue(value: string): boolean {
 }
 
 export function isOutsideForcedColorsMode(node: ChildNode): boolean {
-  return hasMatchingAncestor(
-    node,
-    (ancestor) =>
+  return hasMatchingAncestor({
+    node: node,
+    predicate: (ancestor) =>
       ancestor.type === 'atrule' &&
       ancestor.name === 'media' &&
       (/forced-colors\s*:\s*none/.test(ancestor.params) ||
         /not\s*\(\s*forced-colors\s*:\s*active\s*\)/.test(ancestor.params)),
-  );
+  });
 }

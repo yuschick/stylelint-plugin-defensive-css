@@ -8,10 +8,10 @@ import type { PropertiesHyphen } from 'csstype';
 import type { Rule } from 'stylelint';
 import stylelint from 'stylelint';
 
-import type { SeverityProps } from '../../utils/types';
-import { severityOption } from '../../utils/types';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
-import type { CompositeProperty } from './utils';
 import { compositeProperties, defaultValues, globals } from './utils';
 
 const { report, validateOptions } = stylelint.utils;
@@ -93,7 +93,7 @@ export const noUnsafeWillChange: Rule = (
       }
 
       const filteredProperties = Array.from(properties).filter(
-        (prop) => !ignore?.includes(prop as keyof PropertiesHyphen),
+        (prop) => !ignore.includes(prop as keyof PropertiesHyphen),
       );
 
       // If non-composite properties are in the value, and not in ignore, error

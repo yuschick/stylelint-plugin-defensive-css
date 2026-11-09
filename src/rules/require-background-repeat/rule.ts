@@ -4,12 +4,14 @@
  * @license MIT
  */
 
+import type { Declaration } from 'postcss';
 import type { Rule, Severity } from 'stylelint';
 import stylelint from 'stylelint';
 
-import type { SeverityProps } from '../../utils/types';
-import { severityOption } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+import { validateBasicOption } from '@package-utils/validation';
+
 import { messages, meta, name } from './meta';
 import { findShorthandRepeat, hasUrlValue } from './utils';
 
@@ -70,13 +72,18 @@ export const requireBackgroundRepeat: Rule = (
 
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
-      const declMap = {
-        backgroundImageNode: null,
+      const declMap: {
+        backgroundImageNode?: Declaration;
+        hasBackgroundImage: boolean;
+        hasBackgroundRepeat: boolean;
+        hasMaskImage: boolean;
+        hasMaskRepeat: boolean;
+        maskImageNode?: Declaration;
+      } = {
         hasBackgroundImage: false,
         hasBackgroundRepeat: false,
         hasMaskImage: false,
         hasMaskRepeat: false,
-        maskImageNode: null,
       };
 
       // FIRST: Walk through ALL declarations to collect state
@@ -95,8 +102,7 @@ export const requireBackgroundRepeat: Rule = (
             if (prop === 'background' && findShorthandRepeat(value)) {
               declMap.hasBackgroundRepeat = true;
             } else {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              declMap.backgroundImageNode = decl as any;
+              declMap.backgroundImageNode = decl;
             }
           }
 
@@ -118,8 +124,7 @@ export const requireBackgroundRepeat: Rule = (
             if (prop === 'mask' && findShorthandRepeat(value)) {
               declMap.hasMaskRepeat = true;
             } else {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              declMap.maskImageNode = decl as any;
+              declMap.maskImageNode = decl;
             }
           }
 

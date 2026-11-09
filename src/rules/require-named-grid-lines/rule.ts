@@ -7,9 +7,10 @@
 import type { Rule, Severity } from 'stylelint';
 import stylelint from 'stylelint';
 
-import type { SeverityProps } from '../../utils/types';
-import { severityOption } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+import { validateBasicOption } from '@package-utils/validation';
+
 import { messages, meta, name } from './meta';
 import {
   isValueInvalidForLineNames,

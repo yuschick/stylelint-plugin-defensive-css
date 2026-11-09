@@ -7,9 +7,10 @@
 import type { Rule } from 'stylelint';
 import stylelint from 'stylelint';
 
-import { matchesIgnorePattern } from '../../utils/ignore';
-import type { SeverityProps } from '../../utils/types';
-import { severityOption } from '../../utils/types';
+import { matchesIgnorePattern } from '@package-utils/ignore';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
 import { findCustomPropertiesWithoutFallback } from './utils';
 
@@ -64,7 +65,10 @@ export const requireCustomPropertyFallback: Rule = (
 
       const violatingProperties = propertiesWithoutFallback.filter(
         (property) => {
-          return !matchesIgnorePattern(property, ignorePatterns);
+          return !matchesIgnorePattern({
+            patterns: ignorePatterns,
+            value: property,
+          });
         },
       );
 

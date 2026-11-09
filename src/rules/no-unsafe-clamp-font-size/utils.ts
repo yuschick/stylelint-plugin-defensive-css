@@ -60,7 +60,12 @@ export const parseClampArguments = (
     clampValues.push(currentArgumentText.trim());
   }
 
-  return clampValues.length === 3
-    ? [clampValues[0], clampValues[1], clampValues[2]]
+  const [min, preferred, max, ...extraValues] = clampValues;
+
+  return min !== undefined &&
+    preferred !== undefined &&
+    max !== undefined &&
+    extraValues.length === 0
+    ? [min, preferred, max]
     : null;
 };

@@ -7,8 +7,9 @@
 import type { Rule } from 'stylelint';
 import stylelint from 'stylelint';
 
-import type { SeverityProps } from '../../utils/types';
-import { severityOption } from '../../utils/types';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
 import { findRootLevelLayer } from './utils';
 
@@ -67,7 +68,7 @@ export const requireAtLayer: Rule = (
       }
 
       if (
-        supportedLayerNames?.length &&
+        supportedLayerNames.length &&
         !supportedLayerNames.includes(rootLayer.name)
       ) {
         report({

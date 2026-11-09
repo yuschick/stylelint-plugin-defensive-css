@@ -7,11 +7,12 @@
 import type { Rule } from 'stylelint';
 import stylelint from 'stylelint';
 
-import { checkForCustomProperty, globalKeywords } from '../../utils/css';
-import { matchesIgnorePattern } from '../../utils/ignore';
-import { hasMatchingAncestor } from '../../utils/traversal';
-import type { SeverityProps } from '../../utils/types';
-import { severityOption } from '../../utils/types';
+import { checkForCustomProperty, globalKeywords } from '@package-utils/css';
+import { matchesIgnorePattern } from '@package-utils/ignore';
+import { hasMatchingAncestor } from '@package-utils/traversal';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
 import { cssSystemFonts, webSafeFonts } from './utils';
 
@@ -56,11 +57,11 @@ export const requireSystemFontFallback: Rule = (
     const { ignore = [], strict, severity } = secondaryOptions;
 
     root.walkDecls(/^font(?:-family)?$/, (decl) => {
-      const isFontFaceDeclaration = hasMatchingAncestor(
-        decl,
-        (ancestor) =>
+      const isFontFaceDeclaration = hasMatchingAncestor({
+        node: decl,
+        predicate: (ancestor) =>
           ancestor.type === 'atrule' && ancestor.name === 'font-face',
-      );
+      });
 
       if (isFontFaceDeclaration) {
         return;
@@ -82,7 +83,7 @@ export const requireSystemFontFallback: Rule = (
         }
 
         for (const val of value.split(',')) {
-          if (matchesIgnorePattern(val, ignore)) {
+          if (matchesIgnorePattern({ patterns: ignore, value: val })) {
             return;
           }
 

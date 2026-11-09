@@ -1,4 +1,7 @@
 import type { PropertiesHyphen } from 'csstype';
+import type { ChildNode } from 'postcss';
+
+import { hasMatchingAncestor } from '@package-utils/traversal';
 
 export const motionAtRules = ['@view-transition'] as const;
 export type MotionAtRule = (typeof motionAtRules)[number];
@@ -71,65 +74,40 @@ export function hasMotionBackgroundAttachment(value: string): boolean {
   return false;
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export function isInsidePrefersReducedMotion(node: any): boolean {
-  let parent = node.parent;
-
-  while (parent) {
-    if (parent.type === 'atrule' && parent.name === 'media') {
-      const params = parent.params;
-
-      // Check for prefers-reduced-motion: no-preference
-      if (/prefers-reduced-motion\s*:\s*no-preference/.test(params)) {
-        return true;
-      }
-
-      // Check for not (prefers-reduced-motion: reduce)
-      if (/not\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/.test(params)) {
-        return true;
-      }
-    }
-    parent = parent.parent;
-  }
-
-  return false;
+export function isInsidePrefersReducedMotion(node: ChildNode): boolean {
+  return hasMatchingAncestor({
+    node,
+    predicate: (ancestor) =>
+      ancestor.type === 'atrule' &&
+      ancestor.name === 'media' &&
+      // (prefers-reduced-motion: no-preference) or not (prefers-reduced-motion: reduce)
+      (/prefers-reduced-motion\s*:\s*no-preference/.test(ancestor.params) ||
+        /not\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/.test(
+          ancestor.params,
+        )),
+  });
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export function isInsidePrefersReducedMotionReduce(node: any): boolean {
-  let parent = node.parent;
-
-  while (parent) {
-    if (parent.type === 'atrule' && parent.name === 'media') {
-      const params = parent.params;
-
-      // Check for prefers-reduced-motion: reduce (without "not")
-      // Make sure it's not "not (prefers-reduced-motion: reduce)"
-      if (
-        /prefers-reduced-motion\s*:\s*reduce/.test(params) &&
-        !/not\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/.test(params)
-      ) {
-        return true;
-      }
-
-      // Check for not (prefers-reduced-motion: no-preference)
-      // This is equivalent to (prefers-reduced-motion: reduce)
-      if (
+export function isInsidePrefersReducedMotionReduce(node: ChildNode): boolean {
+  return hasMatchingAncestor({
+    node,
+    predicate: (ancestor) =>
+      ancestor.type === 'atrule' &&
+      ancestor.name === 'media' &&
+      // (prefers-reduced-motion: reduce), excluding its negation, or the
+      // equivalent not (prefers-reduced-motion: no-preference)
+      ((/prefers-reduced-motion\s*:\s*reduce/.test(ancestor.params) &&
+        !/not\s*\(\s*prefers-reduced-motion\s*:\s*reduce\s*\)/.test(
+          ancestor.params,
+        )) ||
         /not\s*\(\s*prefers-reduced-motion\s*:\s*no-preference\s*\)/.test(
-          params,
-        )
-      ) {
-        return true;
-      }
-    }
-    parent = parent.parent;
-  }
-
-  return false;
+          ancestor.params,
+        )),
+  });
 }
 
 export function getInvalidTransitionProperties(value: string): string[] {
-  const transitions = value.split(',').map((t) => t.trim());
+  const transitions = value.split(',').map((transition) => transition.trim());
   const invalidProperties: string[] = [];
 
   for (const transition of transitions) {

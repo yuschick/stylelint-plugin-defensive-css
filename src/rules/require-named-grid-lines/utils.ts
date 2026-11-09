@@ -7,9 +7,7 @@ export function tokenizeGridValue(value: string): string[] {
   let depth = 0;
   let inBrackets = false;
 
-  for (let i = 0; i < value.length; i++) {
-    const char = value[i];
-
+  for (const char of value) {
     if (char === '(') {
       depth++;
       current += char;
@@ -49,7 +47,7 @@ function hasNamedLinesInRepeat(repeatValue: string): boolean {
     return false;
   }
 
-  const content = match[1];
+  const content = match[1] ?? '';
   // Check if the content has at least one named line
   return /\[[^\]]+\]/.test(content);
 }
@@ -71,8 +69,7 @@ export function isValueInvalidForLineNames(value: string): boolean {
   }
 
   // Check each token
-  for (let i = 0; i < tokens.length; i++) {
-    const token = tokens[i];
+  for (const [index, token] of tokens.entries()) {
     const isLineName = /^\[[^\]]+\]$/.test(token);
     const isRepeat = /^repeat\s*\(/i.test(token);
 
@@ -83,11 +80,11 @@ export function isValueInvalidForLineNames(value: string): boolean {
       }
     } else if (!isLineName) {
       // This is a track size - check if previous token was a line name
-      if (i === 0) {
+      if (index === 0) {
         return true; // Invalid - first token is a track without a preceding line name
       }
 
-      const previousToken = tokens[i - 1];
+      const previousToken = tokens[index - 1] ?? '';
       const previousWasLineName = /^\[[^\]]+\]$/.test(previousToken);
 
       if (!previousWasLineName) {
@@ -123,10 +120,11 @@ export function parseGridShorthand(value: string): {
  */
 export function shouldSkipRowsValidation(rowsValue: string): boolean {
   const tokens = tokenizeGridValue(rowsValue);
+  const [firstToken = ''] = tokens;
 
   return (
     tokens.length === 1 &&
-    !/^\[[^\]]+\]$/.test(tokens[0]) &&
-    !/repeat\s*\(/i.test(tokens[0])
+    !/^\[[^\]]+\]$/.test(firstToken) &&
+    !/repeat\s*\(/i.test(firstToken)
   );
 }

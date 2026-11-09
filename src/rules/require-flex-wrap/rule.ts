@@ -4,11 +4,13 @@
  * @license MIT
  */
 
+import type { Declaration } from 'postcss';
 import type { Rule } from 'stylelint';
 import stylelint from 'stylelint';
 
-import type { SeverityProps } from '../../utils/types';
-import { severityOption } from '../../utils/types';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
 import { hasWrapValue, isColumnDirection, isFlexDisplay } from './utils';
 
@@ -41,10 +43,12 @@ export const requireFlexWrap: Rule = (
 
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
-      let isDisplayFlex = false;
-      let hasFlexWrap = false;
-      let isFlexColumn = false;
-      let displayNode = null;
+      const state: {
+        displayNode?: Declaration;
+        hasFlexWrap: boolean;
+        isDisplayFlex: boolean;
+        isFlexColumn: boolean;
+      } = { hasFlexWrap: false, isDisplayFlex: false, isFlexColumn: false };
 
       // Collect all declarations in this rule
       ruleNode.walkDecls((decl) => {
@@ -52,36 +56,40 @@ export const requireFlexWrap: Rule = (
 
         // Check for display: flex
         if (prop === 'display' && isFlexDisplay(value)) {
-          isDisplayFlex = true;
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          displayNode = decl as any;
+          state.isDisplayFlex = true;
+          state.displayNode = decl;
         }
 
         // Check for flex-direction: column
         if (prop === 'flex-direction' && isColumnDirection(value)) {
-          isFlexColumn = true;
+          state.isFlexColumn = true;
         }
 
         // Check for flex-flow (can set both direction and wrap)
         if (prop === 'flex-flow') {
           if (isColumnDirection(value)) {
-            isFlexColumn = true;
+            state.isFlexColumn = true;
           }
           if (hasWrapValue(value)) {
-            hasFlexWrap = true;
+            state.hasFlexWrap = true;
           }
         }
 
         // Check for explicit flex-wrap
         if (prop === 'flex-wrap') {
-          hasFlexWrap = true;
+          state.hasFlexWrap = true;
         }
       });
 
-      if (isDisplayFlex && !hasFlexWrap && !isFlexColumn && displayNode) {
+      if (
+        state.isDisplayFlex &&
+        !state.hasFlexWrap &&
+        !state.isFlexColumn &&
+        state.displayNode
+      ) {
         report({
           message: messages.rejected(selector),
-          node: displayNode,
+          node: state.displayNode,
           result,
           ruleName: name,
           severity,

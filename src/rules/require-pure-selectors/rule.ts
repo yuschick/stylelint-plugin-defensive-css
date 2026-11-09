@@ -7,9 +7,10 @@
 import type { Rule } from 'stylelint';
 import stylelint from 'stylelint';
 
-import { hasMatchingAncestor } from '../../utils/traversal';
-import type { SeverityProps } from '../../utils/types';
-import { severityOption } from '../../utils/types';
+import { hasMatchingAncestor } from '@package-utils/traversal';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
 import { findImpureElement } from './utils';
 
@@ -59,21 +60,30 @@ export const requirePureSelectors: Rule = (
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
 
-      const impureNode = findImpureElement(selector, secondaryOptions);
+      const impureNode = findImpureElement({
+        options: secondaryOptions,
+        selector: selector,
+      });
 
       if (impureNode) {
         const usesNestingSelector = /&/.test(selector);
 
-        const shouldSkip = hasMatchingAncestor(ruleNode, (ancestor) => {
-          if (ancestor.type === 'atrule' && ancestor.name === 'keyframes') {
-            return true;
-          }
+        const shouldSkip = hasMatchingAncestor({
+          node: ruleNode,
+          predicate: (ancestor) => {
+            if (ancestor.type === 'atrule' && ancestor.name === 'keyframes') {
+              return true;
+            }
 
-          return (
-            usesNestingSelector &&
-            ancestor.type === 'rule' &&
-            !findImpureElement(ancestor.selector, secondaryOptions)
-          );
+            return (
+              usesNestingSelector &&
+              ancestor.type === 'rule' &&
+              !findImpureElement({
+                options: secondaryOptions,
+                selector: ancestor.selector,
+              })
+            );
+          },
         });
 
         if (shouldSkip) {

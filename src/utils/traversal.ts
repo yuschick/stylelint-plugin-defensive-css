@@ -1,13 +1,18 @@
 import type { AtRule, ChildNode, Node, Root, Rule } from 'postcss';
 
+interface HasMatchingAncestorOptions {
+  node: ChildNode;
+  predicate: (ancestor: AtRule | Root | Rule) => boolean;
+}
+
 /**
  * Walk up the ancestor chain from a node, testing each ancestor against a predicate.
  * Returns true if any ancestor matches the predicate.
  */
-export function hasMatchingAncestor(
-  node: ChildNode,
-  predicate: (ancestor: AtRule | Root | Rule) => boolean,
-): boolean {
+export function hasMatchingAncestor({
+  node,
+  predicate,
+}: HasMatchingAncestorOptions): boolean {
   let ancestor: Node | undefined = node.parent;
 
   while (ancestor) {

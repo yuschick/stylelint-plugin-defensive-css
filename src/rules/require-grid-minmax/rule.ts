@@ -7,10 +7,11 @@
 import type { Rule } from 'stylelint';
 import stylelint from 'stylelint';
 
-import { matchesIgnorePattern } from '../../utils/ignore';
-import { hasMatchingAncestor } from '../../utils/traversal';
-import type { FixProps, SeverityProps } from '../../utils/types';
-import { fixOption, severityOption } from '../../utils/types';
+import { matchesIgnorePattern } from '@package-utils/ignore';
+import { hasMatchingAncestor } from '@package-utils/traversal';
+import type { FixProps, SeverityProps } from '@package-utils/types';
+import { fixOption, severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
 
 const { report, validateOptions } = stylelint.utils;
@@ -55,11 +56,17 @@ export const requireGridMinmax: Rule = (
     root.walkDecls(/grid-template-columns|grid-auto-columns/, (decl) => {
       /* Skip the declaration if any ancestor selector should be ignored */
       if (
-        hasMatchingAncestor(decl, (ancestor) => {
-          return (
-            ancestor.type === 'rule' &&
-            matchesIgnorePattern(ancestor.selector, ignore)
-          );
+        hasMatchingAncestor({
+          node: decl,
+          predicate: (ancestor) => {
+            return (
+              ancestor.type === 'rule' &&
+              matchesIgnorePattern({
+                patterns: ignore,
+                value: ancestor.selector,
+              })
+            );
+          },
         })
       ) {
         return;

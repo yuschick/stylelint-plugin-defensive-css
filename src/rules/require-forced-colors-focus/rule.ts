@@ -8,7 +8,9 @@ import type { PropertiesHyphen } from 'csstype';
 import type { Rule } from 'stylelint';
 import stylelint from 'stylelint';
 
-import { severityOption } from '../../utils/types';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
 import {
   isOutsideForcedColorsMode,
@@ -21,7 +23,7 @@ const { report, validateOptions } = stylelint.utils;
 
 export const requireForcedColorsFocus: Rule = (
   primaryOption,
-  secondaryOptions = {},
+  secondaryOptions: SeverityProps = {},
 ) => {
   return (root, result) => {
     const validOptions = validateOptions(
@@ -47,8 +49,6 @@ export const requireForcedColorsFocus: Rule = (
     const { severity } = secondaryOptions;
 
     let hasVisibleOutline = true;
-    let hasVisibleBoxShadowIndicator = false;
-    let hasVisibleBorderIndicator = false;
 
     root.walkRules((ruleNode) => {
       // Reset state for top-level rules to prevent leaking across independent selectors
@@ -56,9 +56,11 @@ export const requireForcedColorsFocus: Rule = (
         hasVisibleOutline = true;
       }
 
-      // Reset focus-specific indicators for each rule to prevent leaking to siblings/children
-      hasVisibleBoxShadowIndicator = false;
-      hasVisibleBorderIndicator = false;
+      // Focus-specific indicators are per rule to prevent leaking to siblings/children
+      const indicators: {
+        hasVisibleBorder: boolean;
+        hasVisibleBoxShadow: boolean;
+      } = { hasVisibleBorder: false, hasVisibleBoxShadow: false };
 
       const isOutsideForcedColors = isOutsideForcedColorsMode(ruleNode);
 
@@ -100,7 +102,7 @@ export const requireForcedColorsFocus: Rule = (
 
         if (isFocusSelector && !hasVisibleOutline) {
           if (decl.prop === 'box-shadow' && !checkForRemovalValue(decl.value)) {
-            hasVisibleBoxShadowIndicator = true;
+            indicators.hasVisibleBoxShadow = true;
           }
 
           if (
@@ -108,16 +110,16 @@ export const requireForcedColorsFocus: Rule = (
             !checkForRemovalValue(decl.value) &&
             !decl.value.includes('transparent')
           ) {
-            hasVisibleBorderIndicator = true;
+            indicators.hasVisibleBorder = true;
           }
         }
       });
 
       if (
         isFocusSelector &&
-        hasVisibleBoxShadowIndicator &&
+        indicators.hasVisibleBoxShadow &&
         !hasVisibleOutline &&
-        !hasVisibleBorderIndicator
+        !indicators.hasVisibleBorder
       ) {
         report({
           message: messages.rejected(ruleNode.selector),

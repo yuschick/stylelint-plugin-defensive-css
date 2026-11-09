@@ -1,4 +1,4 @@
-import { overflowPropertiesByAxis } from '../../utils/overflow';
+import { overflowPropertiesByAxis } from '@package-utils/overflow';
 
 export function isScrollableOverflow(value: string): boolean {
   return value.includes('auto') || value.includes('scroll');

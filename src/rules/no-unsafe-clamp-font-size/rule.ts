@@ -7,10 +7,11 @@
 import type { Rule } from 'stylelint';
 import stylelint from 'stylelint';
 
-import { checkForCustomProperty } from '../../utils/css';
-import type { SeverityProps } from '../../utils/types';
-import { severityOption } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
+import { checkForCustomProperty } from '@package-utils/css';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+import { validateBasicOption } from '@package-utils/validation';
+
 import { messages, meta, name } from './meta';
 import { parseClampArguments } from './utils';
 
@@ -58,7 +59,7 @@ export const noUnsafeClampFontSize: Rule = (
       ? reportUnresolvableOption[0]
       : reportUnresolvableOption;
     const unresolvableSeverity = Array.isArray(reportUnresolvableOption)
-      ? reportUnresolvableOption[1]?.severity || severity
+      ? reportUnresolvableOption[1].severity || severity
       : severity;
 
     const dimensionPattern = /^\s*(\d*\.?\d+)\s*([a-z%]+)\s*$/i;
@@ -114,10 +115,12 @@ export const noUnsafeClampFontSize: Rule = (
         return;
       }
 
-      const minValue = parseFloat(minMatch[1]);
-      const minUnit = minMatch[2].trim().toLowerCase();
-      const maxValue = parseFloat(maxMatch[1]);
-      const maxUnit = maxMatch[2].trim().toLowerCase();
+      const [, minNumber = '', rawMinUnit = ''] = minMatch;
+      const [, maxNumber = '', rawMaxUnit = ''] = maxMatch;
+      const minValue = parseFloat(minNumber);
+      const minUnit = rawMinUnit.trim().toLowerCase();
+      const maxValue = parseFloat(maxNumber);
+      const maxUnit = rawMaxUnit.trim().toLowerCase();
 
       /**
        * 5. Check if the min and max values have the same units.

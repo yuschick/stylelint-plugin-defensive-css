@@ -1,4 +1,6 @@
-export default {
+import type { Config } from 'stylelint';
+
+const config: Config = {
   plugins: ['stylelint-plugin-defensive-css'],
   rules: {
     'defensive-css/no-accidental-hover': [true, { severity: 'error' }],
@@ -46,3 +48,5 @@ export default {
     'defensive-css/require-system-font-fallback': [true, { severity: 'error' }],
   },
 };
+
+export default config;

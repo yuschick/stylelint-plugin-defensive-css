@@ -1,7 +1,9 @@
+import type { Config } from 'stylelint';
+
 import { strictOptions as strictFixedSizesOptions } from '../rules/no-fixed-sizes/categories';
 import { strictOptions as strictDynamicViewportHeightOptions } from '../rules/require-dynamic-viewport-height/utils';
 
-export default {
+const config: Config = {
   plugins: ['stylelint-plugin-defensive-css'],
   rules: {
     'defensive-css/no-accidental-hover': [true, { severity: 'error' }],
@@ -51,3 +53,5 @@ export default {
     ],
   },
 };
+
+export default config;
