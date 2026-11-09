@@ -119,6 +119,10 @@ export default defineConfig(
         },
       ],
       '@typescript-eslint/no-non-null-assertion': 'error',
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        { allowNumber: true },
+      ],
       '@typescript-eslint/no-unused-vars': [
         'error',
         {

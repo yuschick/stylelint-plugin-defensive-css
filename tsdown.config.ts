@@ -9,12 +9,14 @@ export default defineConfig({
     index: 'src/index.ts',
   },
   exports: true,
-  external: [
-    'csstype',
-    'stylelint',
-    'postcss-selector-parser',
-    'cssesc',
-    'util-deprecate',
-  ],
+  deps: {
+    neverBundle: [
+      'csstype',
+      'stylelint',
+      'postcss-selector-parser',
+      'cssesc',
+      'util-deprecate',
+    ],
+  },
   format: ['cjs', 'es'],
 });
