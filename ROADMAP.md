@@ -16,7 +16,7 @@ v3 makes the plugin accurate first and larger second. Every existing rule is aud
 | Landing v3 | The official release workflow publishes 3.0.0 and merges the branch into `main` with a merge commit, preserving the history. |
 | Code conventions | Imported from an existing source and audited for this codebase. Anything a linter can check is enforced by CI, and the rest is written guidance. |
 | Nesting | Native CSS nesting is the reference behavior. A nested selector must produce the same result as its flat equivalent, and syntax that only a preprocessor can resolve must never crash a rule or produce a misleading report. |
-| Docs | Structured Markdown that can move to a site later without rewriting. |
+| Docs | Structured Markdown that can move to a site later without rewriting. Each rule's page is the `README.md` in its folder, so GitHub shows it beside the source. |
 | New presets | Undecided. Revisit once the new rules are known. |
 | Breaking changes | Anything that changes what gets reported or fixed ships in 3.0.0. |
 
@@ -45,7 +45,7 @@ Milestone 6 can continue in 3.x if time runs short, because new rules are not br
 
 - [x] Create `release/v3.0.0` from `main` at v2.10.0, so changelog generation has a reachable starting tag.
 - [x] Add a `release/**` ruleset that requires pull requests and squash merges, so each pull request is one changelog entry.
-- [ ] Open one bootstrap pull request to `main` containing the new `release.yaml` and Dependabot's `target-branch: release/v3.0.0`. GitHub reads manually triggered workflows and Dependabot config from the default branch.
+- [ ] Open one bootstrap pull request to `main` containing the new `release.yaml`. Dependabot's `target-branch: release/v3.0.0` already landed in #246. GitHub reads manually triggered workflows and Dependabot config from the default branch.
 - [ ] If `main` ever gets a v2 fix, merge `main` into `release/v3.0.0`.
 
 ### Code conventions
@@ -55,8 +55,8 @@ This work comes before the Milestone 3 refactors, so all later code follows it.
 - [x] Import the TypeScript and coding conventions from the source repository.
 - [x] Audit each one: keep, adapt for this codebase, or remove.
 - [x] Move everything a linter can check into `eslint.config.mts` and `tsconfig.json`.
-- [ ] Put the remaining guidance in `AGENTS.md` and focused files under `docs/conventions/`.
-- [ ] Add a `CLAUDE.md` that imports `AGENTS.md`, so every agent tool reads one source.
+- [x] Put the remaining guidance in `AGENTS.md` and focused files under `docs/conventions/`.
+- [x] Add a `CLAUDE.md` that imports `AGENTS.md`, so every agent tool reads one source.
 - [x] Bring existing code into line with the new lint settings.
 
 ### Pull request checks
@@ -65,14 +65,14 @@ This work comes before the Milestone 3 refactors, so all later code follows it.
 - [x] Add a compatibility matrix: lowest supported 16.x, latest 16.x, 17 and 18.
 - [x] Set the 16.x floor from what the matrix proves, then update `peerDependencies`. The floor is 16.7.0: 27 autofix tests fail on 16.6.1 and every earlier version tested.
 - [x] Add `engines.node` and raise `.nvmrc` to at least 24.15. It is on 24.10, below Stylelint 18's minimum.
-- [ ] Validate the published package shape with `publint` and `@arethetypeswrong/cli`.
+- [x] Validate the published package shape with `publint` and `@arethetypeswrong/cli`.
 - [ ] Mark the required checks in the `Main` and `release/**` rulesets.
 - [x] Lint pull request titles as Conventional Commits, because squash merges turn the title into the changelog entry.
 
 ### Dependencies
 
-- [ ] Close the Dependabot backlog on `main` (#235, #236, #237, #238 and #239) and take those updates on `release/v3.0.0`.
-- [ ] Group Dependabot updates and add the `github-actions` ecosystem.
+- [x] Close the Dependabot backlog on `main` (#235, #236, #237, #238 and #239) and take those updates on `release/v3.0.0`.
+- [x] Group Dependabot updates and add the `github-actions` ecosystem.
 - [x] Remove `eslint-plugin-prettier` and run `prettier --check` directly.
 - [x] Decide whether `vitest-stylelint-utils` stays or is replaced by a small local adapter.
 - [x] Remove stale `external` entries from `tsdown.config.ts` and confirm `csstype` does not leak into published types.
@@ -83,18 +83,18 @@ The plugin has only one runtime dependency, so there is little to remove. Milest
 
 ### Contributor automation
 
-- [ ] Add `AGENTS.md` with the rule anatomy, conventions and commands.
-- [ ] Add a `scaffold:rule` script that creates the source, test and doc files.
-- [ ] Add repository skills for creating a rule, auditing a rule and writing rule docs.
-- [ ] Add a conformance test that runs over every rule and fails unless:
+- [x] Add `AGENTS.md` with the rule anatomy, conventions and commands.
+- [x] Add a `scaffold:rule` script that creates the source, test and doc files, and registers the rule.
+- [x] Add a `create-rule` repository skill. The audit and docs skills come at the start of Milestones 4 and 5, once their checklists and templates exist.
+- [x] Add a conformance test that runs over every rule and fails unless:
   - the rule is exported and has a test file and a doc page
   - `meta.url` points at that rule's doc page
   - `meta.fixable` matches whether the rule passes a `fix` callback
   - reports pass `messageArgs`
   - every preset references only rules that exist
-  - the rule is registered with the nesting test suite from Milestone 3
+  - the rule is registered with the nesting test suite from Milestone 3 (a pending test until then)
 
-The conformance test enforces the rules. Skills speed up the writing, and the test catches what they miss.
+The conformance test enforces the rules. Skills speed up the writing, and the test catches what they miss. Rules that predate a check sit on that check's exemption list, which may only shrink: the test fails when an exempted rule starts passing.
 
 ---
 
@@ -261,7 +261,7 @@ Stylelint lints source code, so the differences that matter are in how nesting i
 - [ ] Replace the custom `fix` option with Stylelint's `disableFix`. **Breaking.**
 - [ ] Pass `messageArgs` to `report()` so custom `message` options work.
 - [ ] Stop declaring `severity` in rule validation, and remove redundant `severity: 'error'` from presets where possible. Per-axis severities stay.
-- [ ] Give each rule its own `meta.url`.
+- [ ] Give each rule its own `meta.url`, pointing at its `README.md`.
 - [ ] Report precise ranges with `index` and `endIndex` where a problem is narrower than its node.
 - [ ] Use `result.stylelint.postcss` when creating nodes. It is new in Stylelint 18, so 16 and 17 need a fallback.
 - [ ] Use `utils.checkAgainstRule()` wherever a built-in rule already does the work.
@@ -274,6 +274,9 @@ Stylelint lints source code, so the differences that matter are in how nesting i
 **Outcome:** all 21 rules are migrated to the shared architecture and each passes the same checklist.
 
 Every rule gets one pull request. Each case below starts as a failing test.
+
+- [ ] Add an `audit-rule` repository skill that walks through the checklist below.
+- [ ] Remove each audited rule from the conformance test's exemption lists.
 
 ### Audit checklist
 
@@ -350,13 +353,14 @@ Tick off as each rule's pull request merges.
 **Outcome:** every rule has a complete page, and every example in the docs is proven by a test.
 
 - [ ] Reduce the README to the pitch, install, quickstart, presets and a generated rule table.
-- [ ] Create `docs/rules/<rule>.md` from one template: why it matters, options, failing examples, passing examples, autofix before and after, browser support and references.
+- [ ] Write each rule's `src/rules/<rule>/README.md` from one template: why it matters, options, failing examples, passing examples, autofix before and after, browser support and references.
 - [ ] Add `docs/guides/` for getting started, presets, nesting and custom syntaxes, ignoring patterns and troubleshooting.
 - [ ] Add `docs/migrations/v3.md`.
 - [ ] Generate the rule and preset tables from rule metadata, and fail CI if they are stale.
 - [ ] Test the fenced CSS examples in each doc page against its rule.
 - [ ] Use front matter and relative links, so the pages can be moved into a site later.
 - [ ] Add `CONTRIBUTING.md`, linked from `AGENTS.md`.
+- [ ] Add a `write-rule-docs` repository skill for the template, and update the scaffold's `README.md` to match it.
 
 ---
 
@@ -431,6 +435,7 @@ RCs publish continuously to `next` from Milestone 2 onward. These checkpoints de
 
 - [ ] Test RCs on real projects, and ask existing users for feedback at the public testing checkpoint.
 - [ ] Publish the migration guide and release notes together.
+- [ ] Point Dependabot's `target-branch` back at `main`.
 - [ ] Add a README note pointing v2 users to the migration guide.
 - [ ] Write a launch post covering what the audit found and why accuracy was the priority.
 
