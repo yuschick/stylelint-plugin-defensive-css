@@ -37,6 +37,7 @@
     "lint:fix": "eslint . --fix",
     "release:official": "release-it --config .release-it--official.json",
     "release:dry": "release-it --dry-run",
+    "scaffold:rule": "node scripts/scaffold-rule.ts",
     "test": "vitest",
     "test:watch": "vitest --watch",
     "format": "prettier --write .",

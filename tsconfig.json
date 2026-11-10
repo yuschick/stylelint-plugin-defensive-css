@@ -21,6 +21,6 @@
     "target": "ESNext",
     "types": ["node"]
   },
-  "include": ["src/**/*", "test/**/*", "*.ts", "*.mts"],
+  "include": ["src/**/*", "test/**/*", "scripts/**/*", "*.ts", "*.mts"],
   "exclude": ["dist", "node_modules"]
 }
