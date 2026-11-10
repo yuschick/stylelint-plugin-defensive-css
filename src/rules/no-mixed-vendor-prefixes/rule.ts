@@ -4,10 +4,14 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
 import { findVendorPrefixes } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -30,7 +34,9 @@ export const noMixedVendorPrefixes: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
 

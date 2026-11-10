@@ -8,13 +8,5 @@ export default defineConfig({
     'configs/strict': 'src/configs/strict.ts',
     index: 'src/index.ts',
   },
-  exports: true,
-  external: [
-    'csstype',
-    'stylelint',
-    'postcss-selector-parser',
-    'cssesc',
-    'util-deprecate',
-  ],
-  format: ['cjs', 'es'],
+  format: ['es'],
 });

@@ -4,20 +4,27 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import type { PropertiesHyphen } from 'csstype';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
-import { severityOption } from '../../utils/types';
 import {
   isOutsideForcedColorsMode,
   outlineProperties,
   checkForRemovalValue,
   borderPatterns,
 } from './utils';
-import { PropertiesHyphen } from 'csstype';
 
 const { report, validateOptions } = stylelint.utils;
 
-export const requireForcedColorsFocus: Rule = (primaryOption, secondaryOptions = {}) => {
+export const requireForcedColorsFocus: Rule = (
+  primaryOption,
+  secondaryOptions: SeverityProps = {},
+) => {
   return (root, result) => {
     const validOptions = validateOptions(
       result,
@@ -35,13 +42,13 @@ export const requireForcedColorsFocus: Rule = (primaryOption, secondaryOptions =
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
 
     let hasVisibleOutline = true;
-    let hasVisibleBoxShadowIndicator = false;
-    let hasVisibleBorderIndicator = false;
 
     root.walkRules((ruleNode) => {
       // Reset state for top-level rules to prevent leaking across independent selectors
@@ -49,9 +56,11 @@ export const requireForcedColorsFocus: Rule = (primaryOption, secondaryOptions =
         hasVisibleOutline = true;
       }
 
-      // Reset focus-specific indicators for each rule to prevent leaking to siblings/children
-      hasVisibleBoxShadowIndicator = false;
-      hasVisibleBorderIndicator = false;
+      // Focus-specific indicators are per rule to prevent leaking to siblings/children
+      const indicators: {
+        hasVisibleBorder: boolean;
+        hasVisibleBoxShadow: boolean;
+      } = { hasVisibleBorder: false, hasVisibleBoxShadow: false };
 
       const isOutsideForcedColors = isOutsideForcedColorsMode(ruleNode);
 
@@ -70,7 +79,9 @@ export const requireForcedColorsFocus: Rule = (primaryOption, secondaryOptions =
        * Matches :focus and :focus-visible but NOT when
        * followed by descendant/child/sibling combinators (e.g. .btn:focus > .icon)
        */
-      const isFocusSelector = /:focus(-visible)?(?=[,:]|$)/.test(ruleNode.selector);
+      const isFocusSelector = /:focus(-visible)?(?=[,:]|$)/.test(
+        ruleNode.selector,
+      );
 
       ruleNode.walkDecls((decl) => {
         if (outlineProperties.has(decl.prop as keyof PropertiesHyphen)) {
@@ -91,7 +102,7 @@ export const requireForcedColorsFocus: Rule = (primaryOption, secondaryOptions =
 
         if (isFocusSelector && !hasVisibleOutline) {
           if (decl.prop === 'box-shadow' && !checkForRemovalValue(decl.value)) {
-            hasVisibleBoxShadowIndicator = true;
+            indicators.hasVisibleBoxShadow = true;
           }
 
           if (
@@ -99,16 +110,16 @@ export const requireForcedColorsFocus: Rule = (primaryOption, secondaryOptions =
             !checkForRemovalValue(decl.value) &&
             !decl.value.includes('transparent')
           ) {
-            hasVisibleBorderIndicator = true;
+            indicators.hasVisibleBorder = true;
           }
         }
       });
 
       if (
         isFocusSelector &&
-        hasVisibleBoxShadowIndicator &&
+        indicators.hasVisibleBoxShadow &&
         !hasVisibleOutline &&
-        !hasVisibleBorderIndicator
+        !indicators.hasVisibleBorder
       ) {
         report({
           message: messages.rejected(ruleNode.selector),

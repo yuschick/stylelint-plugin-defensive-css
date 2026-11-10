@@ -4,15 +4,19 @@
  * @license MIT
  */
 
-import stylelint, { Rule, Severity } from 'stylelint';
+import type { Rule, Severity } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+import { validateBasicOption } from '@package-utils/validation';
+
 import { messages, meta, name } from './meta';
 import {
   isValueInvalidForLineNames,
   parseGridShorthand,
   shouldSkipRowsValidation,
 } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -44,20 +48,28 @@ export const requireNamedGridLines: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     // Default both to true
     const validateColumns = secondaryOptions.columns !== false;
     const validateRows = secondaryOptions.rows !== false;
 
     // If both are disabled, nothing to check
-    if (!validateColumns && !validateRows) return;
+    if (!validateColumns && !validateRows) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
-    const columnsSeverity: Severity | undefined = Array.isArray(secondaryOptions.columns)
+    const columnsSeverity: Severity | undefined = Array.isArray(
+      secondaryOptions.columns,
+    )
       ? secondaryOptions.columns[1].severity
       : severity;
-    const rowsSeverity: Severity | undefined = Array.isArray(secondaryOptions.rows)
+    const rowsSeverity: Severity | undefined = Array.isArray(
+      secondaryOptions.rows,
+    )
       ? secondaryOptions.rows[1].severity
       : severity;
 
@@ -98,7 +110,9 @@ export const requireNamedGridLines: Rule = (
       if (prop === 'grid') {
         const parsed = parseGridShorthand(value);
 
-        if (!parsed) return;
+        if (!parsed) {
+          return;
+        }
 
         const { rows: rowsValue, columns: colsValue } = parsed;
         let invalidRows = false;

@@ -1,4 +1,5 @@
-import stylelint, { RuleMeta } from 'stylelint';
+import type { RuleMeta } from 'stylelint';
+import stylelint from 'stylelint';
 
 const { ruleMessages } = stylelint.utils;
 
@@ -6,7 +7,7 @@ export const name = 'defensive-css/no-user-select-none';
 
 export const messages = ruleMessages(name, {
   rejected: () =>
-    `Expected "user-select: none" to be avoided because it can negatively impact usability and accessibility.`,
+    'Expected "user-select: none" to be avoided because it can negatively impact usability and accessibility.',
 });
 
 export const meta: RuleMeta = {

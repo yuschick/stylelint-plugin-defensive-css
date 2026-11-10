@@ -1,8 +1,13 @@
-import stylelint, { Rule } from 'stylelint';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { FixProps, SeverityProps } from '@package-utils/types';
+import { fixOption, severityOption } from '@package-utils/types';
+import { validateBasicOption } from '@package-utils/validation';
+
 import { messages, meta, name } from './meta';
-import { fixOption, FixProps, severityOption, SeverityProps } from '../../utils/types';
-import { hasStaticViewportHeight, Properties, recommendedOptions } from './utils';
-import { validateBasicOption } from '../../utils/validation';
+import type { Properties } from './utils';
+import { hasStaticViewportHeight, recommendedOptions } from './utils';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -30,7 +35,11 @@ export const requireDynamicViewportHeight: Rule = (
           ...severityOption,
           properties: [
             (value: unknown) => {
-              if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+              if (
+                typeof value !== 'object' ||
+                value === null ||
+                Array.isArray(value)
+              ) {
                 return false;
               }
 
@@ -49,7 +58,9 @@ export const requireDynamicViewportHeight: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
 
@@ -61,9 +72,11 @@ export const requireDynamicViewportHeight: Rule = (
     root.walkDecls((decl) => {
       const { prop, value } = decl;
 
-      const customRuleOption = secondaryOptions.properties?.[prop as keyof Properties];
+      const customRuleOption =
+        secondaryOptions.properties?.[prop as keyof Properties];
       const defaultRuleOption = recommendedOptions[prop as keyof Properties];
-      const resolvedRuleOption = completePropertyOptions[prop as keyof Properties];
+      const resolvedRuleOption =
+        completePropertyOptions[prop as keyof Properties];
 
       const isRuleEnabled = Array.isArray(resolvedRuleOption)
         ? resolvedRuleOption[0]
@@ -72,7 +85,9 @@ export const requireDynamicViewportHeight: Rule = (
       const resolvedSeverity = Array.isArray(customRuleOption)
         ? customRuleOption[1].severity
         : (severity ??
-          (Array.isArray(defaultRuleOption) ? defaultRuleOption[1].severity : undefined));
+          (Array.isArray(defaultRuleOption)
+            ? defaultRuleOption[1].severity
+            : undefined));
 
       if (!isRuleEnabled || !resolvedSeverity) {
         return;

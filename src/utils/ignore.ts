@@ -1,9 +1,14 @@
-export function matchesIgnorePattern(
-  property: string,
-  patterns: (string | RegExp)[],
-): boolean {
+interface MatchesIgnorePatternOptions {
+  patterns: (string | RegExp)[];
+  value: string;
+}
+
+export function matchesIgnorePattern({
+  patterns,
+  value,
+}: MatchesIgnorePatternOptions): boolean {
   return patterns.some((pattern) => {
     const regex = typeof pattern === 'string' ? new RegExp(pattern) : pattern;
-    return regex.test(property);
+    return regex.test(value);
   });
 }

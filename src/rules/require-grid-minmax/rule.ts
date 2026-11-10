@@ -4,11 +4,15 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
+import { matchesIgnorePattern } from '@package-utils/ignore';
+import { hasMatchingAncestor } from '@package-utils/traversal';
+import type { FixProps, SeverityProps } from '@package-utils/types';
+import { fixOption, severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
-import { fixOption, FixProps, severityOption, SeverityProps } from '../../utils/types';
-import { matchesIgnorePattern } from '../../utils/ignore';
-import { hasMatchingAncestor } from '../../utils/traversal';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -43,17 +47,26 @@ export const requireGridMinmax: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { ignore = [], severity } = secondaryOptions;
 
     root.walkDecls(/grid-template-columns|grid-auto-columns/, (decl) => {
       /* Skip the declaration if any ancestor selector should be ignored */
       if (
-        hasMatchingAncestor(decl, (ancestor) => {
-          return (
-            ancestor.type === 'rule' && matchesIgnorePattern(ancestor.selector, ignore)
-          );
+        hasMatchingAncestor({
+          node: decl,
+          predicate: (ancestor) => {
+            return (
+              ancestor.type === 'rule' &&
+              matchesIgnorePattern({
+                patterns: ignore,
+                value: ancestor.selector,
+              })
+            );
+          },
         })
       ) {
         return;
@@ -65,7 +78,8 @@ export const requireGridMinmax: Rule = (
       }
 
       /* Strip out any minmax() or fit-content() functions so their '1fr' values are ignored */
-      const protectedFunctionPattern = /\b(minmax|fit-content)\((?:[^()]|\([^()]*\))*\)/g;
+      const protectedFunctionPattern =
+        /\b(minmax|fit-content)\((?:[^()]|\([^()]*\))*\)/g;
       const unprotectedValue = decl.value.replace(protectedFunctionPattern, '');
 
       /* If no raw '1fr' values remain outside of those functions, return early */

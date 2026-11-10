@@ -3,7 +3,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '@view-transition { navigation: none; }',
@@ -39,7 +39,8 @@ testRule({
           .box { animation: rotate 10s ease; }
         }
       `,
-      description: 'animation inside not (prefers-reduced-motion: reduce) media query',
+      description:
+        'animation inside not (prefers-reduced-motion: reduce) media query',
     },
     {
       code: `
@@ -47,10 +48,11 @@ testRule({
           .box { animation: rotate 10s ease; }
         }
       `,
-      description: 'animation inside not (prefers-reduced-motion: reduce) media query',
+      description:
+        'animation inside not (prefers-reduced-motion: reduce) media query',
     },
     {
-      code: `button { transition: color 1s ease; }`,
+      code: 'button { transition: color 1s ease; }',
       description: 'transition color is allowed',
     },
     {
@@ -141,7 +143,8 @@ testRule({
           }
         }
       `,
-      description: 'nested selector inside not (prefers-reduced-motion: reduce)',
+      description:
+        'nested selector inside not (prefers-reduced-motion: reduce)',
     },
     {
       code: `
@@ -183,7 +186,8 @@ testRule({
           .box { scroll-behavior: smooth; }
         }
       `,
-      description: 'scroll behavior smooth outside prefers-reduced-motion: reduce',
+      description:
+        'scroll behavior smooth outside prefers-reduced-motion: reduce',
     },
     {
       code: `
@@ -191,7 +195,8 @@ testRule({
           .box { background-attachment: fixed; }
         }
       `,
-      description: 'background attachment fixed outside prefers-reduced-motion: reduce',
+      description:
+        'background attachment fixed outside prefers-reduced-motion: reduce',
     },
     {
       code: `
@@ -352,5 +357,4 @@ testRule({
       message: messages.transition('transform'),
     },
   ],
-  /* eslint-enable sort-keys */
 });

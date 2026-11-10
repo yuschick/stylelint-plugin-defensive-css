@@ -4,12 +4,16 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
+import { checkForCustomProperty } from '@package-utils/css';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+import { validateBasicOption } from '@package-utils/validation';
+
 import { messages, meta, name } from './meta';
-import { severityOption, SeverityProps } from '../../utils/types';
 import { parseClampArguments } from './utils';
-import { validateBasicOption } from '../../utils/validation';
-import { checkForCustomProperty } from '../../utils/css';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -35,22 +39,27 @@ export const noUnsafeClampFontSize: Rule = (
         optional: true,
         possible: {
           ...severityOption,
-          maxRatio: [(value: unknown) => typeof value === 'number' && value > 0],
+          maxRatio: [
+            (value: unknown) => typeof value === 'number' && value > 0,
+          ],
           reportUnresolvable: [(value: unknown) => validateBasicOption(value)],
         },
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity = 'error', maxRatio = 2.5 } = secondaryOptions;
 
-    const reportUnresolvableOption = secondaryOptions.reportUnresolvable ?? true;
+    const reportUnresolvableOption =
+      secondaryOptions.reportUnresolvable ?? true;
     const shouldReportUnresolvable = Array.isArray(reportUnresolvableOption)
       ? reportUnresolvableOption[0]
       : reportUnresolvableOption;
     const unresolvableSeverity = Array.isArray(reportUnresolvableOption)
-      ? reportUnresolvableOption[1]?.severity || severity
+      ? reportUnresolvableOption[1].severity || severity
       : severity;
 
     const dimensionPattern = /^\s*(\d*\.?\d+)\s*([a-z%]+)\s*$/i;
@@ -106,10 +115,12 @@ export const noUnsafeClampFontSize: Rule = (
         return;
       }
 
-      const minValue = parseFloat(minMatch[1]);
-      const minUnit = minMatch[2].trim().toLowerCase();
-      const maxValue = parseFloat(maxMatch[1]);
-      const maxUnit = maxMatch[2].trim().toLowerCase();
+      const [, minNumber = '', rawMinUnit = ''] = minMatch;
+      const [, maxNumber = '', rawMaxUnit = ''] = maxMatch;
+      const minValue = parseFloat(minNumber);
+      const minUnit = rawMinUnit.trim().toLowerCase();
+      const maxValue = parseFloat(maxNumber);
+      const maxUnit = rawMaxUnit.trim().toLowerCase();
 
       /**
        * 5. Check if the min and max values have the same units.

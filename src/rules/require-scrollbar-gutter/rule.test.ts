@@ -4,7 +4,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { overflow: auto; scrollbar-gutter: stable; }',
@@ -55,8 +55,9 @@ testRule({
       description: 'overflow clip (not scrollable)',
     },
     {
-      code: `div { overflow-anchor: auto; }`,
-      description: 'A container with overflow-anchor property which should be ignored.',
+      code: 'div { overflow-anchor: auto; }',
+      description:
+        'A container with overflow-anchor property which should be ignored.',
     },
   ],
 
@@ -93,23 +94,24 @@ testRule({
     },
     {
       code: '.class { overflow: auto scroll; }',
-      description: 'overflow with two values, one scrollable, without scrollbar-gutter',
+      description:
+        'overflow with two values, one scrollable, without scrollbar-gutter',
       message: messages.rejected('.class'),
     },
     {
       code: '.class { overflow-x: auto; overflow-y: hidden; }',
-      description: 'mixed overflow with one scrollable axis, without scrollbar-gutter',
+      description:
+        'mixed overflow with one scrollable axis, without scrollbar-gutter',
       message: messages.rejected('.class'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when x is disabled and y is enabled */
 testRule({
   config: [true, { x: false }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { overflow-x: auto; }',
@@ -117,7 +119,8 @@ testRule({
     },
     {
       code: '.class { overflow-inline: scroll; }',
-      description: 'overflow-inline scroll without scrollbar-gutter (x disabled)',
+      description:
+        'overflow-inline scroll without scrollbar-gutter (x disabled)',
     },
     {
       code: '.class { overflow-y: auto; scrollbar-gutter: stable; }',
@@ -133,7 +136,8 @@ testRule({
     },
     {
       code: '.class { overflow-block: scroll; }',
-      description: 'overflow-block scroll without scrollbar-gutter (y still checked)',
+      description:
+        'overflow-block scroll without scrollbar-gutter (y still checked)',
       message: messages.rejected('.class'),
     },
     {
@@ -142,14 +146,13 @@ testRule({
       message: messages.rejected('.class'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when x is enabled and y is disabled */
 testRule({
   config: [true, { y: false }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { overflow-y: auto; }',
@@ -157,7 +160,8 @@ testRule({
     },
     {
       code: '.class { overflow-block: scroll; }',
-      description: 'overflow-block scroll without scrollbar-gutter (y disabled)',
+      description:
+        'overflow-block scroll without scrollbar-gutter (y disabled)',
     },
     {
       code: '.class { overflow-x: auto; scrollbar-gutter: stable; }',
@@ -173,7 +177,8 @@ testRule({
     },
     {
       code: '.class { overflow-inline: scroll; }',
-      description: 'overflow-inline scroll without scrollbar-gutter (x still checked)',
+      description:
+        'overflow-inline scroll without scrollbar-gutter (x still checked)',
       message: messages.rejected('.class'),
     },
     {
@@ -182,14 +187,13 @@ testRule({
       message: messages.rejected('.class'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 /* Test when both x and y are disabled */
 testRule({
   config: [true, { x: false, y: false }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { overflow: auto; }',
@@ -204,11 +208,11 @@ testRule({
       description: 'overflow-y auto without scrollbar-gutter (both disabled)',
     },
     {
-      code: `div { overflow-anchor: auto; }`,
-      description: 'A container with overflow-anchor property which should be ignored.',
+      code: 'div { overflow-anchor: auto; }',
+      description:
+        'A container with overflow-anchor property which should be ignored.',
     },
   ],
 
   reject: [],
-  /* eslint-enable sort-keys */
 });

@@ -9,7 +9,7 @@
 A Stylelint plugin to help you write more defensive, accessible, and maintainable CSS. Catch layout and accessibility bugs before they ship, enforce team-wide best practices, and guard against the subtle CSS pitfalls that break real-world experiences.
 
 > [!TIP]
-> [V1 documentation can be found here](./V1-DOCUMENTATION.md)
+> [V1 documentation can be found here](./docs/archive/v1.md)
 
 ## Table of Contents
 

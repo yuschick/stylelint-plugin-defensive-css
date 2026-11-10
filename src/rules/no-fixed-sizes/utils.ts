@@ -1,4 +1,4 @@
-import { checkForCustomProperty } from '../../utils/css';
+import { checkForCustomProperty } from '@package-utils/css';
 
 const PX_VALUE = /\d+(\.\d+)?px\b/i;
 
@@ -30,7 +30,7 @@ export const isValidAtRule = (params: string): boolean => {
 
   let match;
   while ((match = legacyRegex.exec(normalized)) !== null) {
-    const value = match[2].trim();
+    const value = (match[2] ?? '').trim();
 
     if (PX_VALUE.test(value)) {
       return false;
@@ -41,7 +41,7 @@ export const isValidAtRule = (params: string): boolean => {
   const rangeRegex = /\(([^)]+)\)/g;
 
   while ((match = rangeRegex.exec(normalized)) !== null) {
-    const expression = match[1];
+    const expression = match[1] ?? '';
 
     if (PX_VALUE.test(expression)) {
       return false;
@@ -58,7 +58,10 @@ export const isValidAtRule = (params: string): boolean => {
 export const isValidValue = (value: string): boolean => {
   const normalized = value.toLowerCase();
 
-  const functionPattern = new RegExp(`\\b(${VALIDATED_FUNCTIONS.join('|')})\\s*\\(`, 'i');
+  const functionPattern = new RegExp(
+    `\\b(${VALIDATED_FUNCTIONS.join('|')})\\s*\\(`,
+    'i',
+  );
 
   if (functionPattern.test(normalized)) {
     if (checkForCustomProperty(normalized)[0]) {

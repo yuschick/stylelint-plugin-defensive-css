@@ -4,11 +4,15 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
+import { hasMatchingAncestor } from '@package-utils/traversal';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
-import { severityOption, SeverityProps } from '../../utils/types';
 import { findImpureElement } from './utils';
-import { hasMatchingAncestor } from '../../utils/traversal';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -47,28 +51,39 @@ export const requirePureSelectors: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
 
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
 
-      const impureNode = findImpureElement(selector, secondaryOptions);
+      const impureNode = findImpureElement({
+        options: secondaryOptions,
+        selector: selector,
+      });
 
       if (impureNode) {
         const usesNestingSelector = /&/.test(selector);
 
-        const shouldSkip = hasMatchingAncestor(ruleNode, (ancestor) => {
-          if (ancestor.type === 'atrule' && ancestor.name === 'keyframes') {
-            return true;
-          }
+        const shouldSkip = hasMatchingAncestor({
+          node: ruleNode,
+          predicate: (ancestor) => {
+            if (ancestor.type === 'atrule' && ancestor.name === 'keyframes') {
+              return true;
+            }
 
-          return (
-            usesNestingSelector &&
-            ancestor.type === 'rule' &&
-            !findImpureElement(ancestor.selector, secondaryOptions)
-          );
+            return (
+              usesNestingSelector &&
+              ancestor.type === 'rule' &&
+              !findImpureElement({
+                options: secondaryOptions,
+                selector: ancestor.selector,
+              })
+            );
+          },
         });
 
         if (shouldSkip) {
@@ -77,7 +92,9 @@ export const requirePureSelectors: Rule = (
 
         const hasNestedAttributeModifier =
           secondaryOptions.ignoreAttributeModifiers &&
-          ruleNode.some((child) => child.type === 'rule' && /^&\[/.test(child.selector));
+          ruleNode.some(
+            (child) => child.type === 'rule' && /^&\[/.test(child.selector),
+          );
 
         if (hasNestedAttributeModifier) {
           return;

@@ -1,0 +1,9 @@
+coverage/
+dist/
+package-lock.json
+
+# Generated, or rewritten in the v3 documentation milestone
+CHANGELOG.md
+README.md
+ROADMAP.md
+docs/archive/

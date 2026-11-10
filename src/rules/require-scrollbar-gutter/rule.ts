@@ -4,11 +4,16 @@
  * @license MIT
  */
 
-import stylelint, { Rule, Severity } from 'stylelint';
+import type { Declaration } from 'postcss';
+import type { Rule, Severity } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+import { validateBasicOption } from '@package-utils/validation';
+
 import { messages, meta, name } from './meta';
 import { getOverflowAxis, isScrollableOverflow } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -40,14 +45,18 @@ export const requireScrollbarGutter: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     // Default both to true
     const checkX = secondaryOptions.x !== false;
     const checkY = secondaryOptions.y !== false;
 
     // If both are disabled, nothing to check
-    if (!checkX && !checkY) return;
+    if (!checkX && !checkY) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
     const xSeverity: Severity | undefined = Array.isArray(secondaryOptions.x)
@@ -58,10 +67,16 @@ export const requireScrollbarGutter: Rule = (
       : severity;
 
     root.walkRules((ruleNode) => {
-      let hasScrollableOverflowX = false;
-      let hasScrollableOverflowY = false;
-      let hasScrollbarGutter = false;
-      let overflowNode = null;
+      const state: {
+        hasScrollableOverflowX: boolean;
+        hasScrollableOverflowY: boolean;
+        hasScrollbarGutter: boolean;
+        overflowNode?: Declaration;
+      } = {
+        hasScrollableOverflowX: false,
+        hasScrollableOverflowY: false,
+        hasScrollbarGutter: false,
+      };
 
       // Collect all declarations in this rule
       ruleNode.walkDecls((decl) => {
@@ -71,29 +86,34 @@ export const requireScrollbarGutter: Rule = (
 
         // Check for scrollable overflow properties
         if (axis && isScrollableOverflow(value)) {
-          overflowNode = decl;
+          state.overflowNode = decl;
 
           if (axis === 'x') {
-            hasScrollableOverflowX = true;
+            state.hasScrollableOverflowX = true;
           } else if (axis === 'y') {
-            hasScrollableOverflowY = true;
-          } else if (axis === 'both') {
+            state.hasScrollableOverflowY = true;
+          } else {
             // overflow shorthand affects both axes
-            hasScrollableOverflowX = true;
-            hasScrollableOverflowY = true;
+            state.hasScrollableOverflowX = true;
+            state.hasScrollableOverflowY = true;
           }
         }
 
         // Check for scrollbar-gutter property
         if (prop === 'scrollbar-gutter') {
-          hasScrollbarGutter = true;
+          state.hasScrollbarGutter = true;
         }
       });
 
-      if (checkX && hasScrollableOverflowX && !hasScrollbarGutter && overflowNode) {
+      if (
+        checkX &&
+        state.hasScrollableOverflowX &&
+        !state.hasScrollbarGutter &&
+        state.overflowNode
+      ) {
         report({
           message: messages.rejected(ruleNode.selector),
-          node: overflowNode,
+          node: state.overflowNode,
           result,
           ruleName: name,
           severity: xSeverity,
@@ -103,10 +123,15 @@ export const requireScrollbarGutter: Rule = (
         return;
       }
 
-      if (checkY && hasScrollableOverflowY && !hasScrollbarGutter && overflowNode) {
+      if (
+        checkY &&
+        state.hasScrollableOverflowY &&
+        !state.hasScrollbarGutter &&
+        state.overflowNode
+      ) {
         report({
           message: messages.rejected(ruleNode.selector),
-          node: overflowNode,
+          node: state.overflowNode,
           result,
           ruleName: name,
           severity: ySeverity,

@@ -1,4 +1,4 @@
-import { SeverityProps } from '../../utils/types';
+import type { SeverityProps } from '@package-utils/types';
 
 export const hasStaticViewportHeight = (value: string): boolean => {
   // Match 100vh or 100vb (word boundary to avoid matching 1100vh)

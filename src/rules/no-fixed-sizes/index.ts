@@ -1,5 +1,9 @@
 import stylelint from 'stylelint';
+
 import * as meta from './meta';
 import { noFixedSizes } from './rule';
 
-export default stylelint.createPlugin(meta.name, noFixedSizes);
+export const noFixedSizesPlugin = stylelint.createPlugin(
+  meta.name,
+  noFixedSizes,
+);

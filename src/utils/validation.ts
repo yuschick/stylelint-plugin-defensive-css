@@ -1,4 +1,5 @@
-import { Severity } from 'stylelint';
+import type { Severity } from 'stylelint';
+
 import { severityOption } from './types';
 
 export function validateBasicOption(value: unknown): boolean {
@@ -22,7 +23,8 @@ export function validateBasicOption(value: unknown): boolean {
 
   // Allow [boolean, SeverityProps]
   if (Array.isArray(value) && value.length === 2) {
-    const [enabled, severityProps] = value;
+    const entries: unknown[] = value;
+    const [enabled, severityProps] = entries;
 
     if (typeof enabled !== 'boolean') {
       return false;
@@ -37,7 +39,9 @@ export function validateBasicOption(value: unknown): boolean {
     }
 
     if ('severity' in severityProps) {
-      return severityOption.severity.includes(severityProps.severity);
+      return severityOption.severity.includes(
+        severityProps.severity as Severity,
+      );
     }
 
     return true;

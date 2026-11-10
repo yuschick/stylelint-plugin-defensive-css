@@ -4,7 +4,13 @@
  * @license MIT
  */
 
-import stylelint, { Rule } from 'stylelint';
+import type { PropertiesHyphen } from 'csstype';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+
 import { messages, meta, name } from './meta';
 import {
   isInstantValue,
@@ -14,8 +20,6 @@ import {
   getInvalidTransitionProperties,
   isInsidePrefersReducedMotionReduce,
 } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { PropertiesHyphen } from 'csstype';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -38,7 +42,9 @@ export const requirePrefersReducedMotion: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
 
@@ -55,7 +61,10 @@ export const requirePrefersReducedMotion: Rule = (
       let message;
 
       /* Check against @view-transitions */
-      if (decl.parent?.type === 'atrule' && decl.parent.name === 'view-transition') {
+      if (
+        decl.parent?.type === 'atrule' &&
+        decl.parent.name === 'view-transition'
+      ) {
         if (prop === 'navigation' && value !== 'none') {
           report({
             message: messages.viewTransition(),
@@ -99,10 +108,13 @@ export const requirePrefersReducedMotion: Rule = (
           break;
         }
         case 'transition': {
-          const invalidTransitionProperties = getInvalidTransitionProperties(value);
+          const invalidTransitionProperties =
+            getInvalidTransitionProperties(value);
 
           if (invalidTransitionProperties.length > 0) {
-            message = messages.transition(invalidTransitionProperties.join(', '));
+            message = messages.transition(
+              invalidTransitionProperties.join(', '),
+            );
           }
           break;
         }
@@ -113,7 +125,9 @@ export const requirePrefersReducedMotion: Rule = (
           break;
       }
 
-      if (!message) return;
+      if (!message) {
+        return;
+      }
 
       report({
         message,

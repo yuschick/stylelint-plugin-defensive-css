@@ -4,20 +4,22 @@
  * @license MIT
  */
 import type * as CSS from 'csstype';
+import type { Rule } from 'stylelint';
+import stylelint from 'stylelint';
 
-import stylelint, { Rule } from 'stylelint';
-import { messages, meta, name } from './meta';
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+import { validateBasicOption } from '@package-utils/validation';
+
+import type { AtRules, Properties } from './categories';
 import {
-  AtRules,
   defaultAtRules,
   nonDimensionalAtRules,
-  Properties,
   recommendedOptions,
   strictOptions,
 } from './categories';
+import { messages, meta, name } from './meta';
 import { isValidAtRule, isValidValue } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -45,7 +47,11 @@ export const noFixedSizes: Rule = (
           ...severityOption,
           'at-rules': [
             (value: unknown) => {
-              if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+              if (
+                typeof value !== 'object' ||
+                value === null ||
+                Array.isArray(value)
+              ) {
                 return false;
               }
 
@@ -66,7 +72,11 @@ export const noFixedSizes: Rule = (
           ],
           properties: [
             (value: unknown) => {
-              if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+              if (
+                typeof value !== 'object' ||
+                value === null ||
+                Array.isArray(value)
+              ) {
                 return false;
               }
 
@@ -85,7 +95,9 @@ export const noFixedSizes: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     const { severity } = secondaryOptions;
 
@@ -114,7 +126,9 @@ export const noFixedSizes: Rule = (
       const resolvedSeverity = Array.isArray(customRuleOption)
         ? customRuleOption[1].severity
         : (severity ??
-          (Array.isArray(defaultRuleOption) ? defaultRuleOption[1].severity : undefined));
+          (Array.isArray(defaultRuleOption)
+            ? defaultRuleOption[1].severity
+            : undefined));
 
       const isNonDimensionalAtRule = nonDimensionalAtRules.includes(atRuleName);
 
@@ -145,9 +159,11 @@ export const noFixedSizes: Rule = (
     root.walkDecls((decl) => {
       const { prop } = decl;
 
-      const customRuleOption = secondaryOptions.properties?.[prop as keyof Properties];
+      const customRuleOption =
+        secondaryOptions.properties?.[prop as keyof Properties];
       const defaultRuleOption = recommendedOptions[prop as keyof Properties];
-      const resolvedRuleOption = completePropertyOptions[prop as keyof Properties];
+      const resolvedRuleOption =
+        completePropertyOptions[prop as keyof Properties];
 
       const isRuleEnabled = Array.isArray(resolvedRuleOption)
         ? resolvedRuleOption[0]
@@ -156,9 +172,15 @@ export const noFixedSizes: Rule = (
       const resolvedSeverity = Array.isArray(customRuleOption)
         ? customRuleOption[1].severity
         : (severity ??
-          (Array.isArray(defaultRuleOption) ? defaultRuleOption[1].severity : undefined));
+          (Array.isArray(defaultRuleOption)
+            ? defaultRuleOption[1].severity
+            : undefined));
 
-      if (!(prop in completePropertyOptions) || !isRuleEnabled || !resolvedSeverity) {
+      if (
+        !(prop in completePropertyOptions) ||
+        !isRuleEnabled ||
+        !resolvedSeverity
+      ) {
         return;
       }
 

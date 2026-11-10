@@ -3,7 +3,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { color: red; }',
@@ -14,7 +14,7 @@ testRule({
       description: 'chained class selectors',
     },
     {
-      code: `.button { color: red; &[aria-disabled="true"] { color: blue; } }`,
+      code: '.button { color: red; &[aria-disabled="true"] { color: blue; } }',
       description: 'attribute selector nested within class selector',
     },
     {
@@ -63,7 +63,8 @@ testRule({
     },
     {
       code: '.link[target="_blank"] { color: blue; }',
-      description: 'class with attribute (should pass because it is attached to a class)',
+      description:
+        'class with attribute (should pass because it is attached to a class)',
     },
     {
       code: '.input-field[aria-invalid="true"] { border-color: red; }',
@@ -197,20 +198,19 @@ testRule({
       message: messages.rejected('[hidden]'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { ignoreAttributeModifiers: true }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: 'button[disabled] { color: red; }',
       description: 'button with attribute selector ',
     },
     {
-      code: `button { color: red; &[aria-disabled="true"] { color: blue; } }`,
+      code: 'button { color: red; &[aria-disabled="true"] { color: blue; } }',
       description: 'attribute selector nested within an element selector',
     },
   ],
@@ -221,13 +221,12 @@ testRule({
       message: messages.rejected('[hidden]'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { ignoreAttributeSelectors: true }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: 'button[disabled] { color: red; }',
@@ -237,17 +236,17 @@ testRule({
   reject: [
     {
       code: '[hidden] { display: none }',
-      description: 'global attribute selector remains invalid with legacy option',
+      description:
+        'global attribute selector remains invalid with legacy option',
       message: messages.rejected('[hidden]'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { ignoreElements: ['button'] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: 'button { color: red; }',
@@ -262,13 +261,12 @@ testRule({
       description: 'button element with attribute selector',
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { ignoreElements: ['*'] }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '* { box-sizing: border-box; }',
@@ -282,13 +280,12 @@ testRule({
       message: messages.rejected('section'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { strict: true }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.btn { color: red; }',
@@ -329,7 +326,8 @@ testRule({
     },
     {
       code: 'a.link { color: red; }',
-      description: 'compound selector with class and element tag in strict mode',
+      description:
+        'compound selector with class and element tag in strict mode',
       message: messages.rejected('a.link'),
     },
     {
@@ -348,13 +346,12 @@ testRule({
       message: messages.rejected(':where(button)'),
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { ignoreElements: ['button'], strict: true }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: 'button { color: red; }',
@@ -369,38 +366,37 @@ testRule({
       description: 'ignored element tag with attribute selector in strict mode',
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { ignoreAttributeModifiers: true, strict: true }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: 'button[disabled] { color: red; }',
       description: 'a button tag with [disabled] attribute selector',
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true, { ignoreAttributeSelectors: true, strict: true }],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: 'button[disabled] { color: red; }',
-      description: 'legacy option allows element attribute selector in strict mode',
+      description:
+        'legacy option allows element attribute selector in strict mode',
     },
   ],
   reject: [
     {
       code: '[hidden] { display: none }',
-      description: 'legacy option still rejects global attribute selector in strict mode',
+      description:
+        'legacy option still rejects global attribute selector in strict mode',
       message: messages.rejected('[hidden]'),
     },
   ],
-  /* eslint-enable sort-keys */
 });

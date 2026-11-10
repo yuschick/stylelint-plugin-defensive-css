@@ -1,4 +1,10 @@
-export const globalKeywords = ['inherit', 'initial', 'unset', 'revert', 'revert-layer'];
+export const globalKeywords = [
+  'inherit',
+  'initial',
+  'unset',
+  'revert',
+  'revert-layer',
+];
 
 export function checkForCustomProperty(value: string): [boolean, string[]] {
   const normalized = value.toLocaleLowerCase().trim();

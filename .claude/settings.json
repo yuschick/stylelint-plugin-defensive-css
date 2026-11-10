@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "deny": [
+      "Bash(gh pr merge*)",
+      "Bash(/opt/homebrew/bin/gh pr merge*)",
+      "Bash(gh pr review*)",
+      "Bash(/opt/homebrew/bin/gh pr review*)",
+      "Bash(gh api *merge*)",
+      "Bash(/opt/homebrew/bin/gh api *merge*)",
+      "Bash(gh api *rulesets*)",
+      "Bash(/opt/homebrew/bin/gh api *rulesets*)",
+      "Bash(git push * main)",
+      "Bash(git push * main *)",
+      "Bash(git push *:main*)",
+      "Bash(git push *refs/heads/main*)",
+      "Bash(git push *--force*)",
+      "Bash(git push * -f *)",
+      "Bash(git -C * push*)"
+    ]
+  }
+}

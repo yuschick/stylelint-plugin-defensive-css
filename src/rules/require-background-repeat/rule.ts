@@ -4,11 +4,16 @@
  * @license MIT
  */
 
-import stylelint, { Rule, Severity } from 'stylelint';
+import type { Declaration } from 'postcss';
+import type { Rule, Severity } from 'stylelint';
+import stylelint from 'stylelint';
+
+import type { SeverityProps } from '@package-utils/types';
+import { severityOption } from '@package-utils/types';
+import { validateBasicOption } from '@package-utils/validation';
+
 import { messages, meta, name } from './meta';
 import { findShorthandRepeat, hasUrlValue } from './utils';
-import { severityOption, SeverityProps } from '../../utils/types';
-import { validateBasicOption } from '../../utils/validation';
 
 const { report, validateOptions } = stylelint.utils;
 
@@ -40,10 +45,13 @@ export const requireBackgroundRepeat: Rule = (
       },
     );
 
-    if (!validOptions) return;
+    if (!validOptions) {
+      return;
+    }
 
     // Default both to true
-    const checkBackgroundRepeat = secondaryOptions['background-repeat'] !== false;
+    const checkBackgroundRepeat =
+      secondaryOptions['background-repeat'] !== false;
     const checkMaskRepeat = secondaryOptions['mask-repeat'] !== false;
 
     if (!checkBackgroundRepeat && !checkMaskRepeat) {
@@ -64,13 +72,18 @@ export const requireBackgroundRepeat: Rule = (
 
     root.walkRules((ruleNode) => {
       const { selector } = ruleNode;
-      const declMap = {
-        backgroundImageNode: null,
+      const declMap: {
+        backgroundImageNode?: Declaration;
+        hasBackgroundImage: boolean;
+        hasBackgroundRepeat: boolean;
+        hasMaskImage: boolean;
+        hasMaskRepeat: boolean;
+        maskImageNode?: Declaration;
+      } = {
         hasBackgroundImage: false,
         hasBackgroundRepeat: false,
         hasMaskImage: false,
         hasMaskRepeat: false,
-        maskImageNode: null,
       };
 
       // FIRST: Walk through ALL declarations to collect state
@@ -89,8 +102,7 @@ export const requireBackgroundRepeat: Rule = (
             if (prop === 'background' && findShorthandRepeat(value)) {
               declMap.hasBackgroundRepeat = true;
             } else {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              declMap.backgroundImageNode = decl as any;
+              declMap.backgroundImageNode = decl;
             }
           }
 
@@ -102,15 +114,17 @@ export const requireBackgroundRepeat: Rule = (
 
         if (checkMaskRepeat) {
           // Check for mask-image or mask shorthand
-          if (prop === 'mask-image' || (prop === 'mask' && hasUrlValue(value))) {
+          if (
+            prop === 'mask-image' ||
+            (prop === 'mask' && hasUrlValue(value))
+          ) {
             declMap.hasMaskImage = true;
 
             // Check if shorthand includes repeat
             if (prop === 'mask' && findShorthandRepeat(value)) {
               declMap.hasMaskRepeat = true;
             } else {
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              declMap.maskImageNode = decl as any;
+              declMap.maskImageNode = decl;
             }
           }
 

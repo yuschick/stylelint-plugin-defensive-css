@@ -4,7 +4,7 @@ import { messages, name } from './meta';
 testRule({
   config: [true],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { height: 100dvh; }',
@@ -101,14 +101,13 @@ testRule({
       ],
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [true],
   fix: true,
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { height: 100dvh; }',
@@ -161,20 +160,25 @@ testRule({
       ],
     },
   ],
-  /* eslint-enable sort-keys */
 });
 
 testRule({
   config: [
     true,
-    { properties: { 'block-size': [true, { severity: 'warning' }], height: false } },
+    {
+      properties: {
+        'block-size': [true, { severity: 'warning' }],
+        height: false,
+      },
+    },
   ],
   ruleName: name,
-  /* eslint-disable sort-keys */
+
   accept: [
     {
       code: '.class { height: 100vb; }',
-      description: 'fixed viewport height with manual disable of height property check',
+      description:
+        'fixed viewport height with manual disable of height property check',
     },
   ],
 
@@ -185,5 +189,4 @@ testRule({
       message: messages.warning('block-size'),
     },
   ],
-  /* eslint-enable sort-keys */
 });

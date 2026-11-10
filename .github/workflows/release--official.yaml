@@ -15,7 +15,7 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
-    
+
     steps:
       - name: Checkout release branch
         uses: actions/checkout@v4
