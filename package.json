@@ -6,28 +6,27 @@
   "author": "Daniel Yuschick <daniel.yuschick@gmail.com>",
   "license": "MIT",
   "homepage": "https://github.com/yuschick/stylelint-plugin-defensive-css",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.cts",
+  "main": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
+      "types": "./dist/index.d.mts",
+      "default": "./dist/index.mjs"
     },
     "./configs/accessibility": {
-      "import": "./dist/configs/accessibility.mjs",
-      "require": "./dist/configs/accessibility.cjs"
+      "types": "./dist/configs/accessibility.d.mts",
+      "default": "./dist/configs/accessibility.mjs"
     },
     "./configs/recommended": {
-      "import": "./dist/configs/recommended.mjs",
-      "require": "./dist/configs/recommended.cjs"
+      "types": "./dist/configs/recommended.d.mts",
+      "default": "./dist/configs/recommended.mjs"
     },
     "./configs/strict": {
-      "import": "./dist/configs/strict.mjs",
-      "require": "./dist/configs/strict.cjs"
+      "types": "./dist/configs/strict.d.mts",
+      "default": "./dist/configs/strict.mjs"
     },
     "./package.json": "./package.json"
   },
@@ -42,30 +41,33 @@
     "test:watch": "vitest --watch",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "check:package": "publint && attw --pack . --profile esm-only"
   },
   "dependencies": {
-    "postcss-selector-parser": "^7.1.4"
+    "postcss-selector-parser": "^7.2.0"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
     "@eslint-community/eslint-plugin-eslint-comments": "^4.8.1",
     "@eslint/js": "^10.0.1",
-    "@release-it/conventional-changelog": "^10.0.4",
-    "@types/node": "^25.1.0",
+    "@release-it/conventional-changelog": "^12.0.2",
+    "@types/node": "^22.20.5",
     "csstype": "^3.2.3",
     "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.18.1",
-    "globals": "^17.7.0",
+    "globals": "^17.14.0",
     "jiti": "^2.7.0",
-    "prettier": "^3.8.1",
-    "release-it": "^19.2.4",
-    "stylelint": "^16.1.0",
-    "tsdown": "^0.21.3",
+    "prettier": "^3.9.10",
+    "publint": "^0.3.25",
+    "release-it": "^21.1.2",
+    "stylelint": "^18.0.0",
+    "tsdown": "^0.23.7",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.72.1",
-    "vitest": "^3.2.4",
-    "vitest-stylelint-utils": "^2.0.0"
+    "vite": "^8.3.7",
+    "vitest": "^5.1.0"
   },
   "peerDependencies": {
     "stylelint": "^16.7.0 || ^17.0.0 || ^18.0.0"
@@ -92,6 +94,6 @@
     "url": "https://github.com/yuschick/stylelint-plugin-defensive-css/issues"
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": ">=22.12.0"
   }
 }

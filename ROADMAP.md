@@ -73,11 +73,11 @@ This work comes before the Milestone 3 refactors, so all later code follows it.
 
 - [ ] Close the Dependabot backlog on `main` (#235, #236, #237, #238 and #239) and take those updates on `release/v3.0.0`.
 - [ ] Group Dependabot updates and add the `github-actions` ecosystem.
-- [ ] Remove `eslint-plugin-prettier` and run `prettier --check` directly.
-- [ ] Decide whether `vitest-stylelint-utils` stays or is replaced by a small local adapter.
-- [ ] Remove stale `external` entries from `tsdown.config.ts` and confirm `csstype` does not leak into published types.
-- [ ] Add `types` conditions to `exports`, and drop the CommonJS builds.
-- [ ] Move `V1-DOCUMENTATION.md` out of the repository root.
+- [x] Remove `eslint-plugin-prettier` and run `prettier --check` directly.
+- [x] Decide whether `vitest-stylelint-utils` stays or is replaced by a small local adapter.
+- [x] Remove stale `external` entries from `tsdown.config.ts` and confirm `csstype` does not leak into published types.
+- [x] Add `types` conditions to `exports`, and drop the CommonJS builds.
+- [x] Move `V1-DOCUMENTATION.md` out of the repository root.
 
 The plugin has only one runtime dependency, so there is little to remove. Milestone 3 may add a parser, and that is a good trade for correctness.
 
@@ -438,8 +438,8 @@ RCs publish continuously to `next` from Milestone 2 onward. These checkpoints de
 
 | Change | Migration |
 | --- | --- |
-| Stylelint 14, 15 and 16.0–16.6 are no longer supported | Upgrade to Stylelint 16.7 or newer, on Node 20.19 or newer |
-| CommonJS build removed | Load the plugin as ESM. Stylelint handles this. |
+| Stylelint 14, 15 and 16.0–16.6 are no longer supported | Upgrade to Stylelint 16.7 or newer, on Node 22.12 or newer |
+| CommonJS build removed | No change needed when loading through Stylelint. Direct `require()` callers must use ESM. |
 | `fix` option removed | Remove it, and use `disableFix: true` to opt out |
 | `ignore` strings follow Stylelint's `/regex/` convention | Review existing patterns |
 | More accurate rules report new problems | Run `--fix`, then review what remains |

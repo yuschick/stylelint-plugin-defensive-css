@@ -1,6 +1,6 @@
-import { getTestRule, type TestRule } from 'vitest-stylelint-utils';
-
 import plugins from './src';
+import type { TestRule } from './test/testRule';
+import { getTestRule } from './test/testRule';
 
 globalThis.testRule = getTestRule({ plugins });
 
