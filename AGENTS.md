@@ -108,9 +108,20 @@ Most of these are enforced by ESLint and TypeScript. Fix violations instead of s
 ## Pull requests and commits
 
 - Branch from `release/v3.0.0` and open pull requests against it.
-- Pull requests are squash merged, so the title becomes the changelog entry. Titles must follow Conventional Commits, such as `fix(require-flex-wrap): handle nested rules`. Use `!` for breaking changes.
+- Pull requests are squash merged, so the title becomes the changelog entry. Titles must follow Conventional Commits, scoped to the rule when one rule changes, such as `fix(require-flex-wrap): handle nested rules`.
+- `feat`, `fix`, `perf`, `revert` and `docs` appear in the changelog. `build`, `chore`, `ci`, `refactor`, `style` and `test` don't.
+- Mark a breaking change with `!`, and explain what users must do in a `BREAKING CHANGE:` footer in the squash commit body. That footer becomes the release note.
 - Keep one rule per pull request when changing rule behavior.
 - Never push to `main` or force-push a shared branch.
+
+## Releases
+
+Releases are automated by `.github/workflows/release.yaml`, and never published by hand:
+
+- **Release candidates:** a merge into a `release/**` branch that changes `src/`, dependencies or build config publishes `<version>-rc.<run>` to the `next` dist-tag.
+- **Official releases:** the repository owner runs the **Release** workflow on the release branch.
+
+Run `npm run changelog:preview` to see the notes the next release will generate.
 
 ## Skills
 

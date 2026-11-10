@@ -1,0 +1,235 @@
+name: Release
+
+# One workflow handles both release paths, so npm needs one trusted publisher:
+# - A push to a release branch publishes a release candidate to `next`
+# - Running it manually on a release branch publishes the official release
+#
+# The version always comes from the branch name: release/v3.0.0 means 3.0.0
+
+on:
+  push:
+    branches:
+      - 'release/**'
+    paths:
+      - 'src/**'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsdown.config.ts'
+      - '.github/workflows/release.yaml'
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: 'Rehearse without pushing, publishing or merging'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
+    steps:
+      - name: Read the version from the branch name
+        id: version
+        env:
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          if [[ ! "$BRANCH" =~ ^release/v([0-9]+\.[0-9]+\.[0-9]+)$ ]]; then
+            echo "::error::Releases run only from branches named release/v<major>.<minor>.<patch>, not '$BRANCH'."
+            exit 1
+          fi
+
+          echo "version=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Check package
+        run: npm run check:package
+
+      # Fails before anything is published, rather than leaving npm ahead of main
+      - name: Check the branch merges cleanly into main
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git fetch --no-tags origin main
+
+          if ! git merge-tree --write-tree origin/main HEAD > /dev/null; then
+            echo "::error::$GITHUB_REF_NAME conflicts with main. Merge main into it through a pull request, then run the release again."
+            exit 1
+          fi
+
+  release-candidate:
+    name: Publish release candidate
+    needs: verify
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Require npm 11.5.1 or newer for trusted publishing
+        run: node .github/scripts/check-npm-version.mjs
+
+      # Install scripts never run in a job that can publish
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      # Set in CI only: nothing is committed, so there are no tags or loops
+      - name: Set the release candidate version
+        env:
+          VERSION: ${{ needs.verify.outputs.version }}
+          RUN_NUMBER: ${{ github.run_number }}
+        run: npm version "$VERSION-rc.$RUN_NUMBER" --no-git-tag-version
+
+      - name: Build
+        run: npm run build
+
+      - name: Publish to the next dist-tag
+        run: npm publish --tag next
+
+  official:
+    name: Publish official release
+    needs: verify
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: npm
+    permissions:
+      contents: read
+      id-token: write
+    env:
+      BRANCH: ${{ github.ref_name }}
+      DRY_RUN: ${{ inputs.dry-run }}
+      VERSION: ${{ needs.verify.outputs.version }}
+
+    # Each step skips work that already succeeded, so a failed run can be re-run
+    steps:
+      # The App's ruleset bypass lets it push the release commit and merge
+      - name: Mint a GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+
+      # The branch, not the triggering commit, so a re-run sees its own release commit
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          ref: ${{ github.ref_name }}
+          token: ${{ steps.app-token.outputs.token }}
+
+      - name: Set up Node
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          package-manager-cache: false
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Require npm 11.5.1 or newer for trusted publishing
+        run: node .github/scripts/check-npm-version.mjs
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Commit as the GitHub App
+        env:
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          user_id="$(gh api "/users/${APP_SLUG}[bot]" --jq .id)"
+          git config user.name "${APP_SLUG}[bot]"
+          git config user.email "${user_id}+${APP_SLUG}[bot]@users.noreply.github.com"
+
+      - name: Check what is already released
+        id: released
+        run: |
+          if [[ -n "$(git ls-remote --tags origin "refs/tags/v$VERSION")" ]]; then
+            echo "tag=true" >> "$GITHUB_OUTPUT"
+          fi
+
+          if npm view "stylelint-plugin-defensive-css@$VERSION" version > /dev/null 2>&1; then
+            echo "npm=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Bumps the version, writes the changelog, commits, tags, pushes and
+      # creates the GitHub release. npm publishing is the next step
+      - name: Create the release
+        if: steps.released.outputs.tag != 'true'
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: |
+          if [[ "$DRY_RUN" == 'true' ]]; then
+            npx release-it "$VERSION" --ci --dry-run
+          else
+            npx release-it "$VERSION" --ci
+          fi
+
+      - name: Publish to npm
+        if: steps.released.outputs.npm != 'true'
+        run: |
+          # A dry run doesn't bump the version, so show the package instead
+          if [[ "$DRY_RUN" == 'true' ]]; then
+            npm run build
+            npm pack --dry-run
+            exit 0
+          fi
+
+          git checkout "v$VERSION"
+          npm run build
+          npm publish
+
+      - name: Merge the release branch into main
+        if: ${{ !inputs.dry-run }}
+        run: |
+          git fetch --no-tags origin main "$BRANCH"
+          git checkout -B main origin/main
+          git merge --no-ff "origin/$BRANCH" -m "chore: merge $BRANCH into main"
+          git push origin main
