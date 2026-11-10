@@ -127,12 +127,15 @@ One workflow, `release.yaml`, handles both paths, so npm needs only one trusted 
 
 Test the latest RC with `npm install -D stylelint-plugin-defensive-css@next`.
 
-**Official releases run manually:** open **Actions**, then **Release**, choose **Run workflow**, and select the release branch.
+**Official releases run manually:** open **Actions**, then **Release**, choose **Run workflow**, and select the release branch. Tick **dry run** to rehearse without pushing, publishing or merging.
 
 1. Verify as above, and confirm the branch merges cleanly into `main` before anything is published.
 2. Mint the GitHub App token.
-3. Let `release-it` set the version, write the changelog, commit, tag, create the GitHub release and publish.
-4. Merge the release branch into `main` with a merge commit. This step is safe to re-run if it fails.
+3. Let `release-it` set the version, write the changelog, commit, tag, push and create the GitHub release.
+4. Publish to npm from the new tag.
+5. Merge the release branch into `main` with a merge commit.
+
+Each step skips work that already succeeded, so a failed run can simply be re-run. Publishing comes after the push, so a blocked push never leaves npm ahead of the repository.
 
 Later v2 work uses the same flow from a branch such as `release/v2.10.1`.
 
@@ -140,7 +143,7 @@ Later v2 work uses the same flow from a branch such as `release/v2.10.1`.
 
 These need your npm and GitHub accounts. npm trusted publisher configurations expire if they don't complete a successful publish within 2 days, so do Part A on the day of the first RC.
 
-**Before Part A:** finish the workflow changes below and merge them, so the workflow filename is final. npm connections cannot be edited, only deleted and recreated.
+Do Parts B and C at any time. Do Part A on the day you merge the pull request that adds `release.yaml`: that merge changes the workflow, so it publishes the first RC straight away. npm connections cannot be edited, only deleted and recreated.
 
 #### Part A: npm trusted publisher
 
@@ -161,10 +164,10 @@ These need your npm and GitHub accounts. npm trusted publisher configurations ex
 
 1. Open **GitHub Settings**, **Developer settings**, **GitHub Apps**, then **New GitHub App**.
 2. Name it, set the homepage to the repository, and turn off **Webhook**.
-3. Under repository permissions, set **Contents** to read and write. Leave everything else off.
+3. Under repository permissions, set **Contents** and **Workflows** to read and write. Leave everything else off. **Workflows** is needed because merging a release into `main` can bring workflow changes with it.
 4. Allow installation only on your own account and create the app.
 5. Generate a private key, then install the app on this repository only.
-6. In the repository's Actions settings, add a variable `RELEASE_APP_ID` and a secret `RELEASE_APP_PRIVATE_KEY`.
+6. In the repository's Actions settings, add a variable `RELEASE_APP_CLIENT_ID` with the App's **Client ID**, not its App ID, and a secret `RELEASE_APP_PRIVATE_KEY` with the whole private key file.
 7. In **Settings**, **Rules**, add the app to the bypass list with **Always** on both the `Main` and `release/**` rulesets.
 
 #### Part D: After the first successful RC and official-release dry run
@@ -174,29 +177,31 @@ These need your npm and GitHub accounts. npm trusted publisher configurations ex
 
 ### Workflow and configuration changes
 
-- [ ] Replace the old workflow with `release.yaml`, triggered by `push` to `release/**` for RCs and `workflow_dispatch` for official releases, with no typed inputs.
-- [ ] Limit RCs to changes under `src/` and to `package.json`, `package-lock.json` and build config.
-- [ ] Refuse to run unless the branch name matches `release/v<major>.<minor>.<patch>`.
-- [ ] Add a concurrency group so two releases can't overlap.
-- [ ] Set permissions to `id-token: write` and `contents: read`, and run both jobs in the `npm` environment. The App token handles pushes.
-- [ ] Mint the App token with `actions/create-github-app-token`, in the official job only.
-- [ ] Use `actions/setup-node` with `registry-url` set, `package-manager-cache: false`, and Node 24.
-- [ ] Add a step that fails unless npm is 11.5.1 or newer.
-- [ ] Remove the step that writes an auth token to `.npmrc`.
-- [ ] Set `npm.skipChecks: true` in the `release-it` config, because `npm whoami` has no token under OIDC.
-- [ ] Remove `requireCleanWorkingDir: false` and `requireBranch: false`, and require `release/*`.
-- [ ] Pin third-party actions to commit SHAs.
+- [x] Replace the old workflow with `release.yaml`, triggered by `push` to `release/**` for RCs and `workflow_dispatch` for official releases, with only a dry-run checkbox as input.
+- [x] Limit RCs to changes under `src/` and to `package.json`, `package-lock.json`, build config and the release workflow itself.
+- [x] Refuse to run unless the branch name matches `release/v<major>.<minor>.<patch>`.
+- [x] Add a concurrency group so two releases can't overlap.
+- [x] Set permissions to `id-token: write` and `contents: read`, and run both jobs in the `npm` environment. The App token handles pushes.
+- [x] Mint the App token with `actions/create-github-app-token`, in the official job only.
+- [x] Use `actions/setup-node` with `registry-url` set, `package-manager-cache: false`, and Node 24.
+- [x] Add a step that fails unless npm is 11.5.1 or newer.
+- [x] Remove the step that writes an auth token to `.npmrc`.
+- [x] Set `npm.skipChecks: true` in the `release-it` config, because `npm whoami` has no token under OIDC.
+- [x] Remove `requireCleanWorkingDir: false` and `requireBranch: false`, and require `release/*`.
+- [x] Pin every action in the release workflow to a commit SHA.
+- [x] Install with `--ignore-scripts` in the jobs that can publish.
+- [ ] Open the bootstrap pull request to `main` with `release.yaml`, removing the old workflow, so **Run workflow** appears.
 
 **Exit test:** a merge into `release/v3.0.0` publishes `3.0.0-rc.<n>` to `next` with provenance and leaves `latest` on 2.10.0. A `release-it` dry run also succeeds on the branch and generates the expected changelog.
 
 ### Changelog and release notes
 
-- [ ] Use rule names as commit scopes, such as `fix(require-grid-minmax): ...`, so entries say which rule changed.
-- [ ] Show a **Breaking Changes** section generated from `!` and `BREAKING CHANGE:` footers.
-- [ ] Hide `build`, `ci`, `chore`, `refactor`, `style` and `test`, so tooling work stays out of user-facing notes.
-- [ ] Publish the same content to `CHANGELOG.md` and the GitHub release.
+- [x] Use rule names as commit scopes, such as `fix(require-grid-minmax): ...`, so entries say which rule changed.
+- [x] Show a **Breaking Changes** section generated from `!` and `BREAKING CHANGE:` footers.
+- [x] Hide `build`, `ci`, `chore`, `refactor`, `style` and `test`, so tooling work stays out of user-facing notes. A breaking commit of a hidden type still appears, under both **Breaking Changes** and its own section.
+- [x] Publish the same content to `CHANGELOG.md` and the GitHub release.
 - [ ] Link the migration guide from the 3.0.0 release notes.
-- [ ] Generate the 3.0.0 changelog from `v2.10.0` to the release commit. RCs create no tags, so it reads as one complete summary.
+- [x] Generate the 3.0.0 changelog from `v2.10.0` to the release commit. RCs create no tags, so it reads as one complete summary.
 
 The changelog is generated, and the migration guide is written by hand. Commits explain what changed, while the guide explains what to do about it.
 
