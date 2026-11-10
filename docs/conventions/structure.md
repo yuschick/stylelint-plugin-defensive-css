@@ -16,12 +16,13 @@ Rule IDs are permanent: rules may be reordered or retired, but an ID is never re
 ### FS-04 · Rule Folder Contents
 
 - Each rule **MUST** live in `src/rules/<rule-name>/`, named exactly as the rule without its namespace.
-- A rule folder contains `index.ts`, `meta.ts`, `rule.ts` and `rule.test.ts`. Logic specific to that rule goes in `utils.ts`.
+- A rule folder contains `index.ts`, `meta.ts`, `rule.ts`, `rule.test.ts` and `README.md`, the rule's documentation page. Logic specific to that rule goes in `utils.ts`.
 - A helper used by one rule stays in that rule's folder. It moves to `src/utils/` only when a second rule needs it.
 
 ```bash
 ✅ Correct
 📁 src/rules/require-flex-wrap/
+├── README.md
 ├── index.ts
 ├── meta.ts
 ├── rule.test.ts
@@ -70,7 +71,7 @@ export default requireFlexWrap;
 
 ## Pre-Submission Checklist
 
-- [ ] The rule folder holds the expected files, and helpers live with the only rule using them (FS-04)
+- [ ] The rule folder holds the expected files, including its `README.md`, and helpers live with the only rule using them (FS-04)
 - [ ] Rule tests and shared utility tests are siblings of what they test (FS-05)
 - [ ] Imports climbing more than one folder use a path alias (FS-06)
 - [ ] Named exports only, except the documented entry points, and no `export *` (RX-04, RX-05)
